@@ -1,0 +1,62 @@
+@extends('layout.main')
+
+@section('sidebar')
+<ul class="metismenu" id="menu">
+    <li class="nav-label">Dashboard</li>
+    <li>
+        <a href="{{ route('bendahara.dashboard') }}">
+            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('bendahara.status') }}">
+            <i class="icon-notebook menu-icon"></i><span class="nav-text">Rekap Data</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('bendahara.laporan') }}">
+            <i class="icon-notebook menu-icon"></i><span class="nav-text">Laporan</span>
+        </a>
+    </li>
+</ul>
+@endsection
+
+@section('content')
+<div class="container-fluid mt-3">
+    <div class="row">
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-body d-flex align-items-end row">
+                            <div>
+                                <h2 class="mb-1">Selamat Datang, {{ $user->name }}</h2>
+                                <p>Senin, 29 Juli 2024</p>
+                            </div>
+                            <div class="card-body pb-0 px-0 px-md-4">
+                            <!-- <canvas id="chart_widget_2"></canvas> -->
+                            <img src="assets/theme/images/Illustration.png" alt="" style=" margin-left: 200px; width:100px; height: auto;">
+                            </div>
+                        </div>
+                        <br><br>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3 col-sm-6">
+            <div class="card gradient-1">
+                <div class="card-body">
+                    <h3 class="card-title text-white">Total Rekap Data</h3>
+                    <div class="d-inline-block">
+                        <h2 class="text-white">8541</h2>
+                        <p class="text-white mb-0">Jan - March 2019</p>
+                    </div>
+                    <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- #/ container -->
+</div>
+@endsection
