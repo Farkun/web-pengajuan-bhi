@@ -108,7 +108,7 @@ Route::get('/bendahara/status', function () {
 
 //Dashboard kontoller
 Route::middleware(['auth', 'role:1'])->group(function () {
-    Route::get('/pengaju/dashboard', [DashboardController::class, 'pengaju'])->name('pengaju.dashboard');
+    Route::get('/pengaju/dashboard', [DashboardController::class, 'superadmin'])->name('superadmin.dashboard');
 });
 
 Route::middleware(['auth', 'role:2'])->group(function () {
