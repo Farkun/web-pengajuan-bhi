@@ -106,7 +106,7 @@ Route::get('/bendahara/status', function () {
     return view('bendahara.status');
 })->name('bendahara.status');
 
-//Dashboard Controller
+//Dashboard kontoller
 Route::middleware(['auth', 'role:1'])->group(function () {
     Route::get('/pengaju/dashboard', [DashboardController::class, 'pengaju'])->name('pengaju.dashboard');
 });
