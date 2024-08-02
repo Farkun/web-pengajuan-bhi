@@ -35,7 +35,7 @@
                             </div>
                             <div class="card-body pb-0 px-0 px-md-4">
                             <!-- <canvas id="chart_widget_2"></canvas> -->
-                            <img src="assets/theme/images/Illustration.png" alt="" style=" margin-left: 200px; width:100px; height: auto;">
+                            <img src="{{asset('assets/theme/images/Illustration.png')}}" alt="" style=" margin-left: 200px; width:100px; height: auto;">
                             </div>
                         </div>
                         <br><br>

@@ -72,8 +72,7 @@
                     <span style="font-size: 10px;">Email: marketing@stpbogor.ac.id</span><br>
                 </td>
                 <td style="width: 30%;">
-                    No Trans.: 4<br>
-                    Tanggal: 06 Januari 2016
+                    ID: PA708AB<br>
                 </td>
             </tr>
         </table>

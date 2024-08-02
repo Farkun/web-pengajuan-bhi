@@ -32,37 +32,15 @@
                         <div class="card-body pb-0 d-flex justify-content-between">
                             <div>
                                 <h2 class="mb-1">Selamat Datang, {{ $user->name }}</h2>
-                                <p>Total Earnings of the Month</p>
-                                <h3 class="m-0">$ 12,555</h3>
+                                <p>Senin, 29 Juli 2024</p>
                             </div>
-                            <div>
-                                <ul>
-                                    <li class="d-inline-block mr-3"><a class="text-dark" href="#">Day</a></li>
-                                    <li class="d-inline-block mr-3"><a class="text-dark" href="#">Week</a></li>
-                                    <li class="d-inline-block"><a class="text-dark" href="#">Month</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="chart-wrapper" style="margin-left: 850px">
+                            <div class="card-body pb-0 px-0 px-md-4">
                             <!-- <canvas id="chart_widget_2"></canvas> -->
-                            <img src="assets/theme/images/Illustration.png" alt="">
+                            <img src="{{asset('assets/theme/images/Illustration.png')}}" alt=""
+                            style=" margin-left: 400px; width:300px; height: auto;">
                         </div>
-                        <div class="card-body">
-                            <div class="d-flex justify-content-between">
-                                <div class="w-100 mr-2">
-                                    <h6>Pixel 2</h6>
-                                    <div class="progress" style="height: 6px">
-                                        <div class="progress-bar bg-danger" style="width: 40%"></div>
-                                    </div>
-                                </div>
-                                <div class="ml-2 w-100">
-                                    <h6>iPhone X</h6>
-                                    <div class="progress" style="height: 6px">
-                                        <div class="progress-bar bg-primary" style="width: 80%"></div>
-                                    </div>
-                                </div>
-                            </div>
                         </div>
+                        <br><br>
                     </div>
                 </div>
             </div>
@@ -71,7 +49,7 @@
 
     <div class="container-fluid mt-3">
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-9">
                 <div class="row">
                     <div class="col-12">
                         <div class="card">
@@ -85,7 +63,7 @@
                                             <div class="card mb-0">
                                                 <div class="card-body d-flex align-items-center p-0"
                                                     style="padding: 40px; display: flex; align-items: center;">
-                                                    <img src="assets/theme/images/status_pengaju.png" class="img-fluid"
+                                                    <img src="{{asset('assets/theme/images/status_pengaju.png')}}" class="img-fluid"
                                                         alt="Placeholder Image"
                                                         style="max-width: 200px; margin-right: 20px;">
                                                     <div class="ml-3" style="flex-grow: 1;">
@@ -103,9 +81,9 @@
                                     </div>
 
                                     <!-- Konten lain di sebelah kanan pembatas -->
-                                    <div class="col-lg-6">
+                                    <div style="flex-grow: 1; margin-left: 50px;">
                                         <div class="table-responsive">
-                                            <table class="table table-hover">
+                                            <table class="table table-hover table-striped table-bordered">
                                                 <thead>
                                                     <tr>
                                                         <th>#</th>
