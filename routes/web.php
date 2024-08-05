@@ -17,7 +17,7 @@ use App\Http\Controllers\DashboardController;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Route::get('/superadmin/dashboard', function () {
@@ -126,6 +126,7 @@ Route::middleware(['auth', 'role:4'])->group(function () {
 Route::middleware(['auth', 'role:5'])->group(function () {
     Route::get('/bendahara/dashboard', [DashboardController::class, 'bendahara'])->name('bendahara.dashboard');
 });
+
 
 
 
