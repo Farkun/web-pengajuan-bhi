@@ -8151,7 +8151,7 @@ Fixing Order => Base + Typography >> General Layout + Grid >> Page Layout + Comp
   top: 5rem;
   padding-top: 0;
   z-index: 99;
-  background: #fff;
+  background: #544E4E;
   transition: all .2s ease; }
   @media only screen and (min-width: 1200px) and (max-width: 1350px) {
     .nk-sidebar {
@@ -14127,7 +14127,7 @@ html[dir="rtl"] [direction="rtl"][data-sidebar-style="compact"]:not([data-layout
   color: #fff; }
 
 [data-sibebarbg="color_1"] .nk-sidebar .metismenu {
-  background-color: #fff; }
+  background-color: #544E4E; }
   [data-sibebarbg="color_1"] .nk-sidebar .metismenu > li {
     color: #27394F; }
     [data-sibebarbg="color_1"] .nk-sidebar .metismenu > li ul a {

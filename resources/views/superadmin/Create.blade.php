@@ -2,15 +2,15 @@
 
 @section('sidebar')
 <ul class="metismenu" id="menu">
-    <li class="nav-label">Dashboard</li>
+    <li class="nav-label"></li>
     <li>
-        <a href="{{ route('superadmin.dashboard') }}">
-            <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+        <a href="{{ route('superadmin.dashboard') }}" style="color: white;">
+            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
         </a>
     </li>
     <li>
-        <a href="{{ route('superadmin.daftarakun') }}">
-            <i class="icon-notebook menu-icon"></i><span class="nav-text">Daftar Akun</span>
+        <a href="{{ route('superadmin.daftarakun') }}" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Daftar Akun</span>
         </a>
     </li>
 </ul>

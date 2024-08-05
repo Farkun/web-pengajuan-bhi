@@ -2,20 +2,20 @@
 
 @section('sidebar')
 <ul class="metismenu" id="menu">
-    <li class="nav-label">Dashboard</li>
+    <li class="nav-label"></li>
         <li>
-            <a href="{{ route('bendahara.dashboard') }}">
-                <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+            <a href="{{ route('bendahara.dashboard') }}" style="color: white;">
+                <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('bendahara.status') }}">
-                <i class="icon-notebook menu-icon"></i><span class="nav-text">Rekap Data</span>
+            <a href="{{ route('bendahara.status') }}" style="color: white;">
+                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Rekap Data</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('bendahara.status') }}">
-                <i class="icon-notebook menu-icon"></i><span class="nav-text">Laporan</span>
+            <a href="javascript:void()" style="color: white;">
+                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
             </a>
         </li>
 </ul>

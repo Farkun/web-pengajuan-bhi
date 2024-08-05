@@ -2,20 +2,20 @@
 
 @section('sidebar')
 <ul class="metismenu" id="menu">
-    <li class="nav-label">Dashboard</li>
+    <li class="nav-label"></li>
         <li>
-            <a href="{{ route('pengaju.dashboard') }}">
-                <i class="icon-speedometer menu-icon"></i><span class="nav-text">Dashboard</span>
+            <a href="{{ route('pengaju.dashboard') }}" style="color: white;">
+                <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('pengaju.dana') }}">
-                <i class="icon-note menu-icon"></i><span class="nav-text">Ajukan Dana</span>
+            <a href="{{ route('pengaju.dana') }}" style="color: white;">
+                <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Ajukan Dana</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('pengaju.status') }}">
-                <i class="icon-notebook menu-icon"></i><span class="nav-text">Status</span>
+            <a href="{{ route('pengaju.status') }}" style="color: white;">
+                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Status</span>
             </a>
         </li>
 </ul>

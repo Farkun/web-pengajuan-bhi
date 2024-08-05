@@ -2,15 +2,15 @@
 
 @section('sidebar')
 <ul class="metismenu" id="menu">
-    <li class="nav-label">Dashboard</li>
+    <li class="nav-label"></li>
         <li>
-            <a href="{{ route('approval.status') }}">
-                <i class="icon-speedometer menu-icon"></i><span class="nav-text">Status</span>
+            <a href="javascript:void()" style="color: white;">
+                <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Status</span>
             </a>
         </li>
         <li>
-            <a href="{{ route('approval.laporan') }}">
-                <i class="icon-note menu-icon"></i><span class="nav-text">Laporan</span>
+            <a href="{{ route('approval.laporan') }}" style="color: white;">
+                <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
             </a>
         </li>
 </ul>
