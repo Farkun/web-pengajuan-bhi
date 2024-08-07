@@ -19,7 +19,7 @@ class UserSeeder extends Seeder
             'email' => 'admin@example.com',
             'phone' => '087829334123',
             'password' => Hash::make('superadmin'), // Pastikan untuk mengganti dengan password yang kuat
-            'role' => 1, // Menggunakan enum untuk role
+            'role' => "admin", // Menggunakan enum untuk role
         ]);
     }
 }

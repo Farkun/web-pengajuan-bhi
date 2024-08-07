@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Role extends Model
 {
@@ -12,8 +13,12 @@ class Role extends Model
         'role'
     ];
 
+    public static function getRoleTypes()
+    {
+        return self::pluck('role')->unique()->toArray();
+    } 
     public function users()
     {
-        return $this->hasMany(User::class);
+        return $this->hasMany(User::class, 'role');
     }
 }

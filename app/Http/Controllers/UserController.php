@@ -11,7 +11,9 @@ class UserController extends Controller
 {
     public function index()
     {
-        $users = User::with('role')->get(); // Mengambil data pengguna beserta perannya
+        $users = User::join('roles', 'users.role', '=', 'roles.id')
+                        ->select('users.*', 'roles.role as role_name')
+                        ->get();
         return view('superadmin.daftarakun', compact('users'));
     }
     public function create()
