@@ -48,7 +48,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-validation">
-                            <form class="form-valide" action="#" method="post" onsubmit="event.preventDefault(); showNotificationModal();">
+                            <form class="form-valide" action="{{ route('pengaju.store') }}" method="post">
+                                @csrf
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="val-date">Masukan tanggal pengajuan <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
@@ -56,23 +57,20 @@
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="val-username">Masukan nama pengaju <span class="text-danger">*</span>
-                                    </label>
+                                    <label class="col-lg-4 col-form-label" for="val-username">Masukan nama pengaju <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control" id="val-username" name="val-username" placeholder="Tuliskan nama">
                                     </div>
                                 </div>
                                 
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="val-suggestions">Deskripsi <span class="text-danger">*</span>
-                                    </label>
+                                    <label class="col-lg-4 col-form-label" for="val-suggestions">Deskripsi <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
                                         <textarea class="form-control" id="val-suggestions" name="val-suggestions" rows="5" placeholder="Tuliskan deskripsi"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label class="col-lg-4 col-form-label" for="val-currency">Dana pengajuan <span class="text-danger">*</span>
-                                    </label>
+                                    <label class="col-lg-4 col-form-label" for="val-currency">Dana pengajuan <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
                                         <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="Rp1.600.000">
                                     </div>
@@ -89,6 +87,7 @@
                 </div>
             </div>
         </div>
+    </div>
     </div>
 </div>
 
@@ -117,5 +116,6 @@
 <script>
     function showNotificationModal() {
         $('#notificationModal').modal('show');
-    }
+        }
 </script>
+

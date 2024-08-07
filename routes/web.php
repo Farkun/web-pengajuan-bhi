@@ -4,6 +4,7 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\PengajuController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,6 +47,11 @@ Route::get('/superadmin/tambahakun', function () {
 Route::get('/pengaju/dashboard', function () {
     return view('pengaju.dashboard');
 })->middleware(['auth', 'verified'])->name('pengaju.dashboard');
+
+Route::middleware(['auth', 'role:2'])->group(function(){
+    Route::get('/pengaju/dana', [PengajuController::class, 'dana'])->name('pengaju.dana');
+    Route::post('/pengaju/store', [PengajuController::class, 'store'])->name('pengaju.store');
+});
 
 Route::get('/pengaju/dana', function () {
     return view('pengaju.dana');
