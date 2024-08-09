@@ -14,6 +14,11 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('pengaju.result') }}" style="color: white;">
+                <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Data yang diajukan</span>
+            </a>
+        </li>
+        <li>
             <a href="javascript:void()" style="color: white;">
                 <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Status</span>
             </a>
@@ -61,9 +66,23 @@
                                                     <th>Proses pengajuan</th>
                                                     <th>Status dana</th>
                                                     <th>Keterangan</th>
+                                                    <th>Detail</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
+                                            @foreach($pengajus as $pengaju)
+                                                <tr>
+                                                    <th>{{ $pengaju->id }}</th>
+                                                    <td>{{ $pengaju->tanggal }}</td>
+                                                    <td>{{ $pengaju->nama_pengaju }}</td>
+                                                    <td class="color-primary">{{ $pengaju->total }}</td>
+                                                    <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
+                                                    <td><span class="badge badge-secondary px-2">Belum cair</span></td>
+                                                    <td>Lorem ipsum dolor sit amet....</td> 
+                                                    <td><a href="{{ route('pengaju.detail') }}"><button type="button"
+                                                    class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                </tr>
+                                            @endforeach
                                                 <tr>
                                                     <th>1</th>
                                                     <td>2024-01-22</td>

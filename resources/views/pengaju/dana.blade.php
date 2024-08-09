@@ -14,6 +14,11 @@
             </a>
         </li>
         <li>
+            <a href="{{ route('pengaju.result') }}" style="color: white;">
+                <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Data yang diajukan</span>
+            </a>
+        </li>
+        <li>
             <a href="{{ route('pengaju.status') }}" style="color: white;">
                 <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Status</span>
             </a>
@@ -72,14 +77,14 @@
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="val-currency">Dana pengajuan <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="Rp1.600.000">
+                                        <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="Rp1.600.000" oninput="formatRupiah(this)">
                                     </div>
                                 </div>
                                
-                                <div class="form-group row" style="max-width: 500px; margin-left: auto;">
-                                    <div class="col-lg-8 ml-auto">
-                                        <button type="submit" class="btn btn-primary" id="submitButton">Tambah pengajuan</button>
-                                    </div>
+                                <div class="form-group row">
+                                <div class="sweetalert m-t-15">
+                                    <button class="btn btn-info btn sweet-ajax">Sweet Ajax</button>
+                                </div>
                                 </div>
                             </form>
                         </div>
@@ -89,33 +94,23 @@
         </div>
     </div>
     </div>
+
+    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h4 class="card-title">Sweet Ajax</h4>
+                                <div class="card-content"></div>
+                                <div class="sweetalert m-t-15">
+                                    <button class="btn btn-info btn sweet-ajax">Sweet Ajax</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 </div>
 
-<div class="modal fade" id="notificationModal" tabindex="-1" role="dialog" aria-labelledby="notificationModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="notificationModalLabel">Notifikasi</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Pengajuan telah ditambahkan.
-            </div>
-            
-            <div class="modal-footer">
-                <td><a href="{{ route('pengaju.result') }}"><button type="button" class="btn mb-1 btn-info">ok</button></a></td>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 @endsection
 
-<script>
-    function showNotificationModal() {
-        $('#notificationModal').modal('show');
-        }
-</script>
+
 

@@ -49,8 +49,11 @@ Route::get('/pengaju/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('pengaju.dashboard');
 
 Route::middleware(['auth', 'role:2'])->group(function(){
-    Route::get('/pengaju/dana', [PengajuController::class, 'dana'])->name('pengaju.dana');
+    Route::get('/pengaju/result', [PengajuController::class, 'index'])->name('pengaju.result');
+    Route::get('/pengaju/status', [PengajuController::class, 'index'])->name('pengaju.status');
+    Route::get('/pengaju/dana', [PengajuController::class, 'create'])->name('pengaju.dana');
     Route::post('/pengaju/store', [PengajuController::class, 'store'])->name('pengaju.store');
+    Route::delete('/pengaju/{id}', [PengajuController::class, 'destroy'])->name('pengaju.destroy');
 });
 
 Route::get('/pengaju/dana', function () {
@@ -64,6 +67,10 @@ Route::get('/pengaju/status', function () {
 Route::get('/pengaju/result', function () {
     return view('pengaju.result');
 })->name('pengaju.result');
+
+Route::get('/pengaju/detailstat', function () {
+    return view('pengaju.detail');
+})->name('pengaju.detail');
 
 // Approval
 Route::get('/approval/status', function () {

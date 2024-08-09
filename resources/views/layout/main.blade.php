@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>@yield ('title')</title>
     <!-- Favicon icon -->
-    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/themeimages/favicon.png') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/theme/images/favicon.png') }}">
     <!-- Pignose Calender -->
     <link href="{{ asset('assets/theme/plugins/pg-calendar/css/pignose.calendar.min.css') }}" rel="stylesheet">
     <!-- Chartist -->
@@ -18,6 +18,7 @@
     <link href="{{ asset('assets/theme/plugins/tables/css/datatable/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
     <!-- sweetAlert -->
     <link href="{{ asset('assets/theme/plugins/sweetalert/css/sweetalert.css')}}" rel="stylesheet">
+    <!-- <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script> -->
     <!-- Custom Stylesheet -->
     <link href="{{ asset('assets/theme/css/style.css') }}" rel="stylesheet">
 
@@ -351,6 +352,87 @@
     <!-- SweetAlert -->
     <script src="{{ asset('assets/theme/plugins/sweetalert/js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('assets/theme/plugins/sweetalert/js/sweetalert.init.js') }}"></script>
+
+    <script>
+        function formatRupiah(angka, prefix) {
+            let number_string = angka.toString().replace(/[^,\d]/g, ''),
+                split = number_string.split(','),
+                sisa = split[0].length % 3,
+                rupiah = split[0].substr(0, sisa),
+                ribuan = split[0].substr(sisa).match(/\d{3}/gi);
+
+            if (ribuan) {
+                separator = sisa ? '.' : '';
+                rupiah += separator + ribuan.join('.');
+            }
+
+            rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
+            return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            let elements = document.querySelectorAll('.total-amount');
+            elements.forEach(function (element) {
+                let amount = element.dataset.amount;
+                element.textContent = formatRupiah(amount);
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.sweet-confirm').forEach(button => {
+            button.addEventListener('click', function (event) {
+                const form = this.closest('form');
+                swal({
+                    title: "Apakah Anda yakin?",
+                    text: "Data ini akan dihapus secara permanen!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ya, hapus!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
+                }, function () {
+                    form.submit(); // Submit form untuk menghapus data
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelector('.sweet-ajax').addEventListener('click', function (event) {
+            event.preventDefault(); // Mencegah form submit langsung
+            // Validasi sederhana di frontend
+            var date = document.getElementById('val-date').value;
+            var username = document.getElementById('val-username').value;
+            var suggestions = document.getElementById('val-suggestions').value;
+            var currency = document.getElementById('val-currency').value;
+
+            // Cek apakah semua field sudah diisi
+            if (date === "" || username === "" || suggestions === "" || currency === "") {
+                swal({
+                    title: "Kesalahan!",
+                    text: "Semua data pengajuan harus diisi!",
+                    icon: "error",
+                    button: "OK",
+                });
+            } else {
+                swal({
+                    title: "Apakah Anda yakin?",
+                    text: "Anda akan mengajukan permintaan ini.",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "Ya, Ajukan!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
+                }, function () {
+                    // Kirim form menggunakan JavaScript
+                    event.target.closest('form').submit(); // Mengirim form jika dikonfirmasi
+                });
+            }
+        });
+    </script>
 
 </body>
 

@@ -14,6 +14,11 @@
         </a>
     </li>
     <li>
+        <a href="{{ route('pengaju.result') }}" style="color: white;">
+            <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Data yang diajukan</span>
+        </a>
+    </li>
+    <li>
         <a href="{{ route('pengaju.status') }}" style="color: white;">
             <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Status</span>
         </a>
