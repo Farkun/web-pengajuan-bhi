@@ -78,7 +78,7 @@
                                                 {{ $pengaju->deskripsi }}</td>
                                             <td class="total-amount" data-amount="{{ $pengaju->total }}"></td>
                                             <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
-                                            <td><a href="{{ route('pengaju.detail') }}"><button type="button"
+                                            <td><a href="{{ route('pengaju.detailp', $pengaju->id) }}"><button type="button"
                                                         class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                             <td>
                                                 <form action="{{ route('pengaju.destroy', $pengaju->id) }}" method="POST"

@@ -82,8 +82,8 @@
                                 </div>
                                
                                 <div class="form-group row">
-                                <div class="sweetalert m-t-15">
-                                    <button class="btn btn-info btn sweet-ajax">Sweet Ajax</button>
+                                <div class="col-lg-10 text-right">
+                                    <button class="btn btn-info btn sweet-ajax">Tambah Pengajuan</button>
                                 </div>
                                 </div>
                             </form>
@@ -94,21 +94,6 @@
         </div>
     </div>
     </div>
-
-    <div class="col-lg-12">
-                        <div class="card">
-                            <div class="card-body">
-                                <h4 class="card-title">Sweet Ajax</h4>
-                                <div class="card-content"></div>
-                                <div class="sweetalert m-t-15">
-                                    <button class="btn btn-info btn sweet-ajax">Sweet Ajax</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-</div>
-
-
 
 @endsection
 

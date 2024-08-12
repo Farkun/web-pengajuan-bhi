@@ -79,7 +79,7 @@
                                                     <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
                                                     <td><span class="badge badge-secondary px-2">Belum cair</span></td>
                                                     <td>Lorem ipsum dolor sit amet....</td> 
-                                                    <td><a href="{{ route('pengaju.detail') }}"><button type="button"
+                                                    <td><a href="{{ route('pengaju.details', $pengaju->id) }}"><button type="button"
                                                     class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                                 </tr>
                                             @endforeach

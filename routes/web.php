@@ -51,9 +51,12 @@ Route::get('/pengaju/dashboard', function () {
 Route::middleware(['auth', 'role:2'])->group(function(){
     Route::get('/pengaju/result', [PengajuController::class, 'index'])->name('pengaju.result');
     Route::get('/pengaju/status', [PengajuController::class, 'index'])->name('pengaju.status');
+    Route::get('/pengaju/dashboard', [PengajuController::class, 'index'])->name('pengaju.dashboard');
     Route::get('/pengaju/dana', [PengajuController::class, 'create'])->name('pengaju.dana');
     Route::post('/pengaju/store', [PengajuController::class, 'store'])->name('pengaju.store');
     Route::delete('/pengaju/{id}', [PengajuController::class, 'destroy'])->name('pengaju.destroy');
+    Route::get('/pengaju/detailp/{id}', [PengajuController::class, 'show'])->name('pengaju.detailp');
+    Route::get('/pengaju/details/{id}', [PengajuController::class, 'shows'])->name('pengaju.details');
 });
 
 Route::get('/pengaju/dana', function () {
