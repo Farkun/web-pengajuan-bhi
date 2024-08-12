@@ -77,7 +77,7 @@
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="val-currency">Dana pengajuan <span class="text-danger">*</span></label>
                                     <div class="col-lg-6">
-                                        <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="Rp1.600.000" oninput="formatRupiah(this)">
+                                        <input type="text" class="form-control" id="val-currency" name="val-currency" placeholder="Rp.0,00" oninput="formatRupiah(this)">
                                     </div>
                                 </div>
                                
