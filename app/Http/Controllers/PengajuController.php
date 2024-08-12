@@ -19,6 +19,9 @@ class PengajuController extends Controller
         }
 
         abort(404);
+
+        $latestPengajus = Pengaju::latest()->limit(3)->get(); // Mengambil 3 data terbaru berdasarkan tanggal
+        return view('pengaju.dashboard', compact('latestPengajus'));
     }
     public function create()
     {
@@ -61,4 +64,15 @@ class PengajuController extends Controller
         // Redirect ke halaman pengaju status dengan pesan sukses
         return redirect()->route('pengaju.result')->with('success', 'Data pengaju berhasil dihapus.');
     }
+
+    public function show($id)
+{
+    return view('pengaju.detailp', ['id' => $id]);
+}
+
+public function shows($id)
+{
+    return view('pengaju.details', ['id' => $id]);
+}
+
 }

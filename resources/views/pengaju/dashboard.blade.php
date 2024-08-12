@@ -98,27 +98,15 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
+                                                @foreach ($latestPengajus as $pengaju)
                                                     <tr>
-                                                        <th>1</th>
-                                                        <td>00/00/0000</td>
-                                                        <td>Rp.200.000</td>
+                                                        <th>{{ $loop->iteration }}</th>
+                                                        <td>{{ $pengaju->tanggal }}</td>
+                                                        <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                                         <td><span class="badge badge-warning px-2">Pendding</span>
                                                         </td>
                                                     </tr>
-                                                    <tr>
-                                                        <th>2</th>
-                                                        <td>00/00/0000</td>
-                                                        <td>Rp.200.000</td>
-                                                        <td><span class="badge badge-danger px-2">Ditolak</span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <th>3</th>
-                                                        <td>00/00/0000</td>
-                                                        <td>Rp.200.000</td>
-                                                        <td><span class="badge badge-success px-2">Disetujui</span>
-                                                        </td>
-                                                    </tr>
+                                                @endforeach
                                                 </tbody>
                                             </table>
                                         </div>
