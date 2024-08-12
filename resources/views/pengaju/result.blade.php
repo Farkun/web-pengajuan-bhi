@@ -99,12 +99,6 @@
                     </div>
 
                 </div>
-                <div class="form-group row" style="max-width: 500px; margin-left: auto;">
-                    <div class="col-lg-8 ml-auto">
-                        <td><a href="{{ route('pengaju.dana') }}"><button type="button"
-                                    class="btn mb-1 btn-info">kembali</button></a></td>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

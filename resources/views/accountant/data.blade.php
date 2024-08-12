@@ -10,7 +10,7 @@
         </li>
         <li>
             <a href="javascript:void()" style="color: white;">
-                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Daftar Akun</span>
+                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Data Approval</span>
             </a>
         </li>
 </ul>
@@ -77,17 +77,18 @@
                                         <tfoot>
                                             <tr>
                                                 <th>Id</th>
-                                                <th>Nama</th>
-                                                <th>Email</th>
-                                                <th>No Telp</th>
-                                                <th>Role</th>
-                                                <th>Action</th>
+                                                <th>Tanggal</th>
+                                                <th>Nama Dapartement</th>
+                                                <th>Nama Pengaju</th>
+                                                <th>Deskripsi</th>
+                                                <th>Dana Pengajuan</th>
+                                                <th>Detail</th> 
                                             </tr>
                                         </tfoot>
                                     </table>
                                 </div>
                             </div>
-                            <div class="general-button" style="margin-left: 1050px">
+                            <div class="general-button col-lg-11 text-right">
                                     <div class="sweetalert m-t-30">
                                         <a href=""><button type="button" class="btn mb-1 btn-primary">Kirim Rekap</button></a>
                                     </div>

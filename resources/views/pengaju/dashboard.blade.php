@@ -37,7 +37,7 @@
                         <div class="card-body pb-0 d-flex justify-content-between">
                             <div>
                                 <h2 class="mb-1">Selamat Datang, {{ $user->name }}</h2>
-                                <p>Senin, 29 Juli 2024</p>
+                                <p>{{ $currentDate }}</p>
                             </div>
                             <div class="card-body pb-0 px-0 px-md-4">
                             <!-- <canvas id="chart_widget_2"></canvas> -->

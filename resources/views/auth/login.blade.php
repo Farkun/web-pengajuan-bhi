@@ -40,8 +40,10 @@
                     <div class="form-input-content">
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
+                                <div class="col-lg-12 text-center">
                                 <img src="{{ asset('assets/theme/images/logo-bhs.png') }}" alt=""
-                                    style="width: 250px; height: 250px; margin-left: 118px">
+                                    style="width: 250px; height: 250px; ">
+                                </div>
                                 <a class="text-center" href="index.html">
                                     <h4>Login</h4>
                                 </a>
