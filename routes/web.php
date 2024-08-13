@@ -143,6 +143,8 @@ Route::middleware(['auth', 'role:5'])->group(function () {
     Route::get('/bendahara/dashboard', [DashboardController::class, 'bendahara'])->name('bendahara.dashboard');
 });
 
+Route::get('/dashboard/{type}', [DashboardController::class, 'showDashboard'])->name('dashboard.show');
+
 
 
 

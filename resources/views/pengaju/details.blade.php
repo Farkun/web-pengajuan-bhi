@@ -51,12 +51,14 @@
                         </ul>
                     </div>
                 </div>
+                <div class="general-button col-lg-11 text-right">
+                    <a href="{{ route('pengaju.result') }}"><button type="button"
+                            class="btn mb-1 btn-primary">Kembali</button></a>
+                </div>
+                <br>
             </div>
         </div>
     </div>
 </div>
 
-<div class="general-button" style="margin-left: 1120px">
-    <a href="{{ route('pengaju.status') }}"><button type="button" class="btn mb-1 btn-primary">Kembali</button></a>
-</div>
 @endsection

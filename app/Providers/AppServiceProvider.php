@@ -5,6 +5,7 @@ namespace App\Providers;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
+use Carbon\Carbon;
 
 use App\Models\Pengaju;
 
@@ -44,6 +45,17 @@ class AppServiceProvider extends ServiceProvider
     
             // Kirimkan data pengaju ke view
             $view->with('pengaju', $pengaju);
+        });
+
+        Carbon::setLocale('id');
+        
+        View::composer(
+            ['pengaju.dashboard', 'superadmin.dashboard', 'accountant.dashboard', 'bendahara.dashboard', 'approval.status'],
+            function ($view) {
+            $view->with([
+                'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
+                // Tambahkan data lain yang ingin dibagikan ke semua dashboard
+            ]);
         });
     }
 }

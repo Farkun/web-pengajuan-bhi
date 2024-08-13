@@ -35,21 +35,25 @@
                     <h4 class="card-title">Detail</h4>
                     <div class="basic-list-group">
                         <ul class="list-group">
-                                <li class="list-group-item"><strong>Tanggal:</strong> {{ $pengaju->tanggal }}</li>
-                                <li class="list-group-item"><strong>Nama Departement:</strong> {{ $pengaju->user->name }}</li>
-                                <li class="list-group-item"><strong>Nama Pengaju:</strong> {{ $pengaju->nama_pengaju }}</li>
-                                <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
-                                <li class="list-group-item"><strong>Dana Pengajuan:</strong> Rp{{ number_format($pengaju->total, 0, ',', '.') }}</li>
-                                <li class="list-group-item"><strong>Persetujuan:</strong> <span class="badge badge-secondary px-2">Belum dibaca</span></li>
+                            <li class="list-group-item"><strong>Tanggal:</strong> {{ $pengaju->tanggal }}</li>
+                            <li class="list-group-item"><strong>Nama Departement:</strong> {{ $pengaju->user->name }}
+                            </li>
+                            <li class="list-group-item"><strong>Nama Pengaju:</strong> {{ $pengaju->nama_pengaju }}</li>
+                            <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
+                            <li class="list-group-item"><strong>Dana Pengajuan:</strong>
+                                Rp{{ number_format($pengaju->total, 0, ',', '.') }}</li>
+                            <li class="list-group-item"><strong>Persetujuan:</strong> <span
+                                    class="badge badge-secondary px-2">Belum dibaca</span></li>
                         </ul>
                     </div>
                 </div>
+                <div class="general-button col-lg-11 text-right">
+                    <a href="{{ route('pengaju.result') }}"><button type="button"
+                            class="btn mb-1 btn-primary">Kembali</button></a>
+                </div>
+                <br>
             </div>
         </div>
     </div>
-</div>
-
-<div class="general-button" style="margin-left: 1120px">
-    <a href="{{ route('pengaju.result') }}"><button type="button" class="btn mb-1 btn-primary">Kembali</button></a>
 </div>
 @endsection
