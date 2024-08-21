@@ -11,6 +11,12 @@ class PengajuController extends Controller
 {
     public function index(Request $request)
     {
+        // Ambil ID pengguna yang sedang login
+        $userId = Auth::id();
+
+        // Ambil data pengajuan hanya untuk pengguna yang sedang login
+        $pengajus = Pengaju::where('user_id', $userId)->get();
+        
         $pengajus = Pengaju::all();
         if ($request->routeIs('pengaju.status')) {
             return view('pengaju.status', compact('pengajus'));
@@ -20,7 +26,10 @@ class PengajuController extends Controller
 
         abort(404);
 
-        $latestPengajus = Pengaju::latest()->limit(3)->get(); // Mengambil 3 data terbaru berdasarkan tanggal
+        $latestPengajus = Pengaju::where('user_id', $userId)
+                            ->latest()
+                            ->limit(3)
+                            ->get(); // Mengambil 3 data terbaru berdasarkan tanggal
         return view('pengaju.dashboard', compact('latestPengajus'));
     }
     public function create()

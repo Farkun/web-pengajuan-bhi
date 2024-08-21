@@ -19,6 +19,7 @@ class RoleSeeder extends Seeder
             ['role' => 'approval'],
             ['role' => 'accountant'],
             ['role' => 'bendahara'],
+            ['role' => 'bendahara yayasan'],
         ];
 
         Role::insert($data);

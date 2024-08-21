@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengajuController;
+use App\Http\Controllers\ApprovalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -76,6 +77,12 @@ Route::get('/pengaju/detailstat', function () {
 })->name('pengaju.detail');
 
 // Approval
+Route::middleware(['auth', 'role:3'])->group(function () {
+    Route::get('/approval/status', [ApprovalController::class, 'index'])->name('approval.status');
+    Route::post('/approval/store', [ApprovalController::class, 'store'])->name('approval.store');
+    Route::get('/approval/detailstat/{id}', [ApprovalController::class, 'show'])->name('approval.detailstat');
+});
+
 Route::get('/approval/status', function () {
     return view('approval.status');
 })->middleware(['auth', 'verified'])->name('approval.status');
@@ -87,10 +94,6 @@ Route::get('/approval/laporan', function () {
 Route::get('/approval/detaillap', function () {
     return view('approval.detaillap');
 })->name('approval.detaillap');
-
-Route::get('/approval/detailstat', function () {
-    return view('approval.detailstat');
-})->name('approval.detailstat');
 
 // Accountant
 Route::get('/accountant/dashboard', function () {

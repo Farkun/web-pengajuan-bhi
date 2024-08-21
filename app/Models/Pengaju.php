@@ -25,4 +25,14 @@ class Pengaju extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function keterangan()
+    {
+        return $this->belongsTo(Keterangan::class, 'id_keterangan');
+    }
+
+    public function status()
+    {
+        return $this->belongsTo(Status::class, 'id_status');
+    }
 }

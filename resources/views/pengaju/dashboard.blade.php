@@ -40,10 +40,10 @@
                                 <p>{{ $currentDate }}</p>
                             </div>
                             <div class="card-body pb-0 px-0 px-md-4">
-                            <!-- <canvas id="chart_widget_2"></canvas> -->
-                            <img src="{{asset('assets/theme/images/Illustration.png')}}" alt=""
-                            style=" margin-left: 400px; width:300px; height: auto;">
-                        </div>
+                                <!-- <canvas id="chart_widget_2"></canvas> -->
+                                <img src="{{asset('assets/theme/images/Illustration.png')}}" alt=""
+                                    style=" margin-left: 400px; width:300px; height: auto;">
+                            </div>
                         </div>
                         <br><br>
                     </div>
@@ -63,20 +63,20 @@
                                     <!-- Tombol di sebelah kiri -->
                                     <div class="me-3">
                                         <td><a href="{{ route('pengaju.status') }}">
-                                        <button class="btn w-100"
-                                            style="background-color: transparent; border: 2px solid #000; padding: 35px; font-size: 1.5rem; color: #000;">
-                                            <div class="card mb-0">
-                                                <div class="card-body d-flex align-items-center p-0"
-                                                    style="padding: 40px; display: flex; align-items: center;">
-                                                    <img src="{{asset('assets/theme/images/status_pengaju.png')}}" class="img-fluid"
-                                                        alt="Placeholder Image"
-                                                        style="max-width: 200px; margin-right: 20px;">
-                                                    <div class="ml-3" style="flex-grow: 1;">
-                                                        <h1>Status Pengaju</h1>
+                                                <button class="btn w-100"
+                                                    style="background-color: transparent; border: 2px solid #000; padding: 35px; font-size: 1.5rem; color: #000;">
+                                                    <div class="card mb-0">
+                                                        <div class="card-body d-flex align-items-center p-0"
+                                                            style="padding: 40px; display: flex; align-items: center;">
+                                                            <img src="{{asset('assets/theme/images/status_pengaju.png')}}"
+                                                                class="img-fluid" alt="Placeholder Image"
+                                                                style="max-width: 200px; margin-right: 20px;">
+                                                            <div class="ml-3" style="flex-grow: 1;">
+                                                                <h1>Status Pengaju</h1>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                        </button>
+                                                </button>
                                     </div>
 
 
@@ -98,15 +98,24 @@
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                @foreach ($latestPengajus as $pengaju)
-                                                    <tr>
-                                                        <th>{{ $loop->iteration }}</th>
-                                                        <td>{{ $pengaju->tanggal }}</td>
-                                                        <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }}</td>
-                                                        <td><span class="badge badge-warning px-2">Pendding</span>
-                                                        </td>
-                                                    </tr>
-                                                @endforeach
+                                                    @foreach ($latestPengajus as $pengaju)
+                                                        <tr>
+                                                            <th>{{ $loop->iteration }}</th>
+                                                            <td>{{ $pengaju->tanggal }}</td>
+                                                            <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }}</td>
+                                                            <td>
+                                                                @if($pengaju->id_status == 2)
+                                                                    <span class="badge badge-danger px-2">Ditolak</span>
+                                                                @elseif($pengaju->id_status == 3)
+                                                                    <span class="badge badge-warning px-2">Dipending</span>
+                                                                @elseif($pengaju->id_status == 1)
+                                                                    <span class="badge badge-success px-2">Disetujui</span>
+                                                                @else
+                                                                    <span class="badge badge-secondary px-2">Belum dibaca</span>
+                                                                @endif
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
                                                 </tbody>
                                             </table>
                                         </div>

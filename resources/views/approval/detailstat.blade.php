@@ -26,20 +26,11 @@
                     <h4 class="card-title">Detail</h4>
                     <div class="basic-list-group">
                         <ul class="list-group">
-                            <li class="list-group-item"><strong>Tanggal:</strong> 01/02/2027</li>
-                            <li class="list-group-item"><strong>Nama Departement:</strong> Akuntansi</li>
-                            <li class="list-group-item"><strong>Nama Pengaju:</strong> M. Budiman</li>
-                            <li class="list-group-item"><strong>Deskripsi:</strong>
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                                Porta ac consectetur ac Porta ac consectetur ac
-                            </li>
-                            <li class="list-group-item"><strong>Dana Pengajuan:</strong> Rp.250.000</li>
+                            <li class="list-group-item"><strong>Tanggal:</strong> {{ $pengaju->tanggal }}</li>
+                            <li class="list-group-item"><strong>Nama Departement:</strong> {{ $pengaju->user->name }}</li>
+                            <li class="list-group-item"><strong>Nama Pengaju:</strong> {{ $pengaju->nama_pengaju }}</li>
+                            <li class="list-group-item"><strong>Deskripsi:</strong>{{ $pengaju->deskripsi }}</li>
+                            <li class="list-group-item"><strong>Dana Pengajuan:</strong> Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</li>
                         </ul>
                     </div>
                 </div>

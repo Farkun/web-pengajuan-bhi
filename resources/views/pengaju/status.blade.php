@@ -72,55 +72,53 @@
                                             <tbody>
                                             @foreach($pengajus as $pengaju)
                                                 <tr>
-                                                    <th>{{ $pengaju->id }}</th>
+                                                    <th>{{ $loop->iteration }}</th>
                                                     <td>{{ $pengaju->tanggal }}</td>
                                                     <td>{{ $pengaju->nama_pengaju }}</td>
-                                                    <td class="color-primary">{{ $pengaju->total }}</td>
-                                                    <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
+                                                    <td class="total-amount" data-amount="{{ $pengaju->total }}"></td>
+                                                    <td>
+                                                    @if($pengaju->id_status == 2)
+                                                        <span class="badge badge-danger px-2">Ditolak</span>
+                                                    @elseif($pengaju->id_status == 3)
+                                                        <span class="badge badge-warning px-2">Dipending</span>
+                                                    @elseif($pengaju->id_status == 1)
+                                                        <span class="badge badge-success px-2">Disetujui</span>
+                                                    @else
+                                                        <span class="badge badge-secondary px-2">Belum dibaca</span>
+                                                    @endif
+                                                    </td>
                                                     <td><span class="badge badge-secondary px-2">Belum cair</span></td>
-                                                    <td>Lorem ipsum dolor sit amet....</td> 
+                                                    <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                    @if($pengaju->keterangan)
+                                                        @php
+                                                            $hasVisibleKeterangan = false;
+                                                        @endphp
+        
+                                                        @foreach($pengaju->keterangan->keterangan_data as $key => $value)
+                                                            @php
+                                                                // Mengecek apakah pengguna ini sudah memberikan status 'Setujui'
+                                                                $userApproved = $value['id_status'] == \App\Models\Status::where('status', 'Setujui')->first()->id;
+                                                            @endphp
+
+                                                            @if(!$userApproved)
+                                                                <p><strong>{{ \App\Models\User::find($value['id'])->name }}:</strong> {{ $value['keterangan'] }}</p>
+                                                                @php
+                                                                    $hasVisibleKeterangan = true;
+                                                                @endphp
+                                                            @endif
+                                                        @endforeach
+        
+                                                        @if(!$hasVisibleKeterangan)
+                                                            Tidak ada keterangan.
+                                                        @endif
+                                                    @else
+                                                        Tidak ada keterangan.
+                                                    @endif
+                                                    </td> 
                                                     <td><a href="{{ route('pengaju.details', $pengaju->id) }}"><button type="button"
                                                     class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                                 </tr>
                                             @endforeach
-                                                <tr>
-                                                    <th>1</th>
-                                                    <td>2024-01-22</td>
-                                                    <td>M. Budiman</td>
-                                                    <td class="color-primary">Rp2.000.000</td>
-                                                    <td><span class="badge badge-warning px-2">Dipending</span></td>
-                                                    <td><span class="badge badge-secondary px-2">Belum cair</span></td>
-                                                    <td>Lorem ipsum dolor sit amet....</td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <th>2</th>
-                                                    <td>2024-01-30</td> 
-                                                    <td>M. Budiman</td>
-                                                    <td class="color-success">Rp2.000.000</td>
-                                                    <td><span class="badge badge-danger px-2">Ditolak</span></td>
-                                                    <td><span class="badge badge-secondary px-2">Belum cair</span></td>
-                                                    <td>Lorem ipsum dolor sit amet....</td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                    <th>3</th>
-                                                    <td>2024-01-25</td> 
-                                                    <td>M. Budiman</td>
-                                                    <td class="color-danger">Rp2.000.000</td>
-                                                    <td><span class="badge badge-success px-2">Disetujui</span></td>
-                                                    <td><span class="badge badge-success px-2">Sudah cair</span></td>
-                                                    <td>Lorem ipsum dolor sit amet....</td>
-                                                </tr>
-                                                <tr>
-                                                    <th>4</th>
-                                                    <td>2024-01-08</td> 
-                                                    <td>M. Budiman</td>
-                                                    <td class="color-danger">Rp2.000.000</td>
-                                                    <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
-                                                    <td><span class="badge badge-secondary px-2">Belum cair</span></td>
-                                                    <td>Lorem ipsum dolor sit amet....</td>
-                                                </tr>
                                             </tbody>
                                         </table>
                                     </div>

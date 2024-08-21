@@ -70,14 +70,24 @@
                                 <tbody>
                                     @foreach($pengajus as $pengaju)
                                         <tr>
-                                            <th>{{ $pengaju->id }}</th>
+                                            <th>{{ $loop->iteration }}</th>
                                             <td>{{ $pengaju->tanggal }}</td>
                                             <td>{{ $pengaju->nama_pengaju }}</td>
                                             <td
                                                 style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                {{ $pengaju->deskripsi }}</td>
+                                                {{ $pengaju->deskripsi }}
+                                            </td>
                                             <td class="total-amount" data-amount="{{ $pengaju->total }}"></td>
-                                            <td><span class="badge badge-secondary px-2">Belum dibaca</span></td>
+                                            <td>@if($pengaju->id_status == 2)
+                                                <span class="badge badge-danger px-2">Ditolak</span>
+                                            @elseif($pengaju->id_status == 3)
+                                                <span class="badge badge-warning px-2">Dipending</span>
+                                            @elseif($pengaju->id_status == 1)
+                                                <span class="badge badge-success px-2">Disetujui</span>
+                                            @else
+                                                <span class="badge badge-secondary px-2">Belum dibaca</span>
+                                            @endif
+                                            </td>
                                             <td><a href="{{ route('pengaju.detailp', $pengaju->id) }}"><button type="button"
                                                         class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                             <td>

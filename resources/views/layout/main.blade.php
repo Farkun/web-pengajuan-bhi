@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>@yield ('title')</title>
     <!-- Favicon icon -->
     <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/theme/images/favicon.png') }}">
@@ -434,6 +435,168 @@
         });
     </script>
 
+    <script>
+        // Mengatur ID pengajuan untuk modal Tolak
+        $('#rejectModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Tombol yang memicu modal
+            var pengajuId = button.data('id'); // Ambil ID pengajuan dari atribut data-id
+            var modal = $(this);
+            modal.find('.modal-body #rejectId').val(pengajuId); // Set ID pengajuan ke dalam input hidden
+        });
+
+        // Mengatur ID pengajuan untuk modal Pending
+        $('#pendingModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Tombol yang memicu modal
+            var pengajuId = button.data('id'); // Ambil ID pengajuan dari atribut data-id
+            var modal = $(this);
+            modal.find('.modal-body #pendingId').val(pengajuId); // Set ID pengajuan ke dalam input hidden
+        });
+    </script>
+
+    <script>
+        function confirmApprove(id) {
+            const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+            swal({
+                title: "Apakah Anda yakin?",
+                text: "Anda akan menyetujui pengajuan ini!",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#4CAF50",
+                confirmButtonText: "Ya, setujui!",
+                cancelButtonText: "Batal",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    // Kirim request POST untuk menyetujui pengajuan
+                    fetch('/approval/store', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        },
+                        body: JSON.stringify({
+                            pengaju_id: id,
+                            keterangan: null, // Set null jika tidak ada keterangan
+                            status: 'Setujui', // Status yang diatur
+                            user_id: {{ Auth::id() }} // Mengirim ID pengguna yang sedang login
+                })
+                    })
+                        .then(response => {
+                            if (response.ok) {
+                                return response.json(); // Coba parsing JSON jika respons OK
+                            } else {
+                                return response.text().then(text => { throw new Error(text); }); // Tangani respons non-JSON
+                            }
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                swal("Disetujui!", "Pengajuan telah disetujui.", "success");
+                                location.reload(); // Reload halaman setelah proses selesai
+                            } else {
+                                swal("Oops!", "Terjadi kesalahan saat menyetujui pengajuan.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error); // Log error ke console
+                            swal("Oops!", "Terjadi kesalahan saat menyetujui pengajuan.", "error");
+                        });
+                }
+            });
+        }
+    </script>
+
+    <script>
+        function submitForm(event, formId, status) {
+            event.preventDefault(); // Mencegah form dari submit secara default
+
+            // Tampilkan swal dengan konfirmasi sederhana
+            swal({
+                title: 'Anda yakin?',
+                text: 'Apakah Anda yakin ingin melanjutkan aksi ini?',
+                type: 'warning',
+                showCancelButton: true, // Menampilkan tombol batal
+                confirmButtonText: 'Iya',
+                cancelButtonText: 'Batal',
+                closeOnConfirm: false, // Jangan otomatis menutup swal
+                closeOnCancel: false // Jangan otomatis menutup swal
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    var form = document.getElementById(formId);
+                    var formData = new FormData(form);
+
+                    fetch('{{ route('approval.store') }}', {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: formData
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            let title, text, icon;
+
+                            if (data.success) {
+                                if (status === 'Tolak') {
+                                    title = 'Ditolak!';
+                                    text = 'Pengajuan telah ditolak. ' + data.message;
+                                    icon = 'error';
+                                } else if (status === 'Pending') {
+                                    title = 'Pending!';
+                                    text = 'Pengajuan dalam status pending. ' + data.message;
+                                    icon = 'warning';
+                                } else {
+                                    title = 'Berhasil!';
+                                    text = data.message;
+                                    icon = 'success';
+                                }
+
+                                // Tampilkan swal hasil akhir
+                                swal({
+                                    title: title,
+                                    text: text,
+                                    type: icon, // Menggunakan 'type' di SweetAlert 1.x
+                                    confirmButtonText: "OK"
+                                }, function () {
+                                    // Menyembunyikan modal dan reload halaman
+                                    $('#' + formId.replace('Form', 'Modal')).modal('hide');
+                                    location.reload();
+                                });
+                            } else {
+                                swal({
+                                    title: 'Oops!',
+                                    text: data.message || 'Terjadi kesalahan.',
+                                    type: 'error',
+                                    confirmButtonText: "OK"
+                                });
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swal({
+                                title: 'Oops!',
+                                text: 'Terjadi kesalahan saat mengirim data.',
+                                type: 'error',
+                                confirmButtonText: "OK"
+                            });
+                        });
+                } else {
+                    swal({
+                        title: 'Dibatalkan',
+                        text: 'Aksi Anda dibatalkan.',
+                        type: 'info',
+                        confirmButtonText: "OK"
+                    });
+                }
+            });
+        }
+    </script>
+    
 </body>
 
 </html>

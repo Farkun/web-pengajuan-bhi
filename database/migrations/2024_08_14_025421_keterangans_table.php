@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('keterangans', function (Blueprint $table) {
             $table->id();
-            $table->string('ket');
+            $table->json('keterangan_data')->nullable(); // Kolom untuk menyimpan data JSON
             $table->timestamps();
         });
     }
