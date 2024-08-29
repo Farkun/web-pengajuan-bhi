@@ -42,6 +42,8 @@ class AuthenticatedSessionController extends Controller
             return redirect()->intended(route('accountant.dashboard'));
         } elseif ($user->hasRole(5)) {
             return redirect()->intended(route('bendahara.dashboard'));
+        } elseif ($user->hasRole(6)) {
+            return redirect()->intended(route('bendaharay.data'));
         }
 
 

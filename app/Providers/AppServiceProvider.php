@@ -26,45 +26,46 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        view()->composer(['pengaju.status', 'pengaju.result', 'pengaju.dashboard'], function($view){
+        view()->composer(['pengaju.status', 'pengaju.result', 'pengaju.dashboard'], function ($view) {
             $userId = Auth::id();
             $pengajus = Pengaju::where('user_id', $userId)->get();
             $view->with('pengajus', $pengajus);
 
             $latestPengajus = Pengaju::where('user_id', $userId)
-                                ->latest()
-                                ->limit(3)
-                                ->get();
+                ->latest()
+                ->limit(3)
+                ->get();
 
-             // Mengirim data ke view
-             $view->with('latestPengajus', $latestPengajus);
+            // Mengirim data ke view
+            $view->with('latestPengajus', $latestPengajus);
         });
 
-        view()->composer(['approval.status'], function($view){
+        view()->composer(['approval.status'], function ($view) {
             $view->with('pengajus', Pengaju::all());
         });
 
-        View::composer(['pengaju.detailp','pengaju.details','approval.detailstat'], function($view) {
+        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail'], function ($view) {
             // Ambil ID dari parameter rute
             $id = Route::current()->parameter('id');
-    
+
             // Cari data pengaju berdasarkan ID
             $pengaju = Pengaju::find($id);
-    
+
             // Kirimkan data pengaju ke view
             $view->with('pengaju', $pengaju);
         });
 
         Carbon::setLocale('id');
-        
+
         View::composer(
             ['pengaju.dashboard', 'superadmin.dashboard', 'accountant.dashboard', 'bendahara.dashboard', 'approval.status'],
             function ($view) {
-            $view->with([
-                'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
-                // Tambahkan data lain yang ingin dibagikan ke semua dashboard
-            ]);
-        });
+                $view->with([
+                    'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
+                    // Tambahkan data lain yang ingin dibagikan ke semua dashboard
+                ]);
+            }
+        );
 
         View::composer('approval.status', function ($view) {
             // Ambil status 'pending' dari database
@@ -72,6 +73,21 @@ class AppServiceProvider extends ServiceProvider
 
             // Bagikan variabel ini ke view 'approval.status'
             $view->with('statusPending', $statusPending);
+        });
+
+        // Membuat variabel approvedPengajus tersedia di semua view
+        View::composer(['accountant.data'], function ($view) {
+            // Mengambil ID status yang 'Setujui'
+            $statusApprovedId = Status::where('status', 'Setujui')->first()->id;
+
+            // Mengambil data pengajuan yang disetujui
+            $approvedPengajus = Pengaju::where('id_status', $statusApprovedId)
+                ->whereNull('forwarded_at') // Hanya ambil data yang belum dikirim
+                ->with(['user'])
+                ->get();
+
+            // Membuat variabel tersebut tersedia di view
+            $view->with('approvedPengajus', $approvedPengajus);
         });
     }
 }

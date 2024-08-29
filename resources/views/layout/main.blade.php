@@ -596,7 +596,49 @@
             });
         }
     </script>
-    
+
+    <script>
+        document.getElementById('kirimRekapBtn').addEventListener('click', function () {
+            if (document.querySelectorAll('input[name="selected_pengajus[]"]:checked').length > 0) {
+                swal({
+                    title: "Kirim Rekap?",
+                    text: "Apakah Anda yakin ingin mengirim rekap data yang telah dipilih?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, kirim!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        var form = document.getElementById('forwardForm');
+                        var formData = new FormData(form);
+
+                        fetch(form.action, {
+                            method: form.method,
+                            body: formData,
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    swal("Sukses", data.message, "success");
+                                    document.querySelectorAll('input[name="selected_pengajus[]"]:checked').forEach(checkbox => {
+                                        checkbox.closest('tr').remove();
+                                    });
+                                } else {
+                                    swal("Gagal", data.message, "error");
+                                }
+                            })
+                            .catch(error => {
+                                swal("Terjadi kesalahan", "Terjadi kesalahan saat mengirim data.", "error");
+                            });
+                    }
+                });
+            } else {
+                swal("Error", "Harap pilih data terlebih dahulu sebelum mengirim rekap.", "error");
+            }
+        });
+    </script>
 </body>
 
 </html>

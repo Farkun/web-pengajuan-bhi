@@ -95,7 +95,7 @@
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-warning btn sweet-confirm"
+                                                    <button type="button" class="btn btn-danger btn sweet-confirm"
                                                         data-id="{{ $pengaju->id }}">
                                                         <i class="fa fa-trash"></i>&nbsp;Hapus
                                                     </button>

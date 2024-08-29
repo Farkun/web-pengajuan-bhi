@@ -6,6 +6,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengajuController;
 use App\Http\Controllers\ApprovalController;
+use App\Http\Controllers\AccountantController;
 
 /*
 |--------------------------------------------------------------------------
@@ -96,6 +97,12 @@ Route::get('/approval/detaillap', function () {
 })->name('approval.detaillap');
 
 // Accountant
+Route::middleware(['auth', 'role:4'])->group(function () {
+    Route::get('/accountant/data', [AccountantController::class, 'index'])->name('accountant.data');
+    Route::get('/accountant/detail/{id}', [AccountantController::class, 'show'])->name('accountant.detail');
+    Route::post('/accountant/forward', [AccountantController::class, 'forward'])->name('accountant.forward');
+});
+
 Route::get('/accountant/dashboard', function () {
     return view('accountant.dashboard');
 })->middleware(['auth', 'verified'])->name('accountant.dashboard');
@@ -104,9 +111,9 @@ Route::get('/accountant/data', function () {
     return view('accountant.data');
 })->name('accountant.data');
 
-Route::get('/accountant/detail', function () {
-    return view('accountant.detail');
-})->name('accountant.detail');
+Route::get('/accountant/rekap', function () {
+    return view('accountant.rekap');
+})->name('accountant.rekap');
 
 // Bendahara
 Route::get('/bendahara/dashboard', function () {
@@ -124,6 +131,12 @@ Route::get('/bendahara/detail', function () {
 Route::get('/bendahara/status', function () {
     return view('bendahara.status');
 })->name('bendahara.status');
+
+// Bendahara Yayasan
+Route::get('/bendaharay/data', function () {
+    return view('bendaharay.data');
+})->middleware(['auth', 'verified'])->name('bendaharay.data');
+
 
 //Dashboard kontoller
 Route::middleware(['auth', 'role:1'])->group(function () {
