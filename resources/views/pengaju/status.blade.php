@@ -61,7 +61,7 @@
                                                 <tr>
                                                     <th>#</th>
                                                     <th>Tanggal</th>
-                                                    <th>Name</th>
+                                                    <th>Nama Pengaju</th>
                                                     <th>Dana pengajuan</th>
                                                     <th>Proses pengajuan</th>
                                                     <th>Status dana</th>
@@ -75,7 +75,7 @@
                                                     <th>{{ $loop->iteration }}</th>
                                                     <td>{{ $pengaju->tanggal }}</td>
                                                     <td>{{ $pengaju->nama_pengaju }}</td>
-                                                    <td class="total-amount" data-amount="{{ $pengaju->total }}"></td>
+                                                    <td class="color-primary">Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                                     <td>
                                                     @if($pengaju->id_status == 2)
                                                         <span class="badge badge-danger px-2">Ditolak</span>

@@ -41,7 +41,7 @@
                                     <br><br>
                                     <a href="{{ route('pengaju.dana') }}">
                                         <button type="button" class="btn mb-1 btn-info">Ajukan Dana disini<span
-                                                class="btn-icon-right"><i class="fa fa-table"></i></span>
+                                                class="btn-icon-right"><i class="fa fa-plus"></i></span>
                                         </button>
                                     </a>
                                 </div>

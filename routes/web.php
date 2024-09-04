@@ -39,6 +39,7 @@ Route::middleware(['auth', 'role:1'])->group(function () {
     Route::get('/superadmin/create', [UserController::class, 'create'])->name('superadmin.create');
     Route::post('/superadmin/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/superadmin/daftarakun', [UserController::class, 'index'])->name('superadmin.daftarakun');
+    Route::delete('/superadmin/{id}', [UserController::class, 'destroy'])->name('user.destroy');
 });
 
 Route::get('/superadmin/tambahakun', function () {

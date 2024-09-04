@@ -57,14 +57,19 @@
                                 </label>
                                 <div class="col-lg-6">
                                     <select class="form-control" id="role" name="role" required>
+                                        <!-- Opsi pertama kosong -->
+                                        <option value="" disabled selected>Pilih Role</option>
                                         @foreach($roles as $role)
-                                            <option value="{{ $role->id }}">{{ $role->role }}</option>
+                                            @if(strtolower($role->role) != 'admin')
+                                                <!-- Filter untuk menghilangkan role admin -->
+                                                <option value="{{ $role->id }}">{{ $role->role }}</option>
+                                            @endif
                                         @endforeach
                                     </select>
                                 </div>
                             </div>
                             <div class="form-group row">
-                                <div class="col-lg-8 ml-auto">
+                                <div class="col-lg-10 text-right">
                                     <button type="submit" class="btn btn-primary">Submit</button>
                                 </div>
                             </div>

@@ -77,7 +77,7 @@
                                                 style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                 {{ $pengaju->deskripsi }}
                                             </td>
-                                            <td class="total-amount" data-amount="{{ $pengaju->total }}"></td>
+                                            <td class="color-primary">Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                             <td>@if($pengaju->id_status == 2)
                                                 <span class="badge badge-danger px-2">Ditolak</span>
                                             @elseif($pengaju->id_status == 3)

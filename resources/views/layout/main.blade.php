@@ -355,27 +355,34 @@
     <script src="{{ asset('assets/theme/plugins/sweetalert/js/sweetalert.init.js') }}"></script>
 
     <script>
-        function formatRupiah(angka, prefix) {
-            let number_string = angka.toString().replace(/[^,\d]/g, ''),
-                split = number_string.split(','),
+        function formatRupiah(element) {
+            let angka = element.value.replace(/[^,\d]/g, ''),
+                split = angka.split(','),
                 sisa = split[0].length % 3,
                 rupiah = split[0].substr(0, sisa),
                 ribuan = split[0].substr(sisa).match(/\d{3}/gi);
 
             if (ribuan) {
-                separator = sisa ? '.' : '';
+                let separator = sisa ? '.' : '';
                 rupiah += separator + ribuan.join('.');
             }
 
             rupiah = split[1] != undefined ? rupiah + ',' + split[1] : rupiah;
-            return prefix === undefined ? rupiah : (rupiah ? 'Rp. ' + rupiah : '');
+            element.value = rupiah;
         }
 
         document.addEventListener('DOMContentLoaded', function () {
-            let elements = document.querySelectorAll('.total-amount');
-            elements.forEach(function (element) {
-                let amount = element.dataset.amount;
-                element.textContent = formatRupiah(amount);
+            let inputElement = document.getElementById('val-currency');
+
+            inputElement.addEventListener('input', function () {
+                let cursorPos = inputElement.selectionStart;
+                let originalLength = inputElement.value.length;
+
+                formatRupiah(inputElement);
+
+                let newLength = inputElement.value.length;
+                cursorPos += newLength - originalLength;
+                inputElement.setSelectionRange(cursorPos, cursorPos);
             });
         });
     </script>

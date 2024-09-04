@@ -22,9 +22,13 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-body">
-                    <h4 class="card-title">Data Table</h4>
                     <div class="table-responsive">
                         <table class="table table-striped table-bordered zero-configuration">
+                            <div class="general-button col-lg-11 text-right">
+                                <a href="{{ route('superadmin.create') }}">
+                                    <button type="button" class="btn mb-1 btn-primary">Tambah Akun</button>
+                                </a>
+                            </div>
                             <thead>
                                 <tr>
                                     <th>Id</th>
@@ -38,20 +42,25 @@
                             <tbody>
                                 @foreach($users as $user)
                                     <tr>
-                                        <td>{{ $user->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ $user->phone }}</td>
                                         <td>{{ $user->role_name }}</td>
                                         <td>
-                                            <span>
-                                                <a>
-                                                    <i class="fa fa-pencil color-muted m-r-5"></i>
-                                                </a>
-                                                <a>
-                                                    <i class="fa fa-close color-danger"></i>
-                                                </a>
-                                            </span>
+                                            <button type="button" class="btn btn-primary">
+                                                <i class="fa fa-lock"></i>&nbsp;Reset Password
+                                            </button>
+
+                                            <form action="{{ route('user.destroy', $user->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="btn btn-danger btn sweet-confirm"
+                                                    data-id="{{ $user->id }}">
+                                                    <i class="fa fa-trash"></i>&nbsp;Hapus
+                                                </button>
+                                            </form>
                                         </td>
                                     </tr>
                                 @endforeach
@@ -68,12 +77,6 @@
                             </tfoot>
                         </table>
                     </div>
-                </div>
-                <div class="general-button" style="margin-left: 1070px">
-                    <a href="{{ route('superadmin.create') }}">
-                        <button type="button" class="btn mb-1 btn-primary">Tambah Akun</button>
-                    </a>
-                    <br><br>
                 </div>
             </div>
         </div>
