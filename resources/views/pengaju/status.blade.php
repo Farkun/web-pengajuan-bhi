@@ -28,7 +28,6 @@
 
 @section('content')
 <div class="container-fluid mt-3">
-    <h1>Status</h1>
             <div class="row">
                     <div class="col-lg-12">
                         <div class="row">
@@ -36,8 +35,8 @@
                                 <div class="card">
                                     <div class="card-body pb-0 d-flex justify-content-between">
                                         <div>
-                                            <h3 class="mb-1">Informasi</h3>
-                                            <h5>Seluruh pengajuan yang sudah anda unggah ditampilkan pada halaman ini. </h5>
+                                            <h3 class="mb-1">Status</h3>
+                                            <h5>Status pengajuan yang sudah anda unggah ditampilkan pada halaman ini. </h5>
                                            
                                         </div>
                                         

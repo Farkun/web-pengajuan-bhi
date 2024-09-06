@@ -28,26 +28,6 @@
 
 @section('content')
 <div class="container-fluid mt-3">
-    <h1>Pengajuan</h1>
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-body pb-0 d-flex justify-content-between">
-                            <div>
-                                <h3 class="mb-1">Informasi</h3>
-                                <h5>Di halaman ini Anda dapat mengajukan dana satu atau lebih.
-                                    Orang yang Anda minta untuk menyetujui pengajuan akan mendapat notifikasi untuk
-                                    menyetujui pengajuan. </h5>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <div class="container-fluid">
         <div class="row justify-content-center">
             <div class="col-lg-12">

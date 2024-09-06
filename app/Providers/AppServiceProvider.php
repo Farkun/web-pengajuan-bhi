@@ -44,7 +44,7 @@ class AppServiceProvider extends ServiceProvider
             $view->with('pengajus', Pengaju::all());
         });
 
-        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail'], function ($view) {
+        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'bendaharay.detail'], function ($view) {
             // Ambil ID dari parameter rute
             $id = Route::current()->parameter('id');
 
@@ -88,6 +88,15 @@ class AppServiceProvider extends ServiceProvider
 
             // Membuat variabel tersebut tersedia di view
             $view->with('approvedPengajus', $approvedPengajus);
+        });
+
+        // Menggunakan view composer untuk mengirimkan data ke seluruh tampilan
+        View::composer('bendaharay.data', function ($view) {
+            // Mengambil semua pengajuan yang sudah diteruskan ke bendahara
+            $forwardedPengajus = Pengaju::whereNotNull('forwarded_at')->with('user')->get();
+
+            // Mengirim data ke semua tampilan
+            $view->with('forwardedPengajus', $forwardedPengajus);
         });
     }
 }

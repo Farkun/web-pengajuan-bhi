@@ -5,7 +5,14 @@
     <li class="nav-label"></li>
     <li>
         <a href="javascript:void()" style="color: white;">
-            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap Accountant</span>
+            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
+                Accountant</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('bendaharay.rekap') }}" style="color: white;">
+            <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
+                Ulang</span>
         </a>
     </li>
 </ul>
@@ -29,55 +36,39 @@
                                     <th>Deskripsi</th>
                                     <th>Dana Pengajuan</th>
                                     <th>Detail</th>
-                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-danger px-2">Ditunda</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-secondary px-2">Menunggu</span></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-secondary px-2">Menunggu</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-danger px-2">Ditunda</span></td>
-                                </tr>
-                            </tbody>
+                                @forelse($forwardedPengajus as $pengaju)
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ \Carbon\Carbon::parse($pengaju->created_at)->format('d/m/Y') }}</td>
+                                            <td>{{ $pengaju->user->name }}</td>
+                                            <td>{{ $pengaju->nama_pengaju }}</td>
+                                            <td
+                                                style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                {{ $pengaju->deskripsi }}
+                                            </td>
+                                            <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
+                                            <td><a href="{{ route('bendaharay.detail', $pengaju->id) }}"><button type="button"
+                                                        class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                            <td>
+                                                <button type="button" class="btn mb-1 btn-secondary dropdown-toggle"
+                                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Belum
+                                                    ditanggapi</button>
+                                                <div class="dropdown-menu">
+                                                    <a class="dropdown-item" href="#">Tolak</a>
+                                                </div>
+
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                @empty
+                                    <tr>
+                                        <td colspan="7" class="text-center">Tidak ada pengajuan yang diteruskan.</td>
+                                    </tr>
+                                @endforelse
                             <tfoot>
                                 <tr>
                                     <th>Id</th>
@@ -87,7 +78,7 @@
                                     <th>Role</th>
                                     <th>Action</th>
                                     <th>Detail</th>
-                                    <th>Status</th>
+                                    <th>Action</th>
                                 </tr>
                             </tfoot>
                         </table>

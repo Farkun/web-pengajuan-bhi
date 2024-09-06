@@ -25,7 +25,7 @@
                                 <div class="card">
                                     <div class="card-body pb-0 d-flex justify-content-between">
                                         <div>
-                                            <h3 class="mb-1">Informasi</h3>
+                                            <h3 class="mb-1">Laporan</h3>
                                             <h5>Berikut ini laporan surat pengajuan. Anda bisa memantau status pencairan.</h5>
                                         </div>
                                         

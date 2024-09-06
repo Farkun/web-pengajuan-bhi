@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengajuController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\BendaharayController;
 
 /*
 |--------------------------------------------------------------------------
@@ -134,9 +135,13 @@ Route::get('/bendahara/status', function () {
 })->name('bendahara.status');
 
 // Bendahara Yayasan
-Route::get('/bendaharay/data', function () {
-    return view('bendaharay.data');
-})->middleware(['auth', 'verified'])->name('bendaharay.data');
+Route::middleware(['auth', 'role:6'])->group(function () {
+    Route::get('/bendaharay/data', [BendaharayController::class, 'index'])->name('bendaharay.data');
+    Route::get('/bendaharay/detail/{id}', [BendaharayController::class, 'show'])->name('bendaharay.detail');
+    Route::get('/bendaharay/rekap', function () {
+        return view('bendaharay.rekap');
+    })->name('bendaharay.rekap');
+});
 
 
 //Dashboard kontoller
