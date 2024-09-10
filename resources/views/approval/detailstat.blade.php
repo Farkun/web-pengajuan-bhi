@@ -29,7 +29,7 @@
                             <li class="list-group-item"><strong>Tanggal:</strong> {{ $pengaju->tanggal }}</li>
                             <li class="list-group-item"><strong>Nama Departement:</strong> {{ $pengaju->user->name }}</li>
                             <li class="list-group-item"><strong>Nama Pengaju:</strong> {{ $pengaju->nama_pengaju }}</li>
-                            <li class="list-group-item"><strong>Deskripsi:</strong>{{ $pengaju->deskripsi }}</li>
+                            <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
                             <li class="list-group-item"><strong>Dana Pengajuan:</strong> Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</li>
                         </ul>
                     </div>

@@ -40,6 +40,6 @@ class AccountantController extends Controller
         ]);
 
         // Kirim response sukses dengan SweetAlert
-        return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara.']);
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara yayasan.']);
     }
 }

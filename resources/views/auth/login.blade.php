@@ -58,10 +58,10 @@
                                     </div>
                                     <button type="submit" class="btn login-form__btn submit w-100" style="background-color: #952F33; border-color: #952F33; color: white;">Sign In</button>
                                 </form>
-                                <p class="mt-5 login-form__footer">Dont have account? <a href="{{route('register')}}" class="text-primary">Sign Up</a> now</p>
+                                <!-- <p class="mt-5 login-form__footer">Dont have account? <a href="{{route('register')}}" class="text-primary">Sign Up</a> now</p> -->
                             </div>
                         </div>
-                    </div>
+                    </div>  
                 </div>
             </div>
         </div>

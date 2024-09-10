@@ -534,7 +534,13 @@
                             .then(response => response.json())
                             .then(data => {
                                 if (data.status === 'success') {
-                                    swal("Sukses", data.message, "success");
+                                    swal({
+                                        title: "Sukses",
+                                        text: data.message,
+                                        type: "success"
+                                    }, function () {
+                                        window.location.reload(); // Reload halaman setelah menekan OK
+                                    });
                                     document.querySelectorAll('input[name="selected_pengajus[]"]:checked').forEach(checkbox => {
                                         checkbox.closest('tr').remove();
                                     });

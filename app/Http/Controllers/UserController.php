@@ -47,6 +47,9 @@ class UserController extends Controller
 
     public function destroy($id)
     {
+        // Hapus semua data pengaju yang terkait dengan user
+        DB::table('pengajus')->where('user_id', $id)->delete();
+
         // Hapus data pengaju menggunakan Query Builder
         DB::table('users')->where('id', $id)->delete();
 

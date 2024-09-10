@@ -45,27 +45,31 @@
         </div>
     </div>
     <div class="row justify-content-center">
-    <div class="col-lg-6 col-sm-6 mx-auto">
-            <div class="card gradient-2">
-                <div class="card-body">
-                    <h3 class="card-title text-white">Total Data Approval</h3>
-                    <div class="d-inline-block">
-                        <h2 class="text-white">8541</h2>
+        <div class="col-lg-6 col-sm-6 mx-auto">
+            <a href="{{ route('accountant.data') }}">
+                <div class="card gradient-2">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Total Data Approval</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">8541</h2>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-file"></i></span>
                     </div>
-                    <span class="float-right display-5 opacity-5"><i class="fa fa-file"></i></span>
                 </div>
-            </div>
+            </a>
         </div>
         <div class="col-lg-6 col-sm-6 ">
-            <div class="card gradient-4">
-                <div class="card-body">
-                    <h3 class="card-title text-white">Total Rekap Data</h3>
-                    <div class="d-inline-block">
-                        <h2 class="text-white">99</h2>
+            <a href="{{ route('accountant.rekap') }}">
+                <div class="card gradient-4">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Total Rekap Data</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">99</h2>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-table"></i></span>
                     </div>
-                    <span class="float-right display-5 opacity-5"><i class="fa fa-table"></i></span>
                 </div>
-            </div>
+            </a>
         </div>
     </div>
     <!-- #/ container -->
