@@ -3271,8 +3271,8 @@ input[type="button"].btn-block {
     border-bottom-left-radius: 0.25rem; }
 
 .card-body {
-  flex: 1 1 auto;
-  padding: 1.25rem; }
+  flex: 2 2 auto;
+  padding: 1.25 rem; }
 
 .card-title {
   margin-bottom: 0.75rem; }

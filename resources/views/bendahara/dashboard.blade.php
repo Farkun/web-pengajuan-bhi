@@ -30,8 +30,8 @@
                     <div class="card">
                         <div class="card-body d-flex align-items-end row">
                             <div>
-                                <h2 class="mb-1">Selamat Datang, {{ $user->name }}</h2>
-                                <p>Senin, 29 Juli 2024</p>
+                                <h1 class="mb-1">Selamat Datang, {{ $user->name }}</h1>
+                                <h5>Senin, 29 Juli 2024</h5>
                             </div>
                             <div class="card-body pb-0 px-0 px-md-4">
                             <!-- <canvas id="chart_widget_2"></canvas> -->
@@ -43,16 +43,18 @@
                 </div>
             </div>
         </div>
-        <div class="col-lg-3 col-sm-6">
-            <div class="card gradient-1">
-                <div class="card-body">
-                    <h3 class="card-title text-white">Total Rekap Data</h3>
-                    <div class="d-inline-block">
-                        <h2 class="text-white">8541</h2>
-                        <p class="text-white mb-0">Jan - March 2019</p>
+        <div class="col-lg-4 col-sm-12">
+            <div class="card card-body gradient-1">
+                <a href="status">
+                    <div class="card-body">
+                        <h3 class="card-title text-white">Total Rekap Data</h3>
+                        <div class="d-inline-block">
+                            <h2 class="text-white">8541</h2>
+                            <p class="text-white mb-0">Jan - March 2019</p>
+                        </div>
+                        <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                     </div>
-                    <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
-                </div>
+                </a>
             </div>
         </div>
     </div>
