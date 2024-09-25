@@ -137,6 +137,7 @@ Route::get('/bendahara/status', function () {
 // Bendahara Yayasan
 Route::middleware(['auth', 'role:6'])->group(function () {
     Route::get('/bendaharay/data', [BendaharayController::class, 'index'])->name('bendaharay.data');
+    Route::post('/bendaharay/store', [BendaharayController::class, 'store'])->name('bendaharay.store');
     Route::get('/bendaharay/detail/{id}', [BendaharayController::class, 'show'])->name('bendaharay.detail');
     Route::get('/bendaharay/rekap', function () {
         return view('bendaharay.rekap');

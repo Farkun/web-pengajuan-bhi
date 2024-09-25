@@ -558,6 +558,58 @@
             }
         });
     </script>
+
+    <script>
+        document.getElementById('rejectForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah form dari submit secara default
+
+            swal({
+                title: 'Anda yakin?',
+                text: 'Pengajuan akan ditunda dan dikembalikan ke accountant.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Tolak!',
+                cancelButtonText: 'Batal',
+                closeOnConfirm: false, // Jangan otomatis menutup swal
+                closeOnCancel: true // Menutup swal jika dibatalkan
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    var form = document.getElementById('rejectForm');
+                    var formData = new FormData(form);
+
+                    // Menambahkan header CSRF
+                    fetch("{{ route('bendaharay.store') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                swal({
+                                    title: 'Ditolak!',
+                                    text: 'Pengajuan telah ditolak dan dikembalikan ke accountant.',
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                }, function () {
+                                    // Sembunyikan modal dan reload halaman
+                                    $('#rejectModal').modal('hide');
+                                    location.reload();
+                                });
+                            } else {
+                                swal('Error', data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swal('Error', 'Terjadi kesalahan saat mengirim data.', 'error');
+                        });
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>

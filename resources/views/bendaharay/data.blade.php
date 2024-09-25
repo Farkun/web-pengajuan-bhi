@@ -58,7 +58,8 @@
                                                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Belum
                                                     ditanggapi</button>
                                                 <div class="dropdown-menu">
-                                                    <a class="dropdown-item" href="#">Tolak</a>
+                                                    <a class="dropdown-item reject-button" href="#" data-toggle="modal"
+                                                        data-target="#rejectModal" data-id="{{ $pengaju->id }}">Tolak</a>
                                                 </div>
 
                                             </td>
@@ -72,11 +73,11 @@
                             <tfoot>
                                 <tr>
                                     <th>Id</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>No Telp</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
+                                    <th>Tanggal</th>
+                                    <th>Nama Departement</th>
+                                    <th>Nama Pengaju</th>
+                                    <th>Deskripsi</th>
+                                    <th>Dana Pengajuan</th>
                                     <th>Detail</th>
                                     <th>Action</th>
                                 </tr>
@@ -93,6 +94,8 @@
             </div>
         </div>
     </div>
+    <!-- Modals -->
+    @include('bendaharay.modals')
 </div>
 </div>
 @endsection
