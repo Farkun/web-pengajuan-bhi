@@ -9,14 +9,116 @@ class AccountantController extends Controller
 {
     public function index()
     {
-        // Mengambil data pengajuan yang sudah disetujui
-        $approvedPengajus = Pengaju::where('id_status', \App\Models\Status::where('status', 'Setujui')->first()->id)
-            ->whereNull('forwarded_at') // Hanya ambil data yang belum dikirim
-            ->with(['user']) // Dengan relasi departement dan user jika diperlukan
+        // Ambil ID status "Setujui"
+        $setujuStatusId = \App\Models\Status::where('status', 'Setujui')->first()->id;
+
+        // Mengambil data pengajuan yang sudah disetujui dan tidak memiliki keterangan dari bendahara yayasan
+        $approvedPengajus = Pengaju::where('id_status', $setujuStatusId)
+            ->whereNull('forwarded_at')
+            ->whereDoesntHave('keterangan', function ($query) {
+                // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+            })
+            ->with(['user', 'keterangan']) // Load relasi user dan keterangan
             ->get();
 
-        // Mengirim data ke view
         return view('accountant.index', compact('approvedPengajus'));
+    }
+
+    public function indexForwarded()
+    {
+        // ID user untuk Bendahara Yayasan
+        $bendaharaYayasanId = 10;
+
+        // Mengambil semua pengajuan dengan relasi 'user' dan 'keterangan'
+        $pengajus = Pengaju::with(['user', 'keterangan'])
+            ->get();
+
+        $filteredPengajus = $pengajus->filter(function ($pengaju) use ($bendaharaYayasanId) {
+            // Ambil keterangan_data dari relasi keterangan
+            $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+            // Jika keterangan_data berbentuk string JSON, decode menjadi array
+            if (is_string($keteranganData)) {
+                $keteranganData = json_decode($keteranganData, true);
+            }
+
+            // Pastikan keterangan_data adalah array, jika tidak, abaikan pengajuan ini
+            if (!is_array($keteranganData)) {
+                return false;
+            }
+
+            // Periksa apakah 'bendahara yayasan' ada di dalam keterangan_data
+            $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+
+            // Jika tidak ada data untuk Bendahara Yayasan, abaikan pengajuan ini
+            if (is_null($bendaharaData)) {
+                return false;
+            }
+
+            // Cek apakah id_status dari Bendahara Yayasan adalah 2 (Tolak)
+            return $bendaharaData['id_status'] == 2;
+        });
+
+        // Proses setiap pengajuan yang sudah difilter (untuk status Ditunda)
+        $filteredPengajus->each(function ($pengaju) {
+            $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+            // Decode jika keterangan_data berbentuk string JSON
+            if (is_string($keteranganData)) {
+                $keteranganData = json_decode($keteranganData, true);
+            }
+
+            // Pastikan $keteranganData adalah array
+            if (is_array($keteranganData)) {
+                // Ambil data Bendahara Yayasan
+                $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+
+                if ($bendaharaData && $bendaharaData['id_status'] == 2) { // Status Tolak (Ditunda)
+                    $pengaju->status = (object) [
+                        'id' => $bendaharaData['id_status'],
+                        'status' => 'Ditunda',
+                        'badge_class' => 'badge-danger'
+                    ];
+                    $pengaju->displayed_keterangan = $bendaharaData['keterangan'] ?? 'Tidak ada keterangan.';
+                }
+            }
+        });
+
+        // Menambah pengajuan yang belum diteruskan untuk status Menunggu
+        $pendingPengajus = $pengajus->filter(function ($pengaju) {
+            $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+            // Jika keterangan_data berbentuk string JSON, decode menjadi array
+            if (is_string($keteranganData)) {
+                $keteranganData = json_decode($keteranganData, true);
+            }
+
+            // Pastikan $keteranganData adalah array
+            if (is_array($keteranganData)) {
+                $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+
+                // Menampilkan "Menunggu" jika tidak ada data dari Bendahara Yayasan
+                return is_null($bendaharaData) && !is_null($pengaju->forwarded_at);
+            }
+
+            return false;
+        });
+
+        // Proses pengajuan dengan status "Menunggu"
+        $pendingPengajus->each(function ($pengaju) {
+            $pengaju->status = (object) [
+                'id' => null,
+                'status' => 'Menunggu',
+                'badge_class' => 'badge-secondary'
+            ];
+            $pengaju->displayed_keterangan = 'Pengajuan sudah diteruskan, menunggu tindakan Bendahara Yayasan.';
+        });
+
+        // Gabungkan filteredPengajus (Ditunda) dan pendingPengajus (Menunggu)
+        $finalPengajus = $filteredPengajus->merge($pendingPengajus);
+
+        return view('accountant.rekap', compact('finalPengajus'));
     }
 
     public function show($id)

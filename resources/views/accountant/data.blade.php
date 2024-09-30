@@ -48,7 +48,7 @@
                                         <tr>
                                             <td><input type="checkbox" name="selected_pengajus[]" value="{{ $pengaju->id }}">&nbsp;&nbsp;&nbsp;{{ $loop->iteration }}
                                             </td>
-                                            <td>{{ \Carbon\Carbon::parse($pengaju->created_at)->format('d/m/Y') }}</td>
+                                            <td>{{ ($pengaju->tanggal)}}</td>
                                             <td>{{ $pengaju->user->name }}</td>
                                             <td>{{ $pengaju->nama_pengaju }}</td>
                                             <td

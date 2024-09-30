@@ -40,66 +40,57 @@
                                     <th>Dana Pengajuan</th>
                                     <th>Detail</th>
                                     <th>Status</th>
+                                    <th>Keterangan</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-danger px-2">Ditunda</span></td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-secondary px-2">Menunggu</span></td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-secondary px-2">Menunggu</span></td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>13/07/2024</td>
-                                    <td>Kebersihan</td>
-                                    <td>udin</td>
-                                    <td>butuh penyikat kamar mandi</td>
-                                    <td>25.000</td>
-                                    <td><a href="{{ route('bendahara.detail') }}"><button type="button"
-                                                class="btn mb-1 btn-info">Cek Detail</button></a></td>
-                                    <td><span class="badge badge-danger px-2">Ditunda</span></td>
-                                </tr>
+                                @foreach($finalPengajus as $pengaju)
+                                                            <tr>
+                                                                <td><input type="checkbox">&nbsp;&nbsp;{{ $loop->iteration }}
+                                                                <td>{{ $pengaju->tanggal}}</td>
+                                                                <td>{{ $pengaju->user->name }}</td>
+                                                                <td>{{ $pengaju->nama_pengaju }}</td>
+                                                                <td
+                                                                    style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    {{ $pengaju->deskripsi }}
+                                                                </td>
+                                                                <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
+                                                                <td><a href="{{ route('accountant.detailket', ['id' => $pengaju->id]) }}">
+                                                                        <button type="button" class="btn mb-1 btn-info">Cek Detail</button></a>
+                                                                </td>
+                                                                <td>
+                                                                    <span class="badge {{ $pengaju->status->badge_class }} px-2">
+                                                                        {{ $pengaju->status->status }}
+                                                                    </span>
+                                                                </td>
+                                                                <td
+                                                                    style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                                                    @if($pengaju->displayed_keterangan)
+        @php
+            // Mengambil data keterangan_data
+            $keteranganData = $pengaju->keterangan->keterangan_data;
+
+            // Jika keterangan_data adalah string JSON, decode menjadi array
+            if (is_string($keteranganData)) {
+                $keteranganData = json_decode($keteranganData, true);
+            }
+
+            // Cek apakah keterangan_data sudah menjadi array dan lanjutkan untuk bendahara yayasan
+            $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+        @endphp
+
+        @if($bendaharaData)
+            <p><strong>{{ \App\Models\User::find($bendaharaData['id'])->name }}:</strong> {{ $bendaharaData['keterangan'] }}</p>
+        @else
+            Tidak ada keterangan.
+        @endif
+    @else
+        Tidak ada keterangan.
+    @endif
+                                                                </td>
+                                                            </tr>
+                                @endforeach
                             </tbody>
-                            <tfoot>
-                                <tr>
-                                    <th>Id</th>
-                                    <th>Nama</th>
-                                    <th>Email</th>
-                                    <th>No Telp</th>
-                                    <th>Role</th>
-                                    <th>Action</th>
-                                    <th>Detail</th>
-                                    <th>Status</th>
-                                </tr>
-                            </tfoot>
                         </table>
                     </div>
                 </div>

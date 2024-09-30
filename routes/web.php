@@ -103,6 +103,10 @@ Route::middleware(['auth', 'role:4'])->group(function () {
     Route::get('/accountant/data', [AccountantController::class, 'index'])->name('accountant.data');
     Route::get('/accountant/detail/{id}', [AccountantController::class, 'show'])->name('accountant.detail');
     Route::post('/accountant/forward', [AccountantController::class, 'forward'])->name('accountant.forward');
+    Route::get('/accountant/rekap', [AccountantController::class, 'indexForwarded'])->name('accountant.rekap');
+    Route::get('/accountant/detailket', function () {
+        return view('accountant.detailket');
+    })->name('accountant.detailket');
 });
 
 Route::get('/accountant/dashboard', function () {
@@ -112,10 +116,6 @@ Route::get('/accountant/dashboard', function () {
 Route::get('/accountant/data', function () {
     return view('accountant.data');
 })->name('accountant.data');
-
-Route::get('/accountant/rekap', function () {
-    return view('accountant.rekap');
-})->name('accountant.rekap');
 
 // Bendahara
 Route::get('/bendahara/dashboard', function () {
