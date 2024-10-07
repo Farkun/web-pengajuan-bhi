@@ -144,4 +144,49 @@ class AccountantController extends Controller
         // Kirim response sukses dengan SweetAlert
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara yayasan.']);
     }
+    public function forwardtwo(Request $request)
+    {
+        // Ambil ID pengajuan yang dipilih dari checkbox
+        $selectedPengajus = $request->input('selected_pengajus', []);
+
+        // Jika tidak ada data yang dipilih
+        if (empty($selectedPengajus)) {
+            return response()->json(['status' => 'error', 'message' => 'Tidak ada data yang dipilih untuk dikirim.']);
+        }
+
+        // Ambil semua pengajuan yang dipilih
+        $pengajus = Pengaju::whereIn('id', $selectedPengajus)->get();
+
+        // Loop untuk setiap pengajuan
+        foreach ($pengajus as $pengaju) {
+            // Ambil keterangan terkait pengajuan ini
+            $keterangan = $pengaju->keterangan;
+
+            if ($keterangan) {
+                // Decode JSON dari keterangan_data
+                $keteranganData = json_decode($keterangan->keterangan_data, true);
+
+                // Jika ada entri terkait 'bendahara yayasan', hapus
+                if (isset($keteranganData['bendahara yayasan'])) {
+                    unset($keteranganData['bendahara yayasan']); // Menghapus data bendahara yayasan
+                }
+
+                // Encode ulang keterangan_data dan simpan
+                $keterangan->keterangan_data = json_encode($keteranganData);
+                $keterangan->save();
+            }
+
+            // Update kolom 'forwarded_at' untuk menandai pengajuan sudah dikirim ulang ke bendahara
+            $pengaju->forwarded_at = now();
+            $pengaju->save();
+        }
+
+        // Kirim response sukses dengan SweetAlert
+        return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara yayasan.']);
+    }
+
+    public function shows($id)
+    {
+        return view('accountant.detailket', ['id' => $id]);
+    }
 }

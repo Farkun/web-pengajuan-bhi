@@ -102,11 +102,10 @@ Route::get('/approval/detaillap', function () {
 Route::middleware(['auth', 'role:4'])->group(function () {
     Route::get('/accountant/data', [AccountantController::class, 'index'])->name('accountant.data');
     Route::get('/accountant/detail/{id}', [AccountantController::class, 'show'])->name('accountant.detail');
+    Route::get('/accountant/detailket/{id}', [AccountantController::class, 'shows'])->name('accountant.detailket');
     Route::post('/accountant/forward', [AccountantController::class, 'forward'])->name('accountant.forward');
+    Route::post('/accountant/forwardtwo', [AccountantController::class, 'forwardtwo'])->name('accountant.forwardtwo');
     Route::get('/accountant/rekap', [AccountantController::class, 'indexForwarded'])->name('accountant.rekap');
-    Route::get('/accountant/detailket', function () {
-        return view('accountant.detailket');
-    })->name('accountant.detailket');
 });
 
 Route::get('/accountant/dashboard', function () {
@@ -139,9 +138,8 @@ Route::middleware(['auth', 'role:6'])->group(function () {
     Route::get('/bendaharay/data', [BendaharayController::class, 'index'])->name('bendaharay.data');
     Route::post('/bendaharay/store', [BendaharayController::class, 'store'])->name('bendaharay.store');
     Route::get('/bendaharay/detail/{id}', [BendaharayController::class, 'show'])->name('bendaharay.detail');
-    Route::get('/bendaharay/rekap', function () {
-        return view('bendaharay.rekap');
-    })->name('bendaharay.rekap');
+    Route::post('/bendaharay/approve-all', [BendaharayController::class, 'approveAll'])->name('bendaharay.approve-all');
+    Route::get('/bendaharay/dashboard', [DashboardController::class, 'bendaharay'])->name('bendaharay.dashboard');
 });
 
 

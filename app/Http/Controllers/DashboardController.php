@@ -39,6 +39,12 @@ class DashboardController extends Controller
         return view('approval.status', ['user' => $user]);
     }
 
+    public function bendaharay()
+    {
+        $user = Auth::user(); // Mendapatkan pengguna yang sedang login
+        return view('bendaharay.dashboard', ['user' => $user]);
+    }
+
     public function dashboardTgl()
     {
         return [
@@ -62,6 +68,8 @@ class DashboardController extends Controller
             return view('bendahara.dashboard', $data);
         case 'approval':
             return view('approval.status', $data);
+        case 'bendaharay':
+                return view('bendaharay.dashboard', $data);
         default:
             abort(404); // Menangani kasus di mana jenis dashboard tidak ditemukan
     }

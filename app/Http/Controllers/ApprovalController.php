@@ -13,23 +13,15 @@ class ApprovalController extends Controller
     public function index()
     {
         // Ambil semua pengajuan untuk approval
-        $pengajus = Pengaju::all();
+        $pengajus = Pengaju::whereDoesntHave('keterangan', function ($query) {
+            // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+            $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+        })
+        ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+        ->get();
 
         // Ambil status yang diperlukan
         $statusPending = Status::where('status', 'pending')->first()->id;
-
-        // Ambil ID pengguna yang sedang login
-        $userId = Auth::id();
-        // Tentukan key berdasarkan ID pengguna
-        $userKey = $userId == 3 ? 'cindy' : 'runi';
-
-        // Ambil semua pengajuan yang relevan
-        $pengajus = Pengaju::whereHas('keterangan', function ($query) use ($userKey) {
-            $query->where(function ($subQuery) use ($userKey) {
-                $subQuery->whereNull("keterangan_data->{$userKey}->id_status")
-                    ->orWhere("keterangan_data->{$userKey}->id_status", Status::where('status', 'pending')->first()->id);
-            });
-        })->get();
 
         // Kirim data ke view
         return view('approval.status', [

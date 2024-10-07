@@ -6,6 +6,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Carbon\Carbon;
 
 use App\Models\Pengaju;
@@ -41,10 +42,24 @@ class AppServiceProvider extends ServiceProvider
         });
 
         view()->composer(['approval.status'], function ($view) {
-            $view->with('pengajus', Pengaju::all());
+            // Ambil semua pengajuan untuk approval
+            $pengajus = Pengaju::whereDoesntHave('keterangan', function ($query) {
+                // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+            })
+            ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+            ->get();
+
+            // Ambil status yang diperlukan
+            $statusPending = Status::where('status', 'pending')->first()->id;
+
+            $view->with([
+                'pengajus' => $pengajus,
+                'statusPending' => $statusPending
+            ]);
         });
 
-        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'bendaharay.detail'], function ($view) {
+        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'accountant.detailket', 'bendaharay.detail'], function ($view) {
             // Ambil ID dari parameter rute
             $id = Route::current()->parameter('id');
 
@@ -58,7 +73,7 @@ class AppServiceProvider extends ServiceProvider
         Carbon::setLocale('id');
 
         View::composer(
-            ['pengaju.dashboard', 'superadmin.dashboard', 'accountant.dashboard', 'bendahara.dashboard', 'approval.status'],
+            ['pengaju.dashboard', 'superadmin.dashboard', 'accountant.dashboard', 'bendahara.dashboard', 'bendaharay.dashboard', 'approval.status'],
             function ($view) {
                 $view->with([
                     'currentDate' => Carbon::now()->isoFormat('dddd, D MMMM YYYY'),
@@ -67,33 +82,35 @@ class AppServiceProvider extends ServiceProvider
             }
         );
 
-        View::composer('approval.status', function ($view) {
-            // Ambil status 'pending' dari database
-            $statusPending = Status::where('status', 'pending')->first()->id;
-
-            // Bagikan variabel ini ke view 'approval.status'
-            $view->with('statusPending', $statusPending);
-        });
-
         // Membuat variabel approvedPengajus tersedia di semua view
         View::composer(['accountant.data'], function ($view) {
-            // Mengambil ID status yang 'Setujui'
-            $statusApprovedId = Status::where('status', 'Setujui')->first()->id;
+            // Ambil ID status "Setujui"
+            $setujuStatusId = Status::where('status', 'Setujui')->first()->id;
 
-            // Mengambil data pengajuan yang disetujui
-            $approvedPengajus = Pengaju::where('id_status', $statusApprovedId)
-                ->whereNull('forwarded_at') // Hanya ambil data yang belum dikirim
-                ->with(['user'])
+            // Mengambil data pengajuan yang sudah disetujui dan tidak memiliki keterangan dari bendahara yayasan
+            $approvedPengajus = Pengaju::where('id_status', $setujuStatusId)
+                ->whereNull('forwarded_at')
+                ->whereDoesntHave('keterangan', function ($query) {
+                    // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                    $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+                })
+                ->with(['user', 'keterangan']) // Load relasi user dan keterangan
                 ->get();
 
-            // Membuat variabel tersebut tersedia di view
+            // Bagikan data ke semua views di dalam folder accountant
             $view->with('approvedPengajus', $approvedPengajus);
         });
 
         // Menggunakan view composer untuk mengirimkan data ke seluruh tampilan
         View::composer('bendaharay.data', function ($view) {
-            // Mengambil semua pengajuan yang sudah diteruskan ke bendahara
-            $forwardedPengajus = Pengaju::whereNotNull('forwarded_at')->with('user')->get();
+            // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan
+            $forwardedPengajus = Pengaju::whereNotNull('forwarded_at')
+                ->whereDoesntHave('keterangan', function ($query) {
+                    // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                    $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+                })
+                ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+                ->get();
 
             // Mengirim data ke semua tampilan
             $view->with('forwardedPengajus', $forwardedPengajus);

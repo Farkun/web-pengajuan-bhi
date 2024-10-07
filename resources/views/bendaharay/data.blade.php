@@ -4,15 +4,14 @@
 <ul class="metismenu" id="menu">
     <li class="nav-label"></li>
     <li>
-        <a href="javascript:void()" style="color: white;">
-            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
-                Accountant</span>
+        <a href="{{ route('bendaharay.dashboard') }}" style="color: white;">
+            <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
         </a>
     </li>
     <li>
-        <a href="{{ route('bendaharay.rekap') }}" style="color: white;">
-            <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
-                Ulang</span>
+        <a href="javascript:void()" style="color: white;">
+            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
+                Accountant</span>
         </a>
     </li>
 </ul>
@@ -67,7 +66,7 @@
                                     </tbody>
                                 @empty
                                     <tr>
-                                        <td colspan="7" class="text-center">Tidak ada pengajuan yang diteruskan.</td>
+                                        <td colspan="7" class="text-center">Belum ada pengajuan yang diteruskan.</td>
                                     </tr>
                                 @endforelse
                             <tfoot>
@@ -87,7 +86,7 @@
                 </div>
                 <div class="general-button col-lg-11 text-right">
                     <div class="sweetalert m-t-30">
-                        <a href=""><button type="button" class="btn mb-1 btn-primary">Kirim Rekap</button></a>
+                        <button id="approveAllBtn" type="button" class="btn mb-1 btn-primary">Setujui Semua & Kirim</button>
                     </div>
                     <br><br>
                 </div>

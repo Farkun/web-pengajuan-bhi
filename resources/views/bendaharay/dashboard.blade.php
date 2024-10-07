@@ -9,13 +9,9 @@
         </a>
     </li>
     <li>
-        <a href="{{ route('bendahara.status') }}" style="color: white;">
-            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Rekap Data</span>
-        </a>
-    </li>
-    <li>
-        <a href="{{ route('bendahara.laporan') }}" style="color: white;">
-            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
+        <a href="{{ route('bendaharay.data') }}" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Data Rekap
+            Accountant</span>
         </a>
     </li>
 </ul>
@@ -41,12 +37,11 @@
         </div>
         <div class="col-lg-4 col-sm-12">
             <div class="card card-body gradient-1">
-                <a href="status">
+                <a href="data">
                     <div class="card-body">
-                        <h3 class="card-title text-white">Total Rekap Data</h3>
+                        <h3 class="card-title text-white">Total Rekap Accountant</h3>
                         <div class="d-inline-block">
                             <h2 class="text-white">8541</h2>
-                            <p class="text-white mb-0">Jan - March 2019</p>
                         </div>
                         <span class="float-right display-5 opacity-5"><i class="fa fa-users"></i></span>
                     </div>

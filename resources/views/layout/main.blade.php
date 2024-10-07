@@ -560,6 +560,68 @@
     </script>
 
     <script>
+        document.getElementById('kirimRekapBtnTwo').addEventListener('click', function () {
+            if (document.querySelectorAll('input[name="selected_pengajus[]"]:checked').length > 0) {
+                swal({
+                    title: "Kirim Rekap?",
+                    text: "Apakah Anda yakin ingin mengirim rekap data yang telah dipilih?",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    confirmButtonText: "Ya, kirim!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
+                }, function (isConfirm) {
+                    if (isConfirm) {
+                        var form = document.getElementById('forwardTwoForm');
+                        var formData = new FormData(form);
+
+                        fetch(form.action, {
+                            method: form.method,
+                            body: formData,
+                            headers: {
+                                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                            }
+                        })
+                            .then(response => response.json())
+                            .then(data => {
+                                if (data.status === 'success') {
+                                    swal({
+                                        title: "Sukses",
+                                        text: data.message,
+                                        type: "success"
+                                    }, function () {
+                                        window.location.reload(); // Reload halaman setelah menekan OK
+                                    });
+                                    // Hapus row data yang dipilih
+                                    document.querySelectorAll('input[name="selected_pengajus[]"]:checked').forEach(checkbox => {
+                                        checkbox.closest('tr').remove();
+                                    });
+                                } else {
+                                    swal("Gagal", data.message, "error");
+                                }
+                            })
+                            .catch(error => {
+                                swal("Terjadi kesalahan", "Terjadi kesalahan saat mengirim data.", "error");
+                            });
+                    }
+                });
+            } else {
+                swal("Error", "Harap pilih data terlebih dahulu sebelum mengirim rekap.", "error");
+            }
+        });
+    </script>
+
+    <script>
+        document.getElementById('select-all').addEventListener('change', function () {
+            const checkboxes = document.querySelectorAll('.pengaju-checkbox');
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = this.checked;
+            });
+        });
+    </script>
+
+    <script>
         document.getElementById('rejectForm').addEventListener('submit', function (event) {
             event.preventDefault(); // Mencegah form dari submit secara default
 
@@ -605,6 +667,52 @@
                         .catch(error => {
                             console.error('Error:', error);
                             swal('Error', 'Terjadi kesalahan saat mengirim data.', 'error');
+                        });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        document.getElementById('approveAllBtn').addEventListener('click', function () {
+            swal({
+                title: "Setujui Semua Pengajuan?",
+                text: "Apakah Anda yakin ingin menyetujui semua pengajuan yang ada?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                confirmButtonText: "Ya, setujui semua!",
+                cancelButtonText: "Batal",
+                closeOnConfirm: false
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    // Kirim permintaan POST untuk menyetujui semua pengajuan
+                    fetch('/bendaharay/approve-all', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': csrfToken
+                        }
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                swal({
+                                    title: "Disetujui!",
+                                    text: "Semua pengajuan telah disetujui dan dikirim.",
+                                    type: "success"
+                                }, function () {
+                                    window.location.reload(); // Reload halaman setelah sukses
+                                });
+                            } else {
+                                swal("Oops!", "Terjadi kesalahan saat menyetujui pengajuan.", "error");
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swal("Oops!", "Terjadi kesalahan saat menyetujui pengajuan.", "error");
                         });
                 }
             });
