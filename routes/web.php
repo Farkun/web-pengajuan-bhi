@@ -42,6 +42,7 @@ Route::middleware(['auth', 'role:1'])->group(function () {
     Route::post('/superadmin/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/superadmin/daftarakun', [UserController::class, 'index'])->name('superadmin.daftarakun');
     Route::delete('/superadmin/{id}', [UserController::class, 'destroy'])->name('user.destroy');
+    Route::post('/superadmin/reset/{id}', [UserController::class, 'resetPassword'])->name('user.resetPassword');
 });
 
 Route::get('/superadmin/tambahakun', function () {

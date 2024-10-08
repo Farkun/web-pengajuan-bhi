@@ -48,9 +48,13 @@
                                         <td>{{ $user->phone }}</td>
                                         <td>{{ $user->role_name }}</td>
                                         <td>
-                                            <button type="button" class="btn btn-primary">
-                                                <i class="fa fa-lock"></i>&nbsp;Reset Password
-                                            </button>
+                                            <form action="{{ route('user.resetPassword', $user->id) }}" method="POST"
+                                                class="reset-password-form d-inline">
+                                                @csrf
+                                                <button type="button" class="btn btn-primary sweet-confirm">
+                                                    <i class="fa fa-lock"></i>&nbsp;Reset Password
+                                                </button>
+                                            </form>
 
                                             <form action="{{ route('user.destroy', $user->id) }}" method="POST"
                                                 class="d-inline">
