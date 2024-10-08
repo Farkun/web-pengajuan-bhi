@@ -7,6 +7,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PengajuController;
 use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AccountantController;
+use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\BendaharayController;
 
 /*
@@ -129,9 +130,10 @@ Route::get('/bendahara/detail', function () {
     return view('bendahara.detail');
 })->name('bendahara.detail');
 
-Route::get('/bendahara/status', function () {
-    return view('bendahara.status');
-})->name('bendahara.status');
+// Route::get('/bendahara/status', function () {
+//     return view('bendahara.status');
+// })->name('bendahara.status');
+Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
 
 // Bendahara Yayasan
 Route::middleware(['auth', 'role:6'])->group(function () {
