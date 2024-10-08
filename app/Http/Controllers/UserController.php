@@ -56,4 +56,25 @@ class UserController extends Controller
         // Redirect ke halaman user status dengan pesan sukses
         return redirect()->route('superadmin.daftarakun')->with('success', 'Data user berhasil dihapus.');
     }
+
+    public function resetPassword(Request $request, $id)
+    {
+        // Password default yang akan digunakan
+        $defaultPassword = 'bhs123';
+
+        // Cari user berdasarkan ID
+        $user = User::find($id);
+
+        if ($user) {
+            // Reset password user ke default
+            $user->password = Hash::make($defaultPassword);
+            $user->save();
+
+            // Redirect dengan pesan sukses
+            return redirect()->back()->with('success', 'Password berhasil direset ke password default.');
+        } else {
+            // Jika user tidak ditemukan
+            return redirect()->back()->with('error', 'User tidak ditemukan.');
+        }
+    }
 }

@@ -147,7 +147,7 @@
                                 <div class="dropdown-content-body">
                                     <ul>
                                         <li>
-                                            <a href="app-profile.html"><i class="icon-user"></i>
+                                            <a href="{{ route('profile.edit') }}"><i class="icon-user"></i>
                                                 <span>Profile</span></a>
                                         </li>
                                         <li>
@@ -308,6 +308,27 @@
                     closeOnConfirm: false
                 }, function () {
                     form.submit(); // Submit form untuk menghapus data
+                });
+            });
+        });
+    </script>
+
+    <script>
+        document.querySelectorAll('.sweet-confirm').forEach(button => {
+            button.addEventListener('click', function (event) {
+                const form = this.closest('form'); // Get the closest form related to the button
+                swal({
+                    title: "Apakah Anda yakin?",
+                    text: "Password akan direset ke default!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Ya, reset password!",
+                    cancelButtonText: "Batal",
+                    closeOnConfirm: false
+                }, function () {
+                    form.submit(); // Submit form untuk reset password
                 });
             });
         });
