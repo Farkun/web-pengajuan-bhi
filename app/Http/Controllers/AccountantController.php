@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 
 class AccountantController extends Controller
 {
-    public function index()
+    private function getApprovedPengajus()
     {
         // Ambil ID status "Setujui"
         $setujuStatusId = \App\Models\Status::where('status', 'Setujui')->first()->id;
@@ -22,10 +22,35 @@ class AccountantController extends Controller
             ->with(['user', 'keterangan']) // Load relasi user dan keterangan
             ->get();
 
-        return view('accountant.index', compact('approvedPengajus'));
+        $totaldat = $approvedPengajus->count();
+
+        return compact('approvedPengajus', 'totaldat');
     }
 
-    public function indexForwarded()
+    // Method untuk halaman dashboard
+    public function accountantDashboard()
+    {
+        // Ambil data pengajuan yang sudah disetujui
+        $approvedPengajus = $this->getApprovedPengajus();
+
+        // Ambil data pengajuan yang sudah diteruskan
+        $forwardedPengajus = $this->getForwardedPengajus();
+
+        // Gabungkan data dari kedua method
+        $data = array_merge($approvedPengajus, $forwardedPengajus);
+
+        // Kirimkan semua data ke view
+        return view('accountant.dashboard', $data);
+    }
+
+    // Method untuk halaman index
+    public function index()
+    {
+        $data = $this->getApprovedPengajus();
+        return view('accountant.index', $data);
+    }
+
+    public function getForwardedPengajus()
     {
         // ID user untuk Bendahara Yayasan
         $bendaharaYayasanId = 10;
@@ -118,7 +143,16 @@ class AccountantController extends Controller
         // Gabungkan filteredPengajus (Ditunda) dan pendingPengajus (Menunggu)
         $finalPengajus = $filteredPengajus->merge($pendingPengajus);
 
-        return view('accountant.rekap', compact('finalPengajus'));
+        $totalrek = $finalPengajus->count();
+
+        return compact('finalPengajus', 'totalrek');
+    }
+
+    // Method untuk halaman index
+    public function indexForwarded()
+    {
+        $data = $this->getForwardedPengajus();
+        return view('accountant.rekap', $data);
     }
 
     public function show($id)

@@ -19,7 +19,7 @@
                     </x-slot>
 
                     <x-slot name="content">
-                        <x-dropdown-link href="javascript:void(0);" onclick="window.history.back();">
+                        <x-dropdown-link href="javascript:void(0);" onclick="goBack()">
                             {{ __('Kembali') }}
                         </x-dropdown-link>
 

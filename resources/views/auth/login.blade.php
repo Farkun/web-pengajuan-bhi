@@ -41,12 +41,27 @@
                         <div class="card login-form mb-0">
                             <div class="card-body pt-5">
                                 <div class="col-lg-12 text-center">
-                                <img src="{{ asset('assets/theme/images/logo-bhs.png') }}" alt=""
-                                    style="width: 250px; height: 250px; ">
+                                    <img src="{{ asset('assets/theme/images/logo-bhs.png') }}" alt=""
+                                        style="width: 250px; height: 250px; ">
                                 </div>
                                 <a class="text-center" href="index.html">
                                     <h4>Login</h4>
                                 </a>
+
+                                <!-- Tampilkan pesan error jika ada -->
+                                @if (session('error'))
+                                    <div class="alert alert-danger">
+                                        {{ session('error') }}
+                                    </div>
+                                @elseif ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
 
                                 <form method="POST" action="{{ route('login') }}">
                                     @csrf
@@ -54,14 +69,17 @@
                                         <input type="email" class="form-control" name="email" placeholder="Email">
                                     </div>
                                     <div class="form-group">
-                                        <input type="password" class="form-control" name="password" placeholder="Password">
+                                        <input type="password" class="form-control" name="password"
+                                            placeholder="Password">
                                     </div>
-                                    <button type="submit" class="btn login-form__btn submit w-100" style="background-color: #952F33; border-color: #952F33; color: white;">Sign In</button>
+                                    <button type="submit" class="btn login-form__btn submit w-100"
+                                        style="background-color: #952F33; border-color: #952F33; color: white;">Sign
+                                        In</button>
                                 </form>
                                 <!-- <p class="mt-5 login-form__footer">Dont have account? <a href="{{route('register')}}" class="text-primary">Sign Up</a> now</p> -->
                             </div>
                         </div>
-                    </div>  
+                    </div>
                 </div>
             </div>
         </div>

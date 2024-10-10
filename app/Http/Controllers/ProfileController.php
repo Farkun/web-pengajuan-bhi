@@ -16,6 +16,14 @@ class ProfileController extends Controller
      */
     public function edit(Request $request): View
     {
+        // Simpan URL halaman sebelumnya ke session kecuali jika itu halaman profile, update, atau destroy
+        $previousUrl = url()->previous();
+
+        if (
+            !str_contains($previousUrl, '/profile')
+        ) {
+            session(['previous_url' => $previousUrl]);
+        }
         return view('profile.edit', [
             'user' => $request->user(),
         ]);

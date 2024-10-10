@@ -91,9 +91,22 @@
                                                     @if($pengaju->keterangan)
                                                         @php
                                                             $hasVisibleKeterangan = false;
+
+                                                            // Cek jika keterangan_data adalah string, lalu dekode
+                                                            $keteranganData = $pengaju->keterangan->keterangan_data;
+
+                                                            // Jika keterangan_data adalah string, lakukan json_decode
+                                                            if (is_string($keteranganData)) {
+                                                                $keteranganData = json_decode($keteranganData, true); // Set true untuk mendapatkan array
+                                                            }
+
+                                                            // Pastikan keterangan_data adalah array
+                                                            if (!is_array($keteranganData)) {
+                                                                $keteranganData = []; // Set menjadi array kosong jika bukan
+                                                            }
                                                         @endphp
-        
-                                                        @foreach($pengaju->keterangan->keterangan_data as $key => $value)
+
+                                                        @foreach($keteranganData as $key => $value)
                                                             @php
                                                                 // Mengecek apakah pengguna ini sudah memberikan status 'Setujui'
                                                                 $userApproved = $value['id_status'] == \App\Models\Status::where('status', 'Setujui')->first()->id;
@@ -106,7 +119,7 @@
                                                                 @endphp
                                                             @endif
                                                         @endforeach
-        
+                                                        
                                                         @if(!$hasVisibleKeterangan)
                                                             Tidak ada keterangan.
                                                         @endif

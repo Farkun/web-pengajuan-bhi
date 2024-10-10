@@ -102,6 +102,7 @@ Route::get('/approval/detaillap', function () {
 
 // Accountant
 Route::middleware(['auth', 'role:4'])->group(function () {
+    Route::get('/accountant/dashboard', [AccountantController::class, 'accountantDashboard'])->name('accountant.dashboard');
     Route::get('/accountant/data', [AccountantController::class, 'index'])->name('accountant.data');
     Route::get('/accountant/detail/{id}', [AccountantController::class, 'show'])->name('accountant.detail');
     Route::get('/accountant/detailket/{id}', [AccountantController::class, 'shows'])->name('accountant.detailket');

@@ -42,13 +42,14 @@ class AppServiceProvider extends ServiceProvider
         });
 
         view()->composer(['approval.status'], function ($view) {
-            // Ambil semua pengajuan untuk approval
-            $pengajus = Pengaju::whereDoesntHave('keterangan', function ($query) {
-                // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
-                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
-            })
-            ->with(['user', 'keterangan']) // Load relasi user dan keterangan
-            ->get();
+            // Ambil semua pengajuan untuk approval, kecualikan yang forwarded_at tidak null
+            $pengajus = Pengaju::whereNull('forwarded_at') // Tambahkan filter forwarded_at null
+                ->whereDoesntHave('keterangan', function ($query) {
+                    // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                    $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+                })
+                ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+                ->get();
 
             // Ambil status yang diperlukan
             $statusPending = Status::where('status', 'pending')->first()->id;
@@ -83,7 +84,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Membuat variabel approvedPengajus tersedia di semua view
-        View::composer(['accountant.data'], function ($view) {
+        View::composer(['accountant.data', 'accountant.dashboard'], function ($view) {
             // Ambil ID status "Setujui"
             $setujuStatusId = Status::where('status', 'Setujui')->first()->id;
 
@@ -97,8 +98,21 @@ class AppServiceProvider extends ServiceProvider
                 ->with(['user', 'keterangan']) // Load relasi user dan keterangan
                 ->get();
 
-            // Bagikan data ke semua views di dalam folder accountant
-            $view->with('approvedPengajus', $approvedPengajus);
+            $totaldat = $approvedPengajus->count();
+
+            // Ambil pengajuan yang sudah diteruskan/tolak oleh bendahara yayasan (totalrek)
+            $forwardedPengajus = Pengaju::whereHas('keterangan', function ($query) {
+                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%')
+                    ->where('id_status', 2); // Status tolak
+            })
+                ->with(['user', 'keterangan'])
+                ->get();
+
+            // Hitung total pengajuan yang sudah diteruskan
+            $totalrek = $forwardedPengajus->count();
+
+            // Kirimkan variabel ke view
+            $view->with(compact('approvedPengajus', 'totaldat', 'totalrek'));
         });
 
         // Menggunakan view composer untuk mengirimkan data ke seluruh tampilan
