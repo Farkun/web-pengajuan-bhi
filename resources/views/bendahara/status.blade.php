@@ -4,21 +4,21 @@
 @section('sidebar')
 <ul class="metismenu" id="menu">
     <li class="nav-label"></li>
-        <li>
-            <a href="{{ route('bendahara.dashboard') }}" style="color: white;">
-                <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
-            </a>
-        </li>
-        <li>
-            <a href="javascript:void()" style="color: white;">
-                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Rekap Data</span>
-            </a>
-        </li>
-        <li>
-            <a href="{{ route('bendahara.laporan') }}" style="color: white;">
-                <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
-            </a>
-        </li>
+    <li>
+        <a href="{{ route('bendahara.dashboard') }}" style="color: white;">
+            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Dashboard</span>
+        </a>
+    </li>
+    <li>
+        <a href="javascript:void()" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Rekap Data</span>
+        </a>
+    </li>
+    <li>
+        <a href="{{ route('bendahara.laporan') }}" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
+        </a>
+    </li>
 </ul>
 @endsection
 
@@ -46,14 +46,15 @@
                             <tbody>
                                 @foreach($approvedPengajus as $pengaju)
                                     <tr>
-                                        <td>{{ $pengaju->id }}</td>
+                                        <td>{{ $loop->iteration }}</td>
                                         <td>{{ $pengaju->created_at->format('d/m/Y') }}</td>
-                                        <td>{{ $pengaju->user->name }}</td> <!-- Pastikan ini sesuai dengan field departemen -->
+                                        <td>{{ $pengaju->user->name }}</td>
+                                        <!-- Pastikan ini sesuai dengan field departemen -->
                                         <td>{{ $pengaju->nama_pengaju }}</td>
                                         <td
-                                                style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                                {{ $pengaju->deskripsi }}
-                                            </td>
+                                            style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ $pengaju->deskripsi }}
+                                        </td>
                                         <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                         <td>
                                             <a href="{{ route('bendahara.detail', $pengaju->id) }}">
@@ -61,11 +62,10 @@
                                             </a>
                                         </td>
                                         <td>
-                                            <button type="button" class="btn mb-1 btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                                {{ $pengaju->id_status == 1 ? 'Sudah cair' : 'Belum cair' }}
-                                            </button>
-                                            <div class="dropdown-menu">
-                                                <a class="dropdown-item" href="#">Sudah cair</a>
+                                            <button type="button" class="btn mb-1 btn-secondary dropdown-toggle"
+                                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Belum
+                                                cair</button>
+                                            <div class="dropdown-menu"><a class="dropdown-item" href="#">Sudah cair</a>
                                             </div>
                                         </td>
                                     </tr>

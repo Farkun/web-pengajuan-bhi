@@ -12,13 +12,14 @@ class ApprovalController extends Controller
 {
     public function index()
     {
-        // Ambil semua pengajuan untuk approval
-        $pengajus = Pengaju::whereDoesntHave('keterangan', function ($query) {
-            // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
-            $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
-        })
-        ->with(['user', 'keterangan']) // Load relasi user dan keterangan
-        ->get();
+        // Ambil semua pengajuan untuk approval, kecualikan yang forwarded_at tidak null
+        $pengajus = Pengaju::whereNull('forwarded_at') // Tambahkan filter forwarded_at null
+            ->whereDoesntHave('keterangan', function ($query) {
+                // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+            })
+            ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+            ->get();
 
         // Ambil status yang diperlukan
         $statusPending = Status::where('status', 'pending')->first()->id;
