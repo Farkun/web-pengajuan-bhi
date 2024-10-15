@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Auth;
 
 class BendaharayController extends Controller
 {
-    public function index()
+    public function getFowardedPengajus()
     {
         // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan
         $forwardedPengajus = Pengaju::whereNotNull('forwarded_at')
@@ -21,8 +21,23 @@ class BendaharayController extends Controller
             ->with(['user', 'keterangan']) // Load relasi user dan keterangan
             ->get();
 
+        $totaldat = $forwardedPengajus->count();
+
         // Mengirim data ke view 'bendahara.index'
-        return view('bendaharay.data', compact('forwardedPengajus'));
+        return compact('forwardedPengajus', 'totaldat');
+    }
+
+    public function bendaharayDashboard()
+    {
+        $data = $this->getFowardedPengajus();
+        return view('accountant.dashboard', $data);
+    }
+
+    // Method untuk halaman index
+    public function index()
+    {
+        $data = $this->getFowardedPengajus();
+        return view('bendaharay.data', $data);
     }
 
     public function show($id)

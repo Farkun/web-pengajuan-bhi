@@ -11,6 +11,7 @@ use Carbon\Carbon;
 
 use App\Models\Pengaju;
 use App\Models\Status;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -60,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'accountant.detailket', 'bendaharay.detail'], function ($view) {
+        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'accountant.detailket', 'bendaharay.detail', 'bendahara.detail'], function ($view) {
             // Ambil ID dari parameter rute
             $id = Route::current()->parameter('id');
 
@@ -84,7 +85,7 @@ class AppServiceProvider extends ServiceProvider
         );
 
         // Membuat variabel approvedPengajus tersedia di semua view
-        View::composer(['accountant.data', 'accountant.dashboard'], function ($view) {
+        View::composer(['accountant.data', 'accountant.dashboard', 'accountant.rekap'], function ($view) {
             // Ambil ID status "Setujui"
             $setujuStatusId = Status::where('status', 'Setujui')->first()->id;
 
@@ -100,23 +101,101 @@ class AppServiceProvider extends ServiceProvider
 
             $totaldat = $approvedPengajus->count();
 
-            // Ambil pengajuan yang sudah diteruskan/tolak oleh bendahara yayasan (totalrek)
-            $forwardedPengajus = Pengaju::whereHas('keterangan', function ($query) {
-                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%')
-                    ->where('id_status', 2); // Status tolak
-            })
-                ->with(['user', 'keterangan'])
-                ->get();
+            // Ambil ID status untuk pengajuan yang "Tolak"
+            $tolakStatusId = Status::where('status', 'Tolak')->first()->id;
 
-            // Hitung total pengajuan yang sudah diteruskan
-            $totalrek = $forwardedPengajus->count();
+            // ID user untuk Bendahara Yayasan
+            $bendaharaYayasanId = 10;
+
+            // Mengambil semua pengajuan dengan relasi 'user' dan 'keterangan'
+            $pengajus = Pengaju::with(['user', 'keterangan'])->get();
+
+            // Filter pengajuan yang ditolak oleh bendahara yayasan
+            $filteredPengajus = $pengajus->filter(function ($pengaju) use ($bendaharaYayasanId) {
+                $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+                // Jika keterangan_data adalah string JSON, decode menjadi array
+                if (is_string($keteranganData)) {
+                    $keteranganData = json_decode($keteranganData, true);
+                }
+
+                // Pastikan keterangan_data adalah array
+                if (!is_array($keteranganData)) {
+                    return false;
+                }
+
+                // Periksa apakah 'bendahara yayasan' ada di dalam keterangan_data
+                $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+
+                // Abaikan jika tidak ada data untuk Bendahara Yayasan
+                if (is_null($bendaharaData)) {
+                    return false;
+                }
+
+                // Cek apakah id_status adalah 2 (Tolak)
+                return $bendaharaData['id_status'] == 2;
+            });
+
+            // Proses pengajuan ditunda (status Ditunda)
+            $filteredPengajus->each(function ($pengaju) {
+                $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+                if (is_string($keteranganData)) {
+                    $keteranganData = json_decode($keteranganData, true);
+                }
+
+                if (is_array($keteranganData)) {
+                    $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+
+                    if ($bendaharaData && $bendaharaData['id_status'] == 2) {
+                        $pengaju->status = (object) [
+                            'id' => $bendaharaData['id_status'],
+                            'status' => 'Ditunda',
+                            'badge_class' => 'badge-danger'
+                        ];
+                        $pengaju->displayed_keterangan = $bendaharaData['keterangan'] ?? 'Tidak ada keterangan.';
+                    }
+                }
+            });
+
+            // Pengajuan menunggu (status Menunggu)
+            $pendingPengajus = $pengajus->filter(function ($pengaju) {
+                $keteranganData = $pengaju->keterangan->keterangan_data ?? null;
+
+                if (is_string($keteranganData)) {
+                    $keteranganData = json_decode($keteranganData, true);
+                }
+
+                if (is_array($keteranganData)) {
+                    $bendaharaData = $keteranganData['bendahara yayasan'] ?? null;
+                    return is_null($bendaharaData) && !is_null($pengaju->forwarded_at);
+                }
+
+                return false;
+            });
+
+            // Proses pengajuan menunggu
+            $pendingPengajus->each(function ($pengaju) {
+                $pengaju->status = (object) [
+                    'id' => null,
+                    'status' => 'Menunggu',
+                    'badge_class' => 'badge-secondary'
+                ];
+                $pengaju->displayed_keterangan = 'Pengajuan sudah diteruskan, menunggu tindakan Bendahara Yayasan.';
+            });
+
+            // Gabungkan pengajuan ditunda dan menunggu
+            $finalPengajus = $filteredPengajus->merge($pendingPengajus);
+
+            // Hitung total rekap
+            $totalrek = $finalPengajus->count();
 
             // Kirimkan variabel ke view
-            $view->with(compact('approvedPengajus', 'totaldat', 'totalrek'));
+            $view->with(compact('approvedPengajus', 'finalPengajus', 'totaldat', 'totalrek'));
         });
 
         // Menggunakan view composer untuk mengirimkan data ke seluruh tampilan
-        View::composer('bendaharay.data', function ($view) {
+        View::composer(['bendaharay.data', 'bendaharay.dashboard'], function ($view) {
             // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan
             $forwardedPengajus = Pengaju::whereNotNull('forwarded_at')
                 ->whereDoesntHave('keterangan', function ($query) {
@@ -126,8 +205,27 @@ class AppServiceProvider extends ServiceProvider
                 ->with(['user', 'keterangan']) // Load relasi user dan keterangan
                 ->get();
 
+                $totaldat = $forwardedPengajus->count();
+
             // Mengirim data ke semua tampilan
-            $view->with('forwardedPengajus', $forwardedPengajus);
+            $view->with([
+                'forwardedPengajus' => $forwardedPengajus,
+                'totaldat' => $totaldat
+            ]);
+        });
+
+        View::composer(['superadmin.daftarakun', 'superadmin.dashboard'], function ($view) {
+            $users = User::join('roles', 'users.role', '=', 'roles.id')
+            ->select('users.*', 'roles.role as role_name')
+            ->get();
+
+        $total = $users->count();
+
+            // Mengirim data ke semua tampilan
+            $view->with([
+                'users' => $users,
+                'total' => $total
+            ]);
         });
     }
 }

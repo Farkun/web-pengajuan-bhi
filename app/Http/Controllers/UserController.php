@@ -10,13 +10,30 @@ use App\Models\Role;
 
 class UserController extends Controller
 {
-    public function index()
+    public function getIndex()
     {
         $users = User::join('roles', 'users.role', '=', 'roles.id')
             ->select('users.*', 'roles.role as role_name')
             ->get();
-        return view('superadmin.daftarakun', compact('users'));
+
+        $total = $users->count();
+
+        return  compact('users', 'total');
     }
+
+    public function superadminDashboard()
+    {
+        $data = $this->getIndex();
+        return view('superadmin.dashboard', $data);
+    }
+
+    // Method untuk halaman index
+    public function index()
+    {
+        $data = $this->getIndex();
+        return view('superadmin.daftarakun', $data);
+    }
+
     public function create()
     {
         $roles = Role::all();
