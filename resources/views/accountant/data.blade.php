@@ -48,7 +48,7 @@
                                         <tr>
                                             <td><input type="checkbox" name="selected_pengajus[]" value="{{ $pengaju->id }}">&nbsp;&nbsp;&nbsp;{{ $loop->iteration }}
                                             </td>
-                                            <td>{{ ($pengaju->tanggal)}}</td>
+                                            <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                             <td>{{ $pengaju->user->name }}</td>
                                             <td>{{ $pengaju->nama_pengaju }}</td>
                                             <td
@@ -61,7 +61,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Tidak ada data yang disetujui.</td>
+                                            <td colspan="7" class="text-center">Belum ada data yang disetujui approval.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

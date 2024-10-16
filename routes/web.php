@@ -38,6 +38,7 @@ Route::middleware('auth')->group(function () {
 require __DIR__.'/auth.php';
 
 Route::middleware(['auth', 'role:1'])->group(function () {
+    Route::get('/superadmin/dashboard', [UserController::class, 'superadminDashboard'])->name('superadmin.dashboard');
     Route::get('/superadmin/create', [UserController::class, 'create'])->name('superadmin.create');
     Route::post('/superadmin/store', [UserController::class, 'store'])->name('users.store');
     Route::get('/superadmin/daftarakun', [UserController::class, 'index'])->name('superadmin.daftarakun');
@@ -128,17 +129,24 @@ Route::get('/bendahara/laporan', function () {
     return view('bendahara.laporan');
 })->name('bendahara.laporan');
 
-Route::get('/bendahara/detail', function () {
-    return view('bendahara.detail');
-})->name('bendahara.detail');
+
 
 // Route::get('/bendahara/status', function () {
 //     return view('bendahara.status');
 // })->name('bendahara.status');
+Route::middleware(['auth', 'role:5'])->group(function () {
 Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
+Route::get('/bendahara/detail/{id}', [BendaharaController::class, 'show'])->name('bendahara.detail');
+Route::get('/bendahara/export/excel', [BendaharaController::class, 'export_excel'])->name('bendahara.export.excel');
+<<<<<<< HEAD
+=======
+Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashboard'])->name('bendahara.dashboard');
+>>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
+});
 
 // Bendahara Yayasan
 Route::middleware(['auth', 'role:6'])->group(function () {
+    Route::get('/bendaharay/dashboard', [BendaharayController::class, 'bendaharayDashboard'])->name('bendaharay.dashboard');
     Route::get('/bendaharay/data', [BendaharayController::class, 'index'])->name('bendaharay.data');
     Route::post('/bendaharay/store', [BendaharayController::class, 'store'])->name('bendaharay.store');
     Route::get('/bendaharay/detail/{id}', [BendaharayController::class, 'show'])->name('bendaharay.detail');

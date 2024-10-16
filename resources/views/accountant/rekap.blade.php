@@ -56,7 +56,7 @@
                                             @endif
                                             {{ $loop->iteration }}
                                         </td>
-                                        <td>{{ $pengaju->tanggal}}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                         <td>{{ $pengaju->user->name }}</td>
                                         <td>{{ $pengaju->nama_pengaju }}</td>
                                         <td
