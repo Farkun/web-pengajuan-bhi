@@ -138,10 +138,7 @@ Route::middleware(['auth', 'role:5'])->group(function () {
 Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
 Route::get('/bendahara/detail/{id}', [BendaharaController::class, 'show'])->name('bendahara.detail');
 Route::get('/bendahara/export/excel', [BendaharaController::class, 'export_excel'])->name('bendahara.export.excel');
-<<<<<<< HEAD
-=======
 Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashboard'])->name('bendahara.dashboard');
->>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
 });
 
 // Bendahara Yayasan

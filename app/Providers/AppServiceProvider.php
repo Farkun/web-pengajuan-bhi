@@ -205,11 +205,7 @@ class AppServiceProvider extends ServiceProvider
                 ->with(['user', 'keterangan']) // Load relasi user dan keterangan
                 ->get();
 
-<<<<<<< HEAD
-                $totaldat = $forwardedPengajus->count();
-=======
             $totaldat = $forwardedPengajus->count();
->>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
 
             // Mengirim data ke semua tampilan
             $view->with([
@@ -218,14 +214,6 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-<<<<<<< HEAD
-        View::composer(['superadmin.daftarakun', 'superadmin.dashboard'], function ($view) {
-            $users = User::join('roles', 'users.role', '=', 'roles.id')
-            ->select('users.*', 'roles.role as role_name')
-            ->get();
-
-        $total = $users->count();
-=======
         View::composer(['bendahara.status', 'bendahara.dashboard'], function ($view) {
             // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan dengan status 1
             $approvedPengajus = Pengaju::whereNotNull('forwarded_at')
@@ -252,7 +240,6 @@ class AppServiceProvider extends ServiceProvider
                 ->get();
 
             $total = $users->count();
->>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
 
             // Mengirim data ke semua tampilan
             $view->with([
