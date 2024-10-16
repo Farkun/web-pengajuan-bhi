@@ -44,9 +44,9 @@
                                     <img src="{{ asset('assets/theme/images/logo-bhs.png') }}" alt=""
                                         style="width: 250px; height: 250px; ">
                                 </div>
-                                <a class="text-center" href="index.html">
-                                    <h4>Login</h4>
-                                </a>
+                                
+                                    <h4 class="text-center">Login</h4>
+                                
 
                                 <!-- Tampilkan pesan error jika ada -->
                                 @if (session('error'))
