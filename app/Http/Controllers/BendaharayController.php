@@ -30,7 +30,7 @@ class BendaharayController extends Controller
     public function bendaharayDashboard()
     {
         $data = $this->getFowardedPengajus();
-        return view('accountant.dashboard', $data);
+        return view('bendaharay.dashboard', $data);
     }
 
     // Method untuk halaman index

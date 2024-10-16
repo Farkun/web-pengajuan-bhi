@@ -61,7 +61,7 @@
                                         </tr>
                                     @empty
                                         <tr>
-                                            <td colspan="7" class="text-center">Tidak ada data yang disetujui.</td>
+                                            <td colspan="7" class="text-center">Belum ada data yang disetujui approval.</td>
                                         </tr>
                                     @endforelse
                                 </tbody>

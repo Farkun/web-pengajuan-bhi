@@ -205,7 +205,7 @@ class AppServiceProvider extends ServiceProvider
                 ->with(['user', 'keterangan']) // Load relasi user dan keterangan
                 ->get();
 
-                $totaldat = $forwardedPengajus->count();
+            $totaldat = $forwardedPengajus->count();
 
             // Mengirim data ke semua tampilan
             $view->with([
@@ -214,12 +214,32 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
+        View::composer(['bendahara.status', 'bendahara.dashboard'], function ($view) {
+            // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan dengan status 1
+            $approvedPengajus = Pengaju::whereNotNull('forwarded_at')
+                ->where('id_status', 1) // Hanya ambil yang statusnya 1
+                ->whereHas('keterangan', function ($query) {
+                    // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
+                    $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
+                })
+                ->with(['user', 'keterangan']) // Load relasi user dan keterangan
+                ->get();
+
+            $total = $approvedPengajus->count();
+
+            // Mengirim data ke semua tampilan
+            $view->with([
+                'approvedPengajus' => $approvedPengajus,
+                'total' => $total
+            ]);
+        });
+
         View::composer(['superadmin.daftarakun', 'superadmin.dashboard'], function ($view) {
             $users = User::join('roles', 'users.role', '=', 'roles.id')
-            ->select('users.*', 'roles.role as role_name')
-            ->get();
+                ->select('users.*', 'roles.role as role_name')
+                ->get();
 
-        $total = $users->count();
+            $total = $users->count();
 
             // Mengirim data ke semua tampilan
             $view->with([
