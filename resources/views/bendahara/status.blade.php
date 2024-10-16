@@ -47,7 +47,7 @@
                                 @foreach($approvedPengajus as $pengaju)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>{{ $pengaju->created_at->format('d/m/Y') }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                         <td>{{ $pengaju->user->name }}</td>
                                         <!-- Pastikan ini sesuai dengan field departemen -->
                                         <td>{{ $pengaju->nama_pengaju }}</td>
@@ -86,6 +86,12 @@
                         </table>
                     </div>
                 </div>
+                <div class="general-button col-lg-11 text-right">
+                                    <a href="{{ route('bendahara.export.excel') }}">
+                                        <button type="button" class="btn mb-1 btn-success">Export Excel</button>
+                                    </a>
+                                <br><br>
+                            </div>
             </div>
         </div>
     </div>

@@ -50,7 +50,7 @@
                                                 <td>udin</td>
                                                 <td>butuh penyikat kamar mandi</td>
                                                 <td>25.000</td>
-                                                <td><a href="{{ route('bendahara.detail') }}"><button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                <td><button type="button" class="btn mb-1 btn-info">Cek Detail</button></td>
                                                 <td><span class="badge badge-success px-2">Sudah cair</span>
                                                 </td>
                                             </tr>
@@ -61,7 +61,7 @@
                                                 <td>udin</td>
                                                 <td>butuh penyikat kamar mandi</td>
                                                 <td>25.000</td>
-                                                <td><a href="{{ route('bendahara.detail') }}"><button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                <td><button type="button" class="btn mb-1 btn-info">Cek Detail</button></td>
                                                 <td><span class="badge badge-success px-2">Sudah cair</span>
                                                 </td>
                                             </tr>
@@ -72,7 +72,7 @@
                                                 <td>udin</td>
                                                 <td>butuh penyikat kamar mandi</td>
                                                 <td>25.000</td>
-                                                <td><a href="{{ route('bendahara.detail') }}"><button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                <td><button type="button" class="btn mb-1 btn-info">Cek Detail</button></td>
                                                 <td><span class="badge badge-success px-2">Sudah cair</span>
                                                 </td>
                                             </tr>
@@ -83,7 +83,7 @@
                                                 <td>udin</td>
                                                 <td>butuh penyikat kamar mandi</td>
                                                 <td>25.000</td>
-                                                <td><a href="{{ route('bendahara.detail') }}"><button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                <td><button type="button" class="btn mb-1 btn-info">Cek Detail</button></td>
                                                 <td><span class="badge badge-success px-2">Sudah cair</span>
                                                 </td>
                                             </tr>
@@ -103,7 +103,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <div class="general-button" style="margin-left: 1050px">
+                            <div class="general-button col-lg-11 text-right">
                                     <div class="sweetalert m-t-30">
                                         <button type="button" class="btn mb-1 btn-success">Export Excel</button>
                                     </div>
