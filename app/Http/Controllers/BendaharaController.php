@@ -11,7 +11,11 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class BendaharaController extends Controller
 {
+<<<<<<< HEAD
     public function index()
+=======
+    public function getBendaharaPengajus()
+>>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
     {
         // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan dengan status 1
         $approvedPengajus = Pengaju::whereNotNull('forwarded_at')
@@ -23,8 +27,28 @@ class BendaharaController extends Controller
             ->with(['user', 'keterangan']) // Load relasi user dan keterangan
             ->get();
 
+<<<<<<< HEAD
         // Mengirim data ke view 'bendaharay.data'
         return view('bendahara.status', compact('approvedPengajus'));
+=======
+        $total = $approvedPengajus->count();
+
+        // Mengirim data ke view 'bendaharay.data'
+        return compact('approvedPengajus', 'total');
+    }
+
+    public function bendaharaDashboard()
+    {
+        $data = $this->getBendaharaPengajus();
+        return view('bendahara.dashboard', $data);
+    }
+
+    // Method untuk halaman index
+    public function index()
+    {
+        $data = $this->getBendaharaPengajus();
+        return view('bendahara.status', $data);
+>>>>>>> c9b1a3b3ce6085fc29f09c79a4ab7481e504fb9b
     }
 
     public function show($id)
