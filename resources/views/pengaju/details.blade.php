@@ -43,6 +43,7 @@
                             <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
                             <li class="list-group-item"><strong>Dana Pengajuan:</strong>
                                 Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</li>
+                            <li class="list-group-item"><strong>No Rekening:</strong> {{ $pengaju->nama_bank }} - {{$pengaju->nomor_rekening}}</li>
                             <li class="list-group-item"><strong>Persetujuan:</strong>
                                 @if($pengaju->id_status == 2)
                                     <span class="badge badge-danger px-2">Ditolak</span>
@@ -52,43 +53,79 @@
                                     <span class="badge badge-success px-2">Disetujui</span>
                                 @else
                                     <span class="badge badge-secondary px-2">Belum dibaca</span>
-                                @endif                              </li>
+                                @endif
+                            </li>
                             <li class="list-group-item"><strong>Status Dana:</strong> <span
                                     class="badge badge-secondary px-2">Belum cair</span></li>
                             <li class="list-group-item"><strong>Keterangan:</strong>
                                 @if($pengaju->keterangan)
-                                    @php
-                                        // Menyimpan nama-nama pengguna yang sudah menyetujui
-                                        $approvalList = [];
-                                        // Menyimpan nama-nama pengguna yang memberikan keterangan
-                                        $keteranganList = [];
-                                        foreach ($pengaju->keterangan->keterangan_data as $key => $value) {
-                                            $user = \App\Models\User::find($value['id']);
-                                            if ($value['id_status'] == \App\Models\Status::where('status', 'Setujui')->first()->id) {
-                                                $approvalList[] = $user->name;
-                                            } else {
-                                                $keteranganList[] = [
-                                                    'user' => $user->name,
-                                                    'keterangan' => $value['keterangan']
-                                                ];
-                                            }
-                                        }
-                                    @endphp
+                                                                @php
+                                                                    // Menyimpan nama-nama pengguna yang sudah menyetujui
+                                                                    $approvalList = [];
+                                                                    // Menyimpan nama-nama pengguna yang memberikan keterangan
+                                                                    $keteranganList = [];
+                                                                    // ID Bendahara Yayasan
+                                                                    $bendaharaId = 10; // Ganti dengan ID Bendahara Yayasan yang benar
 
-                                    @if(count($approvalList) > 0)
-                                        <p><strong>Sudah disetujui oleh:</strong> {{ implode(' & ', $approvalList) }}</p>
-                                    @endif
+                                                                    // Ambil keterangan_data
+                                                                    $keteranganData = $pengaju->keterangan->keterangan_data;
 
-                                    @if(count($keteranganList) > 0)
-                                        @foreach($keteranganList as $item)
-                                            <p><strong>{{ $item['user'] }}:</strong> {{ $item['keterangan'] }}</p>
-                                        @endforeach
-                                    @else
-                                        <p>Tidak ada keterangan.</p>
-                                    @endif
+                                                                    // Cek jika keterangan_data adalah string, lalu dekode
+                                                                    if (is_string($keteranganData)) {
+                                                                        $keteranganData = json_decode($keteranganData, true); // Set true untuk mendapatkan array
+                                                                    }
+
+                                                                    // Pastikan keterangan_data adalah array
+                                                                    if (!is_array($keteranganData)) {
+                                                                        $keteranganData = []; // Set menjadi array kosong jika bukan
+                                                                    }
+
+                                                                    foreach ($keteranganData as $key => $value) {
+                                                                        $user = \App\Models\User::find($value['id']);
+
+                                                                        // Mengecek apakah pengguna ini adalah Bendahara Yayasan
+                                                                        $isBendahara = $value['id'] == $bendaharaId;
+
+                                                                        if ($value['id_status'] == \App\Models\Status::where('status', 'Setujui')->first()->id) {
+                                                                            $approvalList[] = $user->name;
+                                                                        } elseif (!$isBendahara) { // Hanya tambahkan keterangan dari pengguna yang bukan Bendahara
+                                                                            $keteranganList[] = [
+                                                                                'user' => $user->name,
+                                                                                'keterangan' => $value['keterangan']
+                                                                            ];
+                                                                        }
+                                                                    }
+                                                                @endphp
+
+                                                                @if(count($approvalList) > 0)
+                                                                    <p><strong>Sudah disetujui oleh:</strong> {{ implode(' & ', $approvalList) }}</p>
+                                                                @endif
+
+                                                                @if(count($keteranganList) > 0)
+                                                                    @foreach($keteranganList as $item)
+                                                                        <p><strong>{{ $item['user'] }}:</strong> {{ $item['keterangan'] }}</p>
+                                                                    @endforeach
+                                                                @else
+                                                                    <p>Tidak ada keterangan.</p>
+                                                                @endif
                                 @else
                                     Tidak ada keterangan.
                                 @endif
+                            </li>
+
+                            <li class="list-group-item"><strong>Invoice:</strong>
+                            @if($pengaju->invoice)
+                                @php
+                                    $extension = pathinfo($pengaju->invoice, PATHINFO_EXTENSION);
+                                @endphp
+
+                                <!-- Tombol unduh untuk semua jenis file -->
+                                <button class="btn btn-primary">
+                                    <a href="{{ asset('storage/' . $pengaju->invoice) }}" target="_blank" style="color:white; text-decoration:none;">Unduh Invoice ({{ strtoupper($extension) }})</a>
+                                </button>
+                            @else
+                                <span>Tidak ada invoice yang diunggah.</span>
+                            @endif
                             </li>
                         </ul>
                     </div>

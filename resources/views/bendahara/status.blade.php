@@ -65,7 +65,9 @@
                                             <button type="button" class="btn mb-1 btn-secondary dropdown-toggle"
                                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Belum
                                                 cair</button>
-                                            <div class="dropdown-menu"><a class="dropdown-item" href="#">Sudah cair</a>
+                                            <div class="dropdown-menu">
+                                            <a class="dropdown-item" href="#" data-toggle="modal" data-target="#cairModal"
+                                            data-pengaju-id="{{ $pengaju->id }}" class="cair-link">Sudah Cair</a>
                                             </div>
                                         </td>
                                     </tr>
@@ -95,5 +97,6 @@
             </div>
         </div>
     </div>
+    @include('bendahara.modals')
 </div>
 @endsection

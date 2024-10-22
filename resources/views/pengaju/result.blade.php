@@ -42,6 +42,7 @@
                                         <th>Nama pengaju</th>
                                         <th>Deskripsi</th>
                                         <th>Dana pengajuan</th>
+                                        <th>No Rekening</th>
                                         <th>Persetujuan</th>
                                         <th>Cek Detail</th>
                                         <th>Action</th>
@@ -58,6 +59,7 @@
                                                 {{ $pengaju->deskripsi }}
                                             </td>
                                             <td class="color-primary">Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</td>
+                                            <td>{{ $pengaju->nama_bank }} - {{$pengaju->nomor_rekening}}</td>
                                             <td>@if($pengaju->id_status == 2)
                                                 <span class="badge badge-danger px-2">Ditolak</span>
                                             @elseif($pengaju->id_status == 3)
@@ -75,9 +77,9 @@
                                                     class="d-inline">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="button" class="btn btn-danger btn sweet-confirm"
+                                                    <button type="button" class="btn btn-danger btn sweet-confirmm"
                                                         data-id="{{ $pengaju->id }}">
-                                                        <i class="fa fa-trash"></i>&nbsp;Hapus
+                                                        <i class="fa fa-trash"></i>
                                                     </button>
                                                 </form>
                                             </td>

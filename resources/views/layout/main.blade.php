@@ -294,7 +294,7 @@
     </script>
 
     <script>
-        document.querySelectorAll('.sweet-confirm').forEach(button => {
+        document.querySelectorAll('.sweet-confirmm').forEach(button => {
             button.addEventListener('click', function (event) {
                 const form = this.closest('form');
                 swal({
@@ -335,6 +335,17 @@
     </script>
 
     <script>
+        function isNumberKey(evt) {
+            var charCode = (evt.which) ? evt.which : evt.keyCode;
+            // Izinkan angka saja (0-9)
+            if (charCode > 31 && (charCode < 48 || charCode > 57)) {
+                return false;
+            }
+            return true;
+        }
+    </script>
+
+    <script>
         document.querySelector('.sweet-ajax').addEventListener('click', function (event) {
             event.preventDefault(); // Mencegah form submit langsung
             // Validasi sederhana di frontend
@@ -342,12 +353,29 @@
             var username = document.getElementById('val-username').value;
             var suggestions = document.getElementById('val-suggestions').value;
             var currency = document.getElementById('val-currency').value;
+            var nomorRekening = document.getElementById('nomor_rekening').value;
+            var namaBank = document.getElementById('nama_bank').value;
+            var invoice = document.querySelector('.invoice-input').files[0]; // Menggunakan class untuk validasi file upload
 
             // Cek apakah semua field sudah diisi
-            if (date === "" || username === "" || suggestions === "" || currency === "") {
+            if (date === "" || username === "" || suggestions === "" || currency === "" || nomorRekening === "" || namaBank === "") {
                 swal({
                     title: "Kesalahan!",
                     text: "Semua data pengajuan harus diisi!",
+                    icon: "error",
+                    button: "OK",
+                });
+            } else if (invoice && !['application/pdf', 'image/jpeg', 'image/png'].includes(invoice.type)) {
+                swal({
+                    title: "Kesalahan!",
+                    text: "File invoice harus dalam format PDF, JPEG, atau PNG!",
+                    icon: "error",
+                    button: "OK",
+                });
+            } else if (invoice && invoice.size > 2048 * 1024) { // Maksimal 2MB
+                swal({
+                    title: "Kesalahan!",
+                    text: "Ukuran file invoice tidak boleh lebih dari 2MB!",
                     icon: "error",
                     button: "OK",
                 });
@@ -737,6 +765,72 @@
                         });
                 }
             });
+        });
+    </script>
+
+    <script>
+        // Menambahkan event listener untuk submit form pencairan
+        document.getElementById('cairForm').addEventListener('submit', function (event) {
+            event.preventDefault(); // Mencegah submit form secara otomatis
+
+            swal({
+                title: 'Anda yakin?',
+                text: 'Dana akan dicairkan dan bukti pembayaran akan disimpan.',
+                type: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, Cairkan!',
+                cancelButtonText: 'Batal',
+                closeOnConfirm: false, // Jangan otomatis menutup swal
+                closeOnCancel: true // Menutup swal jika dibatalkan
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    // Ambil form dan data form
+                    var form = document.getElementById('cairForm');
+                    var formData = new FormData(form);
+
+                    // Menambahkan header CSRF
+                    fetch("{{ route('bendahara.updateCair') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                        },
+                        body: formData
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                // Jika berhasil, tampilkan alert sukses dan reload halaman
+                                swal({
+                                    title: 'Sukses!',
+                                    text: 'Dana telah berhasil dicairkan dan bukti pembayaran telah disimpan.',
+                                    type: 'success',
+                                    confirmButtonText: 'OK'
+                                }, function () {
+                                    $('#cairModal').modal('hide'); // Menutup modal
+                                    location.reload(); // Reload halaman
+                                });
+                            } else {
+                                // Jika gagal, tampilkan alert error
+                                swal('Error', data.message, 'error');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            swal('Error', 'Terjadi kesalahan saat mengirim data.', 'error');
+                        });
+                }
+            });
+        });
+    </script>
+
+    <script>
+        // Menangani event ketika modal dibuka
+        $('#cairModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Tombol yang memicu modal
+            var pengajuId = button.data('pengaju-id'); // Ambil ID pengaju dari data attribute
+
+            // Isi input tersembunyi dengan ID pengaju
+            document.getElementById('pengajuId').value = pengajuId;
         });
     </script>
 </body>

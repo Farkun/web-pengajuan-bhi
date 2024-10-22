@@ -2,32 +2,25 @@
 
 namespace App\Exports;
 
-use Illuminate\Support\Collection;
 use App\Models\Pengaju;
+use Carbon\Carbon;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
-use Carbon\Carbon;
 
-
-class ExportData implements FromCollection, WithHeadings
+class SudahCairExport implements FromCollection, WithHeadings
 {
     /**
-    * @return \Illuminate\Support\Collection
-    */
+     * @return \Illuminate\Support\Collection
+     */
     public function collection()
     {
-        // Ambil data yang sudah diteruskan ke bendahara yayasan dengan status tertentu
-        $approvedPengajus = Pengaju::whereNotNull('forwarded_at')
-            ->where('id_status', 1) // Hanya ambil yang statusnya 1
-            ->whereNull('id_statusdana') // Hanya ambil yang belum cair
-            ->whereHas('keterangan', function ($query) {
-                $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
-            })
+        // Ambil data pengajuan yang status dananya sudah cair
+        $cairPengajus = Pengaju::where('id_statusdana', 1) // Hanya ambil yang sudah cair
             ->with(['user', 'keterangan']) // Load relasi user dan keterangan
             ->get();
 
         // Map data menjadi format yang akan di-export ke Excel
-        return $approvedPengajus->map(function ($pengaju) {
+        return $cairPengajus->map(function ($pengaju) {
             return [
                 'Id' => $pengaju->id,
                 'Tanggal' => Carbon::parse($pengaju->tanggal)->format('d/m/Y'),
@@ -35,7 +28,7 @@ class ExportData implements FromCollection, WithHeadings
                 'Nama Pengaju' => $pengaju->nama_pengaju,
                 'Deskripsi' => $pengaju->deskripsi,
                 'Dana Pengajuan' => number_format($pengaju->total, 0, ',', ','),
-                'Status Dana' => is_null($pengaju->id_statusdana) ? 'Belum Cair' : 'Sudah Cair',
+                'Status Dana' => 'Sudah Cair', // Karena kita hanya mengambil yang sudah cair
             ];
         });
     }
@@ -57,4 +50,3 @@ class ExportData implements FromCollection, WithHeadings
         ];
     }
 }
-//test

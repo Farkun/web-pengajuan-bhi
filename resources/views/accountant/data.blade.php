@@ -40,6 +40,7 @@
                                         <th>Nama Pengaju</th>
                                         <th>Deskripsi</th>
                                         <th>Dana Pengajuan</th>
+                                        <th>No Rekening</th>
                                         <th>Detail</th>
                                     </tr>
                                 </thead>
@@ -56,6 +57,7 @@
                                                 {{ $pengaju->deskripsi }}
                                             </td>
                                             <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
+                                            <td>{{ $pengaju->nama_bank }} - {{$pengaju->nomor_rekening}}</td>
                                             <td><a href="{{ route('accountant.detail', $pengaju->id) }}"><button
                                                         type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                         </tr>
@@ -73,6 +75,7 @@
                                         <th>Nama Pengaju</th>
                                         <th>Deskripsi</th>
                                         <th>Dana Pengajuan</th>
+                                        <th>No Rekening</th>
                                         <th>Detail</th>
                                     </tr>
                                 </tfoot>

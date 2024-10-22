@@ -40,9 +40,9 @@
                                         <th>Nama Pengaju</th>
                                         <th>Deskripsi</th>
                                         <th>Dana Pengajuan</th>
-                                        <th>Detail</th>
                                         <th>Status</th>
                                         <th>Keterangan</th>
+                                        <th>Detail</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -64,9 +64,6 @@
                                             {{ $pengaju->deskripsi }}
                                         </td>
                                         <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
-                                        <td><a href="{{ route('accountant.detailket', ['id' => $pengaju->id]) }}">
-                                                <button type="button" class="btn mb-1 btn-info">Cek Detail</button></a>
-                                        </td>
                                         <td>
                                             <span class="badge {{ $pengaju->status->badge_class }} px-2">
                                                 {{ $pengaju->status->status }}
@@ -97,6 +94,21 @@
                                             @else
                                                 Tidak ada keterangan.
                                             @endif
+                                        </td>
+                                        <td>
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{ route('accountant.detailket', ['id' => $pengaju->id]) }}" style="margin-right: 10px;">
+                                                    <button type="button" class="btn mb-1 btn-info">Cek Detail</button>
+                                                </a>
+    
+                                                @if($pengaju->status->status != 'Menunggu')
+                                                    <a href="{{ route('accountant.edit', ['id' => $pengaju->id]) }}">
+                                                        <button type="button" class="btn btn-warning">
+                                                            <i class="fa fa-pencil"></i>&nbsp;Edit
+                                                        </button>
+                                                    </a>
+                                                @endif
+                                            </div>
                                         </td>
                                     </tr>
                                     @endforeach

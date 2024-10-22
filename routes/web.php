@@ -105,6 +105,8 @@ Route::get('/approval/detaillap', function () {
 Route::middleware(['auth', 'role:4'])->group(function () {
     Route::get('/accountant/dashboard', [AccountantController::class, 'accountantDashboard'])->name('accountant.dashboard');
     Route::get('/accountant/data', [AccountantController::class, 'index'])->name('accountant.data');
+    Route::get('/accountant/edit/{id}', [AccountantController::class, 'edit'])->name('accountant.edit');
+    Route::patch('/accountant/update/{id}', [AccountantController::class, 'update'])->name('accountant.update');
     Route::get('/accountant/detail/{id}', [AccountantController::class, 'show'])->name('accountant.detail');
     Route::get('/accountant/detailket/{id}', [AccountantController::class, 'shows'])->name('accountant.detailket');
     Route::post('/accountant/forward', [AccountantController::class, 'forward'])->name('accountant.forward');
@@ -137,8 +139,12 @@ Route::get('/bendahara/laporan', function () {
 Route::middleware(['auth', 'role:5'])->group(function () {
 Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
 Route::get('/bendahara/detail/{id}', [BendaharaController::class, 'show'])->name('bendahara.detail');
+Route::get('/bendahara/detailap/{id}', [BendaharaController::class, 'shows'])->name('bendahara.detailap');
 Route::get('/bendahara/export/excel', [BendaharaController::class, 'export_excel'])->name('bendahara.export.excel');
 Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashboard'])->name('bendahara.dashboard');
+Route::post('/bendahara/update-cair', [BendaharaController::class, 'updateCair'])->name('bendahara.updateCair');
+Route::get('/bendahara/laporan', [BendaharaController::class, 'laporan'])->name('bendahara.laporan');
+Route::get('/bendahara/export-sudah-cair', [BendaharaController::class, 'exportSudahCair'])->name('export.sudahcair');
 });
 
 // Bendahara Yayasan

@@ -60,7 +60,7 @@
                                                 class="d-inline">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="button" class="btn btn-danger btn sweet-confirm"
+                                                <button type="button" class="btn btn-danger btn sweet-confirmm"
                                                     data-id="{{ $user->id }}">
                                                     <i class="fa fa-trash"></i>&nbsp;Hapus
                                                 </button>

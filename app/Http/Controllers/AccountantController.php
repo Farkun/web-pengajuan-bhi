@@ -223,4 +223,31 @@ class AccountantController extends Controller
     {
         return view('accountant.detailket', ['id' => $id]);
     }
+
+    public function edit($id)
+    {
+        $pengaju = Pengaju::find($id);
+        return view('accountant.edit', compact('pengaju'));
+    }
+
+    public function update(Request $request, $id)
+    {
+        // Validasi input jika perlu
+        $request->validate([
+            'deskripsi' => 'required|string',
+            'total' => 'required|string', // Pastikan total adalah angka
+        ]);
+
+        // Menghapus titik pada input total untuk format Rupiah dan konversi ke float
+        $total = str_replace('.', '', $request['total']); // Menghapus titik
+        $total = floatval($total); // Mengonversi ke float
+
+        // Update data
+        Pengaju::find($id)->update([
+            'deskripsi' => $request->deskripsi,
+            'total' => $total
+        ]);
+
+        return redirect()->route('accountant.rekap')->with('success', 'Data berhasil diperbarui!');
+    }
 }

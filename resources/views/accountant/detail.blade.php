@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cash Form Advance</title>
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ asset('assets/theme/images/logo-bhs.png') }}">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
@@ -88,7 +89,6 @@
                 display: none;
             }
         }
-
     </style>
 </head>
 
@@ -106,7 +106,7 @@
                     <span style="font-size: 10px;">Email: marketing@stpbogor.ac.id</span><br>
                 </td>
                 <td style="width: 10%; vertical-align: bottom; padding-top: 10px;">
-                        Id: {{ 'PA' . str_pad($pengaju->id, 6, '0', STR_PAD_LEFT) }}<br>
+                    Id: {{ 'PA' . str_pad($pengaju->id, 6, '0', STR_PAD_LEFT) }}<br>
                 </td>
             </tr>
             <tr>
@@ -125,26 +125,46 @@
                 </tr>
             </thead>
             <tbody>
-                    <tr>
-                        <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
-                        <td>{{ $pengaju->deskripsi }}</td>
-                        <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }},00</td>
-                    </tr>
-                    <tr>
-                        <td></td>
-                        <td></td>
-                        <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }},00</td>
-                    </tr>
+                <tr>
+                    <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
+                    <td>{{ $pengaju->deskripsi }}</td>
+                    <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }},00</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td>Rp{{ number_format($pengaju->total, 0, ',', '.') }},00</td>
+                </tr>
             </tbody>
         </table>
-        <div class="footer">
+        <div class="footer d-flex justify-content-between align-items-center">
+            <div>
+                <strong>No Rekening:</strong> {{ $pengaju->nama_bank }} - {{ $pengaju->nomor_rekening }}
+            </div>
+
+            <div>
             <a href="{{ route('accountant.data') }}"><button type="button"
                     class="btn mb-1 btn-rounded btn-warning"></span>Kembali</button></a>
+
+            @if($pengaju->invoice) <!-- Cek apakah invoice ada -->
+                        @php
+                            $extension = pathinfo($pengaju->invoice, PATHINFO_EXTENSION);
+                        @endphp
+                        <!-- Tombol unduh untuk semua jenis file -->
+                        <button class="btn mb-1 btn-rounded btn-primary">
+                            <a href="{{ asset('storage/' . $pengaju->invoice) }}" target="_blank"
+                                style="color:white; text-decoration:none;">
+                                Invoice ({{ strtoupper($extension) }})
+                            </a>
+                        </button>
+            @endif
+
             <button type="button" class="btn mb-1 btn-rounded btn-info" onclick="window.print()">
                 <i class="bi bi-printer"></i>&nbsp;&nbsp;</span>Cetak PDF</button>
+            </div>
         </div>
     </div>
-    
+
 </body>
 
 </html>

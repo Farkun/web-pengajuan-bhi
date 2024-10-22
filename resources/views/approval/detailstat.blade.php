@@ -31,6 +31,21 @@
                             <li class="list-group-item"><strong>Nama Pengaju:</strong> {{ $pengaju->nama_pengaju }}</li>
                             <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
                             <li class="list-group-item"><strong>Dana Pengajuan:</strong> Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</li>
+                            <li class="list-group-item"><strong>No Rekening:</strong> {{ $pengaju->nama_bank }} - {{$pengaju->nomor_rekening}}</li>
+                            <li class="list-group-item"><strong>Invoice:</strong>
+                            @if($pengaju->invoice)
+                                @php
+                                    $extension = pathinfo($pengaju->invoice, PATHINFO_EXTENSION);
+                                @endphp
+
+                                <!-- Tombol unduh untuk semua jenis file -->
+                                <button class="btn btn-primary">
+                                    <a href="{{ asset('storage/' . $pengaju->invoice) }}" target="_blank" style="color:white; text-decoration:none;">Unduh Invoice ({{ strtoupper($extension) }})</a>
+                                </button>
+                            @else
+                                <span>Tidak ada invoice yang diunggah.</span>
+                            @endif
+                            </li>
                         </ul>
                     </div>
                 </div>

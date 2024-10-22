@@ -137,7 +137,7 @@
             </div>
 
             <div>
-            <a href="{{ route('bendahara.status') }}"><button type="button"
+            <a href="{{ route('bendahara.laporan') }}"><button type="button"
                     class="btn mb-1 btn-rounded btn-warning"></span>Kembali</button></a>
 
             @if($pengaju->invoice) <!-- Cek apakah invoice ada -->

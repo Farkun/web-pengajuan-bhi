@@ -108,18 +108,24 @@
 
                                                         @foreach($keteranganData as $key => $value)
                                                             @php
+                                                                // ID Bendahara Yayasan
+                                                                $bendaharaId = 10; // Ganti dengan ID Bendahara Yayasan yang benar
+            
+                                                                // Mengecek apakah pengguna ini adalah Bendahara Yayasan
+                                                                $isBendahara = $value['id'] == $bendaharaId;
+
                                                                 // Mengecek apakah pengguna ini sudah memberikan status 'Setujui'
                                                                 $userApproved = $value['id_status'] == \App\Models\Status::where('status', 'Setujui')->first()->id;
                                                             @endphp
 
-                                                            @if(!$userApproved)
+                                                            @if(!$userApproved && !$isBendahara) 
                                                                 <p><strong>{{ \App\Models\User::find($value['id'])->name }}:</strong> {{ $value['keterangan'] }}</p>
                                                                 @php
                                                                     $hasVisibleKeterangan = true;
                                                                 @endphp
                                                             @endif
                                                         @endforeach
-                                                        
+    
                                                         @if(!$hasVisibleKeterangan)
                                                             Tidak ada keterangan.
                                                         @endif

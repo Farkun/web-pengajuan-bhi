@@ -61,7 +61,7 @@ class AppServiceProvider extends ServiceProvider
             ]);
         });
 
-        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'accountant.detailket', 'bendaharay.detail', 'bendahara.detail'], function ($view) {
+        View::composer(['pengaju.detailp', 'pengaju.details', 'approval.detailstat', 'accountant.detail', 'accountant.detailket', 'bendaharay.detail', 'bendahara.detail', 'bendahara.detailap'], function ($view) {
             // Ambil ID dari parameter rute
             $id = Route::current()->parameter('id');
 
@@ -218,6 +218,7 @@ class AppServiceProvider extends ServiceProvider
             // Mengambil semua pengajuan yang sudah diteruskan ke bendahara yayasan dengan status 1
             $approvedPengajus = Pengaju::whereNotNull('forwarded_at')
                 ->where('id_status', 1) // Hanya ambil yang statusnya 1
+                ->whereNull('id_statusdana') // Hanya ambil yang belum cair
                 ->whereHas('keterangan', function ($query) {
                     // Menggunakan keterangan_data untuk mengecualikan data dari bendahara yayasan
                     $query->where('keterangan_data', 'LIKE', '%bendahara yayasan%');
@@ -246,6 +247,15 @@ class AppServiceProvider extends ServiceProvider
                 'users' => $users,
                 'total' => $total
             ]);
+        });
+
+        // Binding data pengajuan dengan status 'sudah cair'
+        view()->composer('bendahara.laporan', function ($view) {
+            // Ambil data pengajuan yang sudah cair
+            $pengajuans = Pengaju::where('id_statusdana', 1)->get();
+
+            // Kirim data pengajuan ke view
+            $view->with('pengajuans', $pengajuans);
         });
     }
 }

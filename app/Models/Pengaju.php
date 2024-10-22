@@ -14,12 +14,16 @@ class Pengaju extends Model
         'nama_pengaju',
         'deskripsi',
         'total',
+        'nomor_rekening',
+        'nama_bank',
+        'invoice',
         'id_status',
         'id_statusdana',
         'id_keterangan',
-        'forwarded_at'
+        'forwarded_at',
+        'bukti_pembayaran'
     ];
-    
+
     // Definisikan relasi dengan model User
     public function user()
     {
