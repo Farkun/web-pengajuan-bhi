@@ -87,19 +87,9 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::get('/approval/status', [ApprovalController::class, 'index'])->name('approval.status');
     Route::post('/approval/store', [ApprovalController::class, 'store'])->name('approval.store');
     Route::get('/approval/detailstat/{id}', [ApprovalController::class, 'show'])->name('approval.detailstat');
+    Route::get('/approval/detaillap/{id}', [ApprovalController::class, 'shows'])->name('approval.detaillap');
+    Route::get('/approval/laporan', [ApprovalController::class, 'laporan'])->name('approval.laporan');
 });
-
-Route::get('/approval/status', function () {
-    return view('approval.status');
-})->middleware(['auth', 'verified'])->name('approval.status');
-
-Route::get('/approval/laporan', function () {
-    return view('approval.laporan');
-})->name('approval.laporan');
-
-Route::get('/approval/detaillap', function () {
-    return view('approval.detaillap');
-})->name('approval.detaillap');
 
 // Accountant
 Route::middleware(['auth', 'role:4'])->group(function () {

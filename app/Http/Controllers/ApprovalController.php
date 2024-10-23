@@ -148,6 +148,15 @@ class ApprovalController extends Controller
         return null; // Atau nilai khusus lain
     }
 
+    public function laporan()
+    {
+        // Ambil data pengajuan yang sudah cair
+        $pengajuans = Pengaju::where('id_statusdana', 1)->get();
+
+        // Kirim data pengajuan ke view
+        return view('approval.laporan', compact('pengajuans'));
+    }
+
     public function show($id)
     {
         return view('approval.detailstat', ['id' => $id]);

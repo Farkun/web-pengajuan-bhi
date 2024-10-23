@@ -86,7 +86,13 @@
                                                         <span class="badge badge-secondary px-2">Belum dibaca</span>
                                                     @endif
                                                     </td>
-                                                    <td><span class="badge badge-secondary px-2">Belum cair</span></td>
+                                                    <td>
+                                                    @if($pengaju->id_statusdana == 1) {{-- Asumsikan 1 adalah status sudah cair --}}
+                                                        <span class="badge badge-success px-2">Sudah cair</span>
+                                                    @else
+                                                        <span class="badge badge-secondary px-2">Belum cair</span>
+                                                    @endif
+                                                    </td>
                                                     <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
                                                     @if($pengaju->keterangan)
                                                         @php

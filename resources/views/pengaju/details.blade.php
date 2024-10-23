@@ -43,7 +43,9 @@
                             <li class="list-group-item"><strong>Deskripsi:</strong> {{ $pengaju->deskripsi }}</li>
                             <li class="list-group-item"><strong>Dana Pengajuan:</strong>
                                 Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</li>
-                            <li class="list-group-item"><strong>No Rekening:</strong> {{ $pengaju->nama_bank }} - {{$pengaju->nomor_rekening}}</li>
+                            <li class="list-group-item"><strong>No Rekening:</strong> {{ $pengaju->nama_bank }} -
+                                {{$pengaju->nomor_rekening}}
+                            </li>
                             <li class="list-group-item"><strong>Persetujuan:</strong>
                                 @if($pengaju->id_status == 2)
                                     <span class="badge badge-danger px-2">Ditolak</span>
@@ -55,8 +57,13 @@
                                     <span class="badge badge-secondary px-2">Belum dibaca</span>
                                 @endif
                             </li>
-                            <li class="list-group-item"><strong>Status Dana:</strong> <span
-                                    class="badge badge-secondary px-2">Belum cair</span></li>
+                            <li class="list-group-item"><strong>Status Dana:</strong>
+                                @if($pengaju->id_statusdana == 1) {{-- Asumsikan 1 adalah status sudah cair --}}
+                                    <span class="badge badge-success px-2">Sudah cair</span>
+                                @else
+                                    <span class="badge badge-secondary px-2">Belum cair</span>
+                                @endif
+                            </li>
                             <li class="list-group-item"><strong>Keterangan:</strong>
                                 @if($pengaju->keterangan)
                                                                 @php
@@ -114,18 +121,29 @@
                             </li>
 
                             <li class="list-group-item"><strong>Invoice:</strong>
-                            @if($pengaju->invoice)
-                                @php
-                                    $extension = pathinfo($pengaju->invoice, PATHINFO_EXTENSION);
-                                @endphp
+                                @if($pengaju->invoice)
+                                    @php
+                                        $extension = pathinfo($pengaju->invoice, PATHINFO_EXTENSION);
+                                    @endphp
 
-                                <!-- Tombol unduh untuk semua jenis file -->
-                                <button class="btn btn-primary">
-                                    <a href="{{ asset('storage/' . $pengaju->invoice) }}" target="_blank" style="color:white; text-decoration:none;">Unduh Invoice ({{ strtoupper($extension) }})</a>
-                                </button>
-                            @else
-                                <span>Tidak ada invoice yang diunggah.</span>
-                            @endif
+                                    <!-- Tombol unduh untuk semua jenis file -->
+                                    <button class="btn btn-primary">
+                                        <a href="{{ asset('storage/' . $pengaju->invoice) }}" target="_blank"
+                                            style="color:white; text-decoration:none;">Unduh Invoice
+                                            ({{ strtoupper($extension) }})</a>
+                                    </button>
+                                @else
+                                    <span>Tidak ada invoice yang diunggah.</span>
+                                @endif
+                            </li>
+
+                            <li class="list-group-item"><strong>Bukti Pembayaran:</strong>
+                                @if($pengaju->bukti_pembayaran)
+                                    <a href="{{ asset('storage/' . $pengaju->bukti_pembayaran) }}" target="_blank"
+                                        class="btn btn-primary">Lihat Bukti Pembayaran</a>
+                                @else
+                                    <span>Tidak ada bukti pembayaran yang diunggah.</span>
+                                @endif
                             </li>
                         </ul>
                     </div>

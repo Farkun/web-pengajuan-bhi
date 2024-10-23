@@ -49,6 +49,7 @@ class PengajuController extends Controller
             'nomor_rekening' => 'required|string|max:50',
             'nama_bank' => 'required|string',
             'invoice' => 'nullable|file|mimes:pdf,jpeg,png,jpg|max:2048', // Validasi untuk invoice
+            'bukti_pembayaran' => 'nullable|file|mimes:pdf,jpeg,png,jpg|max:2048', // Validasi untuk bukti pembayaran
         ]);
 
 
@@ -70,6 +71,14 @@ class PengajuController extends Controller
             $invoicePath = $invoice->storeAs('invoices', $invoiceName, 'public');
         }
 
+        // Proses upload bukti pembayaran jika ada
+        $buktiPembayaranPath = null;
+        if ($request->hasFile('bukti_pembayaran')) {
+            $buktiPembayaran = $request->file('bukti_pembayaran');
+            $buktiPembayaranName = time() . '_' . $buktiPembayaran->getClientOriginalName();
+            $buktiPembayaranPath = $buktiPembayaran->storeAs('bukti_pembayaran', $buktiPembayaranName, 'public');
+        }
+
         $pengaju = new Pengaju();
         $pengaju->tanggal = $validated['val-date'];
         $pengaju->user_id = Auth::id(); // Menetapkan ID pengguna yang sedang login
@@ -79,6 +88,7 @@ class PengajuController extends Controller
         $pengaju->nomor_rekening = $validated['nomor_rekening'];
         $pengaju->nama_bank = $validated['nama_bank'];
         $pengaju->invoice = $invoicePath;
+        $pengaju->bukti_pembayaran = $buktiPembayaranPath;
         $pengaju->id_status = $request->id_status ?? null;
         $pengaju->id_statusdana = $request->id_statusdana ?? null;
         $pengaju->id_keterangan = $request->id_keterangan ?? null;
