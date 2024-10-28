@@ -53,7 +53,8 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="form-validation">
-                            <form class="form-valide" action="{{ route('pengaju.store') }}" method="post" enctype="multipart/form-data">
+                            <form class="form-valide" action="{{ route('pengaju.store') }}" method="post"
+                                enctype="multipart/form-data">
                                 @csrf
                                 <div class="form-group row">
                                     <label class="col-lg-4 col-form-label" for="val-date">Masukan tanggal pengajuan
@@ -89,13 +90,16 @@
                                 </div>
                                 <div class="form-row">
                                     <div class="form-group col-md-6">
-                                        <label for="nomor_rekening">Nomor Rekening <span class="text-danger">*</span></label>
+                                        <label for="nomor_rekening">Nomor Rekening <span
+                                                class="text-danger">*</span></label>
                                         <input type="text" class="form-control" id="nomor_rekening"
-                                            name="nomor_rekening" placeholder="Masukkan nomor rekening" onkeypress="return isNumberKey(event)">
+                                            name="nomor_rekening" placeholder="Masukkan nomor rekening"
+                                            onkeypress="return isNumberKey(event)">
                                     </div>
                                     <div class="form-group col-md-4">
                                         <label for="nama_bank">Nama Bank <span class="text-danger">*</span></label>
-                                        <select id="nama_bank" name="nama_bank" class="form-control">
+                                        <select id="nama_bank_select" name="nama_bank_select" class="form-control"
+                                            onchange="toggleBankInput()">
                                             <option selected="selected" value="">Pilih Bank...</option>
                                             <option value="BCA">BCA</option>
                                             <option value="Mandiri">Mandiri</option>
@@ -103,11 +107,19 @@
                                             <option value="BRI">BRI</option>
                                             <option value="Danamon">Danamon</option>
                                             <option value="CIMB Niaga">CIMB Niaga</option>
+                                            <option value="other">Lainnya...</option>
                                         </select>
+
+                                        <!-- Input tambahan untuk nama bank lain -->
+                                        <input type="text" id="other_bank" class="form-control mt-2"
+                                            placeholder="Masukkan Nama Bank Lainnya" style="display: none;">
+
+                                        <!-- Input hidden yang akan mengirim nama bank ke database -->
+                                        <input type="hidden" id="nama_bank" name="nama_bank">
                                     </div>
                                 </div>
                                 <div class="form-group">
-                                    <label for="invoice">Invoice (opsional)</label>
+                                    <label for="invoice">Invoice (opsional) *maksimal 2MB</label>
                                     <input type="file" class="form-control-file invoice-input" name="invoice">
                                 </div>
                                 <div class="form-group row">

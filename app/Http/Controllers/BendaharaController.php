@@ -9,6 +9,7 @@ use App\Models\Keterangan;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SudahCairExport;
+use Carbon\Carbon;
 
 class BendaharaController extends Controller
 {
@@ -49,7 +50,7 @@ class BendaharaController extends Controller
         // Validasi input
         $request->validate([
             'pengaju_id' => 'required|exists:pengajus,id',
-            'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,jpeg,png',
+            'bukti_pembayaran' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
         ]);
 
         // Mengunggah bukti pembayaran ke folder penyimpanan
@@ -74,6 +75,40 @@ class BendaharaController extends Controller
 
         // Kirim data pengajuan ke view
         return view('bendahara.laporan', compact('pengajuans'));
+    }
+
+    public function showDashboard()
+    {
+        // Ambil semua data pencairan
+        $totalCairSelasa = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1) // Asumsi kolom status cair menandakan dana sudah dicairkan
+            ->whereDay('tanggal', '=', Carbon::now()->startOfWeek()->addDays(1)->day) // Selasa
+            ->sum('total'); // Menghitung total dana cair di hari Selasa
+
+        $totalCairJumat = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1)
+            ->whereDay('tanggal', '=', Carbon::now()->startOfWeek()->addDays(4)->day) // Jumat
+            ->sum('total'); // Menghitung total dana cair di hari Jumat
+
+        $totalCairMinggu = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1)
+            ->whereBetween('tanggal', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->sum('total'); // Menghitung total dana cair selama minggu ini
+
+        // Persentase berdasarkan total mingguan (contoh)
+        $persenSelasa = ($totalCairMinggu > 0) ? ($totalCairSelasa / $totalCairMinggu) * 100 : 0;
+        $persenJumat = ($totalCairMinggu > 0) ? ($totalCairJumat / $totalCairMinggu) * 100 : 0;
+
+        // Mengirimkan data ke view
+        return view('bendahara.dashboard', [
+            'totalSelasa' => $totalCairSelasa,
+            'totalJumat' => $totalCairJumat,
+            'totalMinggu' => $totalCairMinggu,
+            'persenSelasa' => $persenSelasa,
+            'persenJumat' => $persenJumat,
+            'tanggalSelasa' => Carbon::now()->startOfWeek()->addDays(1)->format('d F Y'),
+            'tanggalJumat' => Carbon::now()->startOfWeek()->addDays(4)->format('d F Y'),
+        ]);
     }
 
     public function show($id)

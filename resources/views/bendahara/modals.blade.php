@@ -15,7 +15,7 @@
                     <input type="hidden" name="id_statusdana" value="1"> <!-- Status Cair -->
 
                     <div class="form-group">
-                        <label for="bukti_pembayaran">Upload Bukti Pembayaran</label>
+                        <label for="bukti_pembayaran">Upload Bukti Pembayaran <span class="text-danger">*maksimal 2MB</span></label>
                         <input type="file" class="form-control" id="bukti_pembayaran" name="bukti_pembayaran" required>
                     </div>
                     <div class="modal-footer">

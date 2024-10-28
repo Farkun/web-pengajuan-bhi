@@ -26,7 +26,7 @@
                         <form class="form-valide" action="{{ route('users.store') }}" method="post">
                             @csrf
                             <div class="form-group row">
-                                <label class="col-lg-4 col-form-label" for="name">Nama<span class="text-danger">*</span>
+                                <label class="col-lg-4 col-form-label" for="name">Nama/Nama Dapartemen<span class="text-danger">*</span>
                                 </label>
                                 <div class="col-lg-6">
                                     <input type="text" class="form-control" id="name" name="name"

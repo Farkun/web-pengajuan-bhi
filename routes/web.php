@@ -89,6 +89,7 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::get('/approval/detailstat/{id}', [ApprovalController::class, 'show'])->name('approval.detailstat');
     Route::get('/approval/detaillap/{id}', [ApprovalController::class, 'shows'])->name('approval.detaillap');
     Route::get('/approval/laporan', [ApprovalController::class, 'laporan'])->name('approval.laporan');
+    Route::get('/approval/laporan', [ApprovalController::class, 'showDashboard'])->name('approval.laporan');
 });
 
 // Accountant
@@ -113,9 +114,6 @@ Route::get('/accountant/data', function () {
 })->name('accountant.data');
 
 // Bendahara
-Route::get('/bendahara/dashboard', function () {
-    return view('bendahara.dashboard');
-})->middleware(['auth', 'verified'])->name('bendahara.dashboard');
 
 Route::get('/bendahara/laporan', function () {
     return view('bendahara.laporan');
@@ -135,6 +133,7 @@ Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashbo
 Route::post('/bendahara/update-cair', [BendaharaController::class, 'updateCair'])->name('bendahara.updateCair');
 Route::get('/bendahara/laporan', [BendaharaController::class, 'laporan'])->name('bendahara.laporan');
 Route::get('/bendahara/export-sudah-cair', [BendaharaController::class, 'exportSudahCair'])->name('export.sudahcair');
+Route::get('/bendahara/dashboard', [BendaharaController::class, 'showDashboard'])->name('bendahara.dashboard');
 });
 
 // Bendahara Yayasan
@@ -144,7 +143,7 @@ Route::middleware(['auth', 'role:6'])->group(function () {
     Route::post('/bendaharay/store', [BendaharayController::class, 'store'])->name('bendaharay.store');
     Route::get('/bendaharay/detail/{id}', [BendaharayController::class, 'show'])->name('bendaharay.detail');
     Route::post('/bendaharay/approve-all', [BendaharayController::class, 'approveAll'])->name('bendaharay.approve-all');
-    Route::get('/bendaharay/dashboard', [DashboardController::class, 'bendaharay'])->name('bendaharay.dashboard');
+    Route::get('/bendaharay/dashboard', [BendaharaController::class, 'showDashboard'])->name('bendahara.dashboard');
 });
 
 
@@ -167,6 +166,10 @@ Route::middleware(['auth', 'role:4'])->group(function () {
 
 Route::middleware(['auth', 'role:5'])->group(function () {
     Route::get('/bendahara/dashboard', [DashboardController::class, 'bendahara'])->name('bendahara.dashboard');
+});
+
+Route::middleware(['auth', 'role:6'])->group(function () {
+Route::get('/bendaharay/dashboard', [DashboardController::class, 'bendaharay'])->name('bendaharay.dashboard');
 });
 
 Route::get('/dashboard/{type}', [DashboardController::class, 'showDashboard'])->name('dashboard.show');

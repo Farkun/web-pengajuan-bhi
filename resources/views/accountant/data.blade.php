@@ -47,7 +47,7 @@
                                 <tbody>
                                     @forelse($approvedPengajus as $pengaju)
                                         <tr>
-                                            <td><input type="checkbox" name="selected_pengajus[]" value="{{ $pengaju->id }}">&nbsp;&nbsp;&nbsp;{{ $loop->iteration }}
+                                            <td><input type="checkbox" name="selected_pengajus[]" value="{{ $pengaju->id }}">&nbsp;&nbsp;{{ $loop->iteration }}
                                             </td>
                                             <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                             <td>{{ $pengaju->user->name }}</td>

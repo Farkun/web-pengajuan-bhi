@@ -7,6 +7,7 @@ use App\Models\Pengaju;
 use App\Models\Keterangan;
 use App\Models\Status;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class ApprovalController extends Controller
 {
@@ -155,6 +156,40 @@ class ApprovalController extends Controller
 
         // Kirim data pengajuan ke view
         return view('approval.laporan', compact('pengajuans'));
+    }
+
+    public function showDashboard()
+    {
+        // Ambil semua data pencairan
+        $totalCairSelasa = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1) // Asumsi kolom status cair menandakan dana sudah dicairkan
+            ->whereDay('tanggal', '=', Carbon::now()->startOfWeek()->addDays(1)->day) // Selasa
+            ->sum('total'); // Menghitung total dana cair di hari Selasa
+
+        $totalCairJumat = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1)
+            ->whereDay('tanggal', '=', Carbon::now()->startOfWeek()->addDays(4)->day) // Jumat
+            ->sum('total'); // Menghitung total dana cair di hari Jumat
+
+        $totalCairMinggu = Pengaju::whereNotNull('forwarded_at')
+            ->where('id_statusdana', 1)
+            ->whereBetween('tanggal', [Carbon::now()->startOfWeek(), Carbon::now()->endOfWeek()])
+            ->sum('total'); // Menghitung total dana cair selama minggu ini
+
+        // Persentase berdasarkan total mingguan (contoh)
+        $persenSelasa = ($totalCairMinggu > 0) ? ($totalCairSelasa / $totalCairMinggu) * 100 : 0;
+        $persenJumat = ($totalCairMinggu > 0) ? ($totalCairJumat / $totalCairMinggu) * 100 : 0;
+
+        // Mengirimkan data ke view
+        return view('approval.laporan', [
+            'totalSelasa' => $totalCairSelasa,
+            'totalJumat' => $totalCairJumat,
+            'totalMinggu' => $totalCairMinggu,
+            'persenSelasa' => $persenSelasa,
+            'persenJumat' => $persenJumat,
+            'tanggalSelasa' => Carbon::now()->startOfWeek()->addDays(1)->format('d F Y'),
+            'tanggalJumat' => Carbon::now()->startOfWeek()->addDays(4)->format('d F Y'),
+        ]);
     }
 
     public function show($id)

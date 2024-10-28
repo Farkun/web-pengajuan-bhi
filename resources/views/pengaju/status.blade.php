@@ -72,7 +72,7 @@
                                             @foreach($pengajus as $pengaju)
                                                 <tr>
                                                     <th>{{ $loop->iteration }}</th>
-                                                    <td>{{ $pengaju->tanggal }}</td>
+                                                    <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                                     <td>{{ $pengaju->nama_pengaju }}</td>
                                                     <td class="color-primary">Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                                     <td>

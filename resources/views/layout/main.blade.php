@@ -361,7 +361,7 @@
             if (date === "" || username === "" || suggestions === "" || currency === "" || nomorRekening === "" || namaBank === "") {
                 swal({
                     title: "Kesalahan!",
-                    text: "Semua data pengajuan harus diisi!",
+                    text: "Semua data pengajuan yang wajib harus diisi!",
                     icon: "error",
                     button: "OK",
                 });
@@ -832,6 +832,29 @@
             // Isi input tersembunyi dengan ID pengaju
             document.getElementById('pengajuId').value = pengajuId;
         });
+    </script>
+
+    <script>
+        function toggleBankInput() {
+            var select = document.getElementById("nama_bank_select");
+            var otherBankInput = document.getElementById("other_bank");
+            var hiddenBankInput = document.getElementById("nama_bank");
+
+            if (select.value === "other") {
+                otherBankInput.style.display = "block";
+                otherBankInput.required = true;
+                hiddenBankInput.value = ""; // Kosongkan saat opsi "Lainnya" dipilih
+
+                // Update input hidden dengan nilai dari input custom saat pengguna mengetik
+                otherBankInput.addEventListener('input', function () {
+                    hiddenBankInput.value = otherBankInput.value;
+                });
+            } else {
+                otherBankInput.style.display = "none";
+                otherBankInput.required = false;
+                hiddenBankInput.value = select.value; // Set nilai dropdown jika bukan "Lainnya"
+            }
+        }
     </script>
 </body>
 

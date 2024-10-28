@@ -104,8 +104,8 @@
                     <span style="font-size: 10px;">Website: www.stpbogor.ac.id</span><br>
                     <span style="font-size: 10px;">Email: marketing@stpbogor.ac.id</span><br>
                 </td>
-                <td style="width: 30%;">
-                    ID: PA708AB<br>
+                <td style="width: 10%; vertical-align: bottom; padding-top: 10px;">
+                Id: {{ 'PA' . str_pad($pengaju->id, 6, '0', STR_PAD_LEFT) }}<br>
                 </td>
             </tr>
         </table>

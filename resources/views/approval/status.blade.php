@@ -69,7 +69,7 @@
                                     @if($statusUser === null || $statusUser === $statusPending)
                                     <tr>
                                         <th>{{ $counter }}</th>
-                                        <td>{{ $pengaju->tanggal }}</td>
+                                        <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                         <td>{{ $pengaju->user->name }}</td>
                                         <td>{{ $pengaju->nama_pengaju }}</td>
                                         <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">{{ $pengaju->deskripsi }}</td>
