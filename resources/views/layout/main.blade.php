@@ -80,57 +80,44 @@
                     <ul class="clearfix">
                         <li class="icons dropdown"><a href="javascript:void(0)" data-toggle="dropdown">
                                 <i class="mdi mdi-bell-outline"></i>
-                                <span class="badge badge-pill gradient-2">3</span>
+                                <!-- Tampilkan badge hanya jika ada notifikasi -->
+                                @if(auth()->user()->unreadNotifications->count() > 0)
+                                    <span
+                                        class="badge badge-pill gradient-2">{{ auth()->user()->unreadNotifications->count() }}</span>
+                                @endif
                             </a>
                             <div class="drop-down animated fadeIn dropdown-menu dropdown-notfication">
                                 <div class="dropdown-content-heading d-flex justify-content-between">
-                                    <span class="">2 New Notifications</span>
-                                    <a href="javascript:void()" class="d-inline-block">
-                                        <span class="badge badge-pill gradient-2">5</span>
-                                    </a>
+                                    <!-- Tampilkan pesan berbeda tergantung jumlah notifikasi -->
+                                    @if(auth()->user()->unreadNotifications->count() > 0)
+                                        <span>{{ auth()->user()->unreadNotifications->count() }} New Notifications</span>
+                                    @else
+                                        <span>No Notifications</span>
+                                    @endif
+                                    <!-- Badge di bagian dalam hanya muncul jika ada notifikasi -->
+                                    @if(auth()->user()->unreadNotifications->count() > 0)
+                                        <a href="javascript:void()" class="d-inline-block">
+                                            <span
+                                                class="badge badge-pill gradient-2">{{ auth()->user()->unreadNotifications->count() }}</span>
+                                        </a>
+                                    @endif
                                 </div>
                                 <div class="dropdown-content-body">
                                     <ul>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i
-                                                        class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Events near you</h6>
-                                                    <span class="notification-text">Within next 5 days</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i
-                                                        class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Event Started</h6>
-                                                    <span class="notification-text">One hour ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-success-lighten-2"><i
-                                                        class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Event Ended Successfully</h6>
-                                                    <span class="notification-text">One hour ago</span>
-                                                </div>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void()">
-                                                <span class="mr-3 avatar-icon bg-danger-lighten-2"><i
-                                                        class="icon-present"></i></span>
-                                                <div class="notification-content">
-                                                    <h6 class="notification-heading">Events to Join</h6>
-                                                    <span class="notification-text">After two days</span>
-                                                </div>
-                                            </a>
-                                        </li>
+                                        @foreach (auth()->user()->unreadNotifications as $notification)
+                                            <li>
+                                                <a href="{{ route('notifications.read', ['id' => $notification->id]) }}">
+                                                    <span class="mr-3 avatar-icon bg-success-lighten-2"><i
+                                                            class="icon-present"></i></span>
+                                                    <div class="notification-content">
+                                                        <h6 class="notification-heading">
+                                                            {{ $notification->data['messages'] }}
+                                                        </h6>
+                                                        <span class="notification-text">{{ $notification->created_at->diffForHumans() }}</span>
+                                                    </div>
+                                                </a>
+                                            </li>
+                                        @endforeach
                                     </ul>
 
                                 </div>
@@ -412,6 +399,16 @@
             var pengajuId = button.data('id'); // Ambil ID pengajuan dari atribut data-id
             var modal = $(this);
             modal.find('.modal-body #pendingId').val(pengajuId); // Set ID pengajuan ke dalam input hidden
+        });
+    </script>
+
+    <script>
+        // Mengatur ID pengajuan untuk modal Tolak
+        $('#rejecttModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Tombol yang memicu modal
+            var pengajuId = button.data('id'); // Ambil ID pengajuan dari atribut data-id
+            var modal = $(this);
+            modal.find('.modal-body #rejectId').val(pengajuId); // Set ID pengajuan ke dalam input hidden
         });
     </script>
 
@@ -706,7 +703,7 @@
                                     confirmButtonText: 'OK'
                                 }, function () {
                                     // Sembunyikan modal dan reload halaman
-                                    $('#rejectModal').modal('hide');
+                                    $('#rejecttModal').modal('hide');
                                     location.reload();
                                 });
                             } else {

@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\StatusNotification;
 use Illuminate\Http\Request;
 use App\Models\Pengaju;
 use App\Models\Keterangan;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
+use Notification;
 
 class ApprovalController extends Controller
 {
@@ -86,6 +89,36 @@ class ApprovalController extends Controller
             $pengaju->update([
                 'id_status' => $finalStatus,
             ]);
+        }
+
+        if ($finalStatus) {
+            // Tentukan pesan notifikasi berdasarkan finalStatus
+            switch ($finalStatus) {
+                case 1:
+                    $message = 'Approval Menyetujui Data Pengajuan';
+                    break;
+                case 2:
+                    $message = 'Approval Menolak Data Pengajuan';
+                    break;
+                case 3:
+                    $message = 'Approval Pending Data Pengajuan';
+                    break;
+                default:
+                    $message = 'Approval Status Tidak Diketahui';
+                    break;
+            }
+        
+            // Kirim notifikasi ke pengaju berdasarkan pengaju_id
+            $userPengaju = User::find($pengaju->user_id);
+            if ($userPengaju) {
+                $userPengaju->notify(new StatusNotification($pengaju, $message));
+            }
+        
+            // Jika status adalah 1 (Setuju), kirim notifikasi ke semua accountant
+            if ($finalStatus == 1) {
+                $userAccountants = User::where('role', 4)->get();
+                Notification::send($userAccountants, new StatusNotification($pengaju, $message));
+            }
         }
 
         return response()->json(['success' => true, 'message' => 'Keterangan berhasil disimpan.']);

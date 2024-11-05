@@ -7,7 +7,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-                <form id="rejectForm" onsubmit="submitForm(event, 'rejectForm', 'Tolak');">
+                <form id="rejecttForm" onsubmit="submitForm(event, 'rejecttForm', 'Tolak');">
                     @csrf
                     <input type="hidden" name="pengaju_id" id="rejectId">
                     <input type="hidden" name="status" value="Tolak">

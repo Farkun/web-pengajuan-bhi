@@ -58,7 +58,7 @@
                                                     ditanggapi</button>
                                                 <div class="dropdown-menu">
                                                     <a class="dropdown-item reject-button" href="#" data-toggle="modal"
-                                                        data-target="#rejectModal" data-id="{{ $pengaju->id }}">Tolak</a>
+                                                        data-target="#rejecttModal" data-id="{{ $pengaju->id }}">Tolak</a>
                                                 </div>
 
                                             </td>

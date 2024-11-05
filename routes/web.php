@@ -9,6 +9,7 @@ use App\Http\Controllers\ApprovalController;
 use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\BendaharayController;
+use App\Http\Controllers\NotificationsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,7 +36,7 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';
 
 Route::middleware(['auth', 'role:1'])->group(function () {
     Route::get('/superadmin/dashboard', [UserController::class, 'superadminDashboard'])->name('superadmin.dashboard');
@@ -55,7 +56,7 @@ Route::get('/pengaju/dashboard', function () {
     return view('pengaju.dashboard');
 })->middleware(['auth', 'verified'])->name('pengaju.dashboard');
 
-Route::middleware(['auth', 'role:2'])->group(function(){
+Route::middleware(['auth', 'role:2'])->group(function () {
     Route::get('/pengaju/result', [PengajuController::class, 'index'])->name('pengaju.result');
     Route::get('/pengaju/status', [PengajuController::class, 'index'])->name('pengaju.status');
     Route::get('/pengaju/dashboard', [PengajuController::class, 'index'])->name('pengaju.dashboard');
@@ -125,15 +126,15 @@ Route::get('/bendahara/laporan', function () {
 //     return view('bendahara.status');
 // })->name('bendahara.status');
 Route::middleware(['auth', 'role:5'])->group(function () {
-Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
-Route::get('/bendahara/detail/{id}', [BendaharaController::class, 'show'])->name('bendahara.detail');
-Route::get('/bendahara/detailap/{id}', [BendaharaController::class, 'shows'])->name('bendahara.detailap');
-Route::get('/bendahara/export/excel', [BendaharaController::class, 'export_excel'])->name('bendahara.export.excel');
-Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashboard'])->name('bendahara.dashboard');
-Route::post('/bendahara/update-cair', [BendaharaController::class, 'updateCair'])->name('bendahara.updateCair');
-Route::get('/bendahara/laporan', [BendaharaController::class, 'laporan'])->name('bendahara.laporan');
-Route::get('/bendahara/export-sudah-cair', [BendaharaController::class, 'exportSudahCair'])->name('export.sudahcair');
-Route::get('/bendahara/dashboard', [BendaharaController::class, 'showDashboard'])->name('bendahara.dashboard');
+    Route::get('/bendahara/status', [BendaharaController::class, 'index'])->name('bendahara.status');
+    Route::get('/bendahara/detail/{id}', [BendaharaController::class, 'show'])->name('bendahara.detail');
+    Route::get('/bendahara/detailap/{id}', [BendaharaController::class, 'shows'])->name('bendahara.detailap');
+    Route::get('/bendahara/export/excel', [BendaharaController::class, 'export_excel'])->name('bendahara.export.excel');
+    Route::get('/bendahara/dashboard', [BendaharaController::class, 'bendaharaDashboard'])->name('bendahara.dashboard');
+    Route::post('/bendahara/update-cair', [BendaharaController::class, 'updateCair'])->name('bendahara.updateCair');
+    Route::get('/bendahara/laporan', [BendaharaController::class, 'laporan'])->name('bendahara.laporan');
+    Route::get('/bendahara/export-sudah-cair', [BendaharaController::class, 'exportSudahCair'])->name('export.sudahcair');
+    Route::get('/bendahara/dashboard', [BendaharaController::class, 'showDashboard'])->name('bendahara.dashboard');
 });
 
 // Bendahara Yayasan
@@ -169,10 +170,23 @@ Route::middleware(['auth', 'role:5'])->group(function () {
 });
 
 Route::middleware(['auth', 'role:6'])->group(function () {
-Route::get('/bendaharay/dashboard', [DashboardController::class, 'bendaharay'])->name('bendaharay.dashboard');
+    Route::get('/bendaharay/dashboard', [DashboardController::class, 'bendaharay'])->name('bendaharay.dashboard');
 });
 
 Route::get('/dashboard/{type}', [DashboardController::class, 'showDashboard'])->name('dashboard.show');
+
+
+//Notification Read
+Route::get('/notifications/read/{id}', [NotificationsController::class, 'markAsRead'])->name('notifications.read');
+
+// Route::middleware('auth')->group(function () {
+//     Route::post('/notifications/pengajuan-created/{pengajuanId}', [NotificationController::class, 'createNotificationForApproval'])->name('notifications.pengajuanCreated');
+//     Route::post('/notifications/approval-decision/{pengajuanId}', [NotificationController::class, 'notifyApprovalDecision'])->name('notifications.approvalDecision');
+//     Route::post('/notifications/accountant-to-yayasan/{pengajuanId}', [NotificationController::class, 'notifyAccountantToYayasanTreasurer'])->name('notifications.accountantToYayasan');
+//     Route::post('/notifications/treasurer-decision/{pengajuanId}', [NotificationController::class, 'notifyTreasurerDecision'])->name('notifications.treasurerDecision');
+//     Route::post('/notifications/disbursement/{pengajuanId}', [NotificationController::class, 'notifyDisbursementToPengajuAndApproval'])->name('notifications.disbursement');
+//     Route::post('/notifications/{id}/mark-as-read', [NotificationController::class, 'markAsRead'])->name('notifications.markAsRead');
+// });
 
 
 

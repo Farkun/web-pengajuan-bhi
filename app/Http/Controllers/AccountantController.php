@@ -3,7 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Pengaju;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Models\User;
+use App\Notifications\SendNotification;
+use Notification;
 
 class AccountantController extends Controller
 {
@@ -175,9 +179,19 @@ class AccountantController extends Controller
             'forwarded_at' => now(),
         ]);
 
+        $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+
+        $userOperator = User::where('role', 6)->get();
+        // Kirim notifikasi untuk setiap pengajuan yang dipilih
+        foreach ($selectedPengajus as $pengajuId) {
+            $pengaju = Pengaju::find($pengajuId);
+            Notification::send($userOperator, new SendNotification($pengaju, $message));
+        }
+
         // Kirim response sukses dengan SweetAlert
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara yayasan.']);
     }
+
     public function forwardtwo(Request $request)
     {
         // Ambil ID pengajuan yang dipilih dari checkbox
@@ -215,6 +229,10 @@ class AccountantController extends Controller
             $pengaju->save();
         }
 
+        $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+
+        $userOperator = User::where('role', 6)->get();
+        Notification::send($userOperator, new SendNotification($pengaju, $message));
         // Kirim response sukses dengan SweetAlert
         return response()->json(['status' => 'success', 'message' => 'Data berhasil dikirim ke bendahara yayasan.']);
     }

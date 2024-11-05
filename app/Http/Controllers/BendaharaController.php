@@ -6,9 +6,12 @@ use App\Exports\ExportData;
 use Illuminate\Http\Request;
 use App\Models\Pengaju;
 use App\Models\Keterangan;
+use App\Models\User;
+use App\Notifications\CairNotification;
 use Illuminate\Support\Facades\Auth;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\SudahCairExport;
+use Notification;
 use Carbon\Carbon;
 
 class BendaharaController extends Controller
@@ -63,6 +66,17 @@ class BendaharaController extends Controller
         $pengaju->id_statusdana = $id_statusdana; // Set status ke "Sudah Cair"
         $pengaju->bukti_pembayaran = $buktiPembayaran; // Simpan bukti pembayaran
         $pengaju->save();
+
+        $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+        // Kirim notifikasi ke approval (role ID 2)
+        $userApproval = User::where('role', 3)->get();
+        Notification::send($userApproval, new CairNotification($pengaju, $message));
+
+        // Kirim notifikasi ke pengaju spesifik (pemilik pengajuan)
+        $userPengaju = User::find($pengaju->user_id);
+        if ($userPengaju) {
+            $userPengaju->notify(new CairNotification($pengaju, $message));
+        }
 
         // Kembalikan respons JSON, bukan redirect
         return response()->json(['success' => true, 'message' => 'Pengajuan telah dicairkan dan bukti pembayaran telah disimpan.']);

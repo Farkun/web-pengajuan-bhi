@@ -12,6 +12,7 @@ use Carbon\Carbon;
 use App\Models\Pengaju;
 use App\Models\Status;
 use App\Models\User;
+use App\Models\Notification;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -291,5 +292,16 @@ class AppServiceProvider extends ServiceProvider
                 'tanggalJumat' => Carbon::now()->startOfWeek()->addDays(4)->format('d F Y'),
             ]);
         });
+
+        // View::composer('*', function ($view) {
+        //     if (Auth::check()) {
+        //         $notifications = Notification::where('user_id', Auth::id())
+        //             ->where('is_read', false)
+        //             ->orderBy('created_at', 'desc')
+        //             ->get();
+        
+        //         $view->with('notifications', $notifications);
+        //     }
+        // });
     }
 }

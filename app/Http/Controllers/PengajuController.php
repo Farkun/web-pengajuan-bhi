@@ -2,18 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Notifications\PengajuNotification;
 use Illuminate\Http\Request;
 use App\Models\Pengaju;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
+use Notification;
 
 class PengajuController extends Controller
 {
+
     public function index(Request $request)
     {
         // Ambil ID pengguna yang sedang login
         $userId = Auth::id();
+
+        auth()->user()->unreadNotifications->where('id', request('id'))->first()?->markAsRead();
 
         // Ambil data pengajuan hanya untuk pengguna yang sedang login
         $pengajus = Pengaju::where('user_id', $userId)->get();
@@ -95,6 +101,8 @@ class PengajuController extends Controller
         $pengaju->forwarded_at = $request->forwarded_at ?? null;
         $pengaju->save();
 
+        $userOperator = User::where('role', 3)->get();
+        Notification::send($userOperator, new PengajuNotification($pengaju));
         return redirect()->route('pengaju.result')->with('success', 'Pengajuan berhasil ditambahkan.');
     }
 

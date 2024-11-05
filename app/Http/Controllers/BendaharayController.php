@@ -3,10 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Notifications\PostponeNotification;
+use App\Notifications\SendNotification;
 use App\Models\Pengaju;
 use App\Models\Keterangan;
 use App\Models\Status;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Notification;
 
 class BendaharayController extends Controller
 {
@@ -103,6 +107,11 @@ class BendaharayController extends Controller
             $keterangan->keterangan_data = json_encode($keteranganData);
             $keterangan->save();
 
+            $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+
+            $userOperator = User::where('role', 4)->get();
+            Notification::send($userOperator, new PostponeNotification($pengaju, $message));
+
             return response()->json([
                 'success' => true,
                 'message' => 'Pengajuan berhasil ditolak dan dikembalikan ke accountant.'
@@ -168,6 +177,10 @@ class BendaharayController extends Controller
             $pengaju->forwarded_at = now();
             $pengaju->save();
         }
+
+        $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+        $userOperator = User::where('role', 5)->get();
+        Notification::send($userOperator, new SendNotification($pengaju, $message));
 
         return response()->json([
             'success' => true,
