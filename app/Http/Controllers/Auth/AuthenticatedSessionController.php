@@ -9,6 +9,8 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Session;
 
 class AuthenticatedSessionController extends Controller
 {
@@ -57,10 +59,16 @@ class AuthenticatedSessionController extends Controller
     {
         Auth::guard('web')->logout();
 
+        // Hapus semua sesi
+        Session::flush();
+
+        // Hapus cookie sesi untuk mencegah masalah "page expired"
+        $response = redirect('/login')->withCookie(Cookie::forget('laravel_session'));
+
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
 
-        return redirect('/login');
+        return $response;
     }
 }
