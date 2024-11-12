@@ -10,6 +10,7 @@ use App\Http\Controllers\AccountantController;
 use App\Http\Controllers\BendaharaController;
 use App\Http\Controllers\BendaharayController;
 use App\Http\Controllers\NotificationsController;
+use App\Models\Pengaju;
 
 /*
 |--------------------------------------------------------------------------
@@ -92,7 +93,12 @@ Route::middleware(['auth', 'role:3'])->group(function () {
     Route::get('/approval/detaillap/{id}', [ApprovalController::class, 'shows'])->name('approval.detaillap');
     Route::get('/approval/laporan', [ApprovalController::class, 'laporan'])->name('approval.laporan');
     Route::get('/approval/laporan', [ApprovalController::class, 'showDashboard'])->name('approval.laporan');
+    // Route::get('/approval/statusApproval', [PengajuController::class, 'index'])->name('approval.statusApproval');
 });
+
+Route::get('/approval/statusApproval', function () {
+    return view('approval.statusApproval');
+})->name('approval.statusApproval');
 
 // Accountant
 Route::middleware(['auth', 'role:4'])->group(function () {
@@ -115,13 +121,19 @@ Route::get('/accountant/data', function () {
     return view('accountant.data');
 })->name('accountant.data');
 
+Route::get('/accountant/statusAkuntan', function () {
+    return view('accountant.statusAkuntan');
+})->name('accountant.statusAkuntan');
+
 // Bendahara
 
 Route::get('/bendahara/laporan', function () {
     return view('bendahara.laporan');
 })->name('bendahara.laporan');
 
-
+Route::get('/bendahara/statusBendahara', function () {
+    return view('bendahara.statusBendahara');
+})->name('bendahara.statusBendahara');
 
 // Route::get('/bendahara/status', function () {
 //     return view('bendahara.status');
@@ -148,6 +160,9 @@ Route::middleware(['auth', 'role:6'])->group(function () {
     Route::get('/bendaharay/dashboard', [BendaharaController::class, 'showDashboard'])->name('bendahara.dashboard');
 });
 
+Route::get('/bendaharay/statusBendaharaY', function () {
+    return view('bendaharay.statusBendaharaY');
+})->name('bendaharay.statusBendaharaY');
 
 //Dashboard kontoller
 Route::middleware(['auth', 'role:1'])->group(function () {

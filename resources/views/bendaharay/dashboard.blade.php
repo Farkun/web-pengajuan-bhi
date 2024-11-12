@@ -14,6 +14,11 @@
             Accountant</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('bendaharay.statusBendaharaY') }}" style="color: white;">
+            <i class="icon-speedometer menu-icon" style="color: white;"></i><span class="nav-text">Progress Keseluruhan</span>
+        </a>
+    </li>
 </ul>
 @endsection
 
