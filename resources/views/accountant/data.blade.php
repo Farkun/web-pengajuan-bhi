@@ -18,6 +18,11 @@
             <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Rekap Data</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('accountant.statusAkuntan') }}" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Progress Keseluruhan</span>
+        </a>
+    </li>
 </ul>
 @endsection
 

@@ -18,6 +18,11 @@
             <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
         </a>
     </li>
+    <li>
+        <a href="{{ route('bendahara.statusBendahara') }}" style="color: white;">
+            <i class="icon-notebook menu-icon" style="color: white;"></i><span class="nav-text">Progress Keseluruhan</span>
+        </a>
+    </li>
 </ul>
 @endsection
 

@@ -13,6 +13,11 @@
                 <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Laporan</span>
             </a>
         </li>
+        <li>
+            <a href="{{ route('approval.statusApproval') }}" style="color: white;">
+                <i class="icon-note menu-icon" style="color: white;"></i><span class="nav-text">Progress Keseluruhan</span>
+            </a>
+        </li>
 </ul>
 @endsection
 
