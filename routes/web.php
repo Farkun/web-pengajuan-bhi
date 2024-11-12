@@ -65,6 +65,7 @@ Route::middleware(['auth', 'role:2'])->group(function () {
     Route::delete('/pengaju/{id}', [PengajuController::class, 'destroy'])->name('pengaju.destroy');
     Route::get('/pengaju/detailp/{id}', [PengajuController::class, 'show'])->name('pengaju.detailp');
     Route::get('/pengaju/details/{id}', [PengajuController::class, 'shows'])->name('pengaju.details');
+    Route::post('/pengaju/receive', [PengajuController::class, 'receive'])->name('pengaju.receive');
 });
 
 Route::get('/pengaju/dana', function () {

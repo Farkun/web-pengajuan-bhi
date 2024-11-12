@@ -71,7 +71,20 @@
                                             <tbody>
                                             @foreach($pengajus as $pengaju)
                                                 <tr>
-                                                    <th>{{ $loop->iteration }}</th>
+                                                    <!-- Checkbox dan Nomor Iterasi -->
+                                                    <td>
+                                                        {{ $loop->iteration }}
+
+                                                        <!-- Tampilkan checkbox ketika dana cair dan jika dana sudah diterima atau belum diterima -->
+                                                        @if($pengaju->id_statusdana == 1) <!-- Kondisi memastikan dana cair -->
+                                                            &nbsp;&nbsp;
+                                                            <input type="checkbox" 
+                                                                name="selected_pengajus[]" 
+                                                                value="{{ $pengaju->id }}"
+                                                                onclick="confirmReceive({{ $pengaju->id }}, this)"
+                                                                @if($pengaju->received_at) checked disabled @endif>
+                                                        @endif
+                                                    </td>
                                                     <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                                     <td>{{ $pengaju->nama_pengaju }}</td>
                                                     <td class="color-primary">Rp.{{ number_format($pengaju->total, 0, ',', '.') }}</td>

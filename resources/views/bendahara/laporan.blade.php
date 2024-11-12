@@ -40,6 +40,7 @@
                                     <th>Dana Pengajuan</th>
                                     <th>Detail</th>
                                     <th>Status</th>
+                                    <th>Status Terima</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -49,12 +50,21 @@
                                         <td>{{ \Carbon\Carbon::parse($pengaju->tanggal)->format('d/m/Y') }}</td>
                                         <td>{{ $pengaju->user->name }}</td>
                                         <td>{{ $pengaju->nama_pengaju }}</td>
-                                        <td style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-                                        {{ $pengaju->deskripsi }}</td>
+                                        <td
+                                            style="max-width: 200px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                            {{ $pengaju->deskripsi }}
+                                        </td>
                                         <td>{{ number_format($pengaju->total, 0, ',', '.') }}</td>
                                         <td><a href="{{ route('bendahara.detailap', $pengaju->id) }}">
-                                            <button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
+                                                <button type="button" class="btn mb-1 btn-info">Cek Detail</button></a></td>
                                         <td><span class="badge badge-success px-2">Sudah cair</span></td>
+                                        <td>
+                                            @if($pengaju->received_at)
+                                                <span class="badge badge-success px-2">Sudah diterima</span>
+                                            @else
+                                                <span class="badge badge-secondary px-2">Belum diterima</span>
+                                            @endif
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>
@@ -68,6 +78,7 @@
                                     <th>Action</th>
                                     <th>Detail</th>
                                     <th>Status</th>
+                                    <th>Status Terima</th>
                                 </tr>
                             </tfoot>
                         </table>
@@ -76,7 +87,7 @@
                 <div class="general-button col-lg-11 text-right">
                     <div class="sweetalert m-t-30">
                         <a href="{{ route('export.sudahcair') }}">
-                        <button type="button" class="btn mb-1 btn-success">Export Excel</button>
+                            <button type="button" class="btn mb-1 btn-success">Export Excel</button>
                         </a>
                     </div>
                     <br><br>

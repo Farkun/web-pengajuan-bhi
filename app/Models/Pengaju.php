@@ -19,6 +19,7 @@ class Pengaju extends Model
         'invoice',
         'id_status',
         'id_statusdana',
+        'received_at',
         'id_keterangan',
         'forwarded_at',
         'bukti_pembayaran'

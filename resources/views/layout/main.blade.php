@@ -113,7 +113,8 @@
                                                         <h6 class="notification-heading">
                                                             {{ $notification->data['messages'] }}
                                                         </h6>
-                                                        <span class="notification-text">{{ $notification->created_at->diffForHumans() }}</span>
+                                                        <span
+                                                            class="notification-text">{{ $notification->created_at->diffForHumans() }}</span>
                                                     </div>
                                                 </a>
                                             </li>
@@ -851,6 +852,70 @@
                 otherBankInput.required = false;
                 hiddenBankInput.value = select.value; // Set nilai dropdown jika bukan "Lainnya"
             }
+        }
+    </script>
+
+    <script>
+        function confirmReceive(pengajuId, checkbox) {
+            // Menyimpan status awal checkbox
+            const isChecked = checkbox.checked;
+
+            // Menampilkan SweetAlert konfirmasi menggunakan callback function
+            swal({
+                title: 'Apakah dana yang dicairkan sudah Anda terima?',
+                text: "Jika sudah, tekan 'Ya' untuk konfirmasi.",
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Ya',
+                cancelButtonText: 'Batal',
+                closeOnCancel: true // Menutup swal jika dibatalkan
+            }, function (isConfirm) {
+                if (isConfirm) {
+                    // Jika konfirmasi 'Ya', kirimkan data ke server
+                    fetch("{{ route('pengaju.receive') }}", {
+                        method: 'POST',
+                        headers: {
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ id: pengajuId })
+                    })
+                        .then(response => {
+                            if (!response.ok) {
+                                return Promise.reject('Server Error: Gagal mengirimkan data');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            if (data.success) {
+                                // Jika berhasil, tampilkan SweetAlert sukses
+                                swal({
+                                    title: 'Berhasil!',
+                                    text: 'Dana telah diterima.',
+                                    icon: 'success',
+                                    confirmButtonText: 'OK'
+                                }, function () {
+                                    // Ubah status checkbox dan nonaktifkan agar tidak bisa diubah lagi
+                                    checkbox.checked = true;
+                                    checkbox.disabled = true;
+                                });
+                            } else {
+                                swal('Error!', 'Gagal mengonfirmasi penerimaan dana.', 'error');
+                            }
+                        })
+                        .catch(error => {
+                            // Tangani error jika terjadi pada fetch atau response
+                            console.error('Error:', error);
+                            swal('Error', 'Terjadi kesalahan saat mengirim data.', 'error');
+
+                            // Mengembalikan status checkbox jika ada error
+                            checkbox.checked = !isChecked;
+                        });
+                } else {
+                    // Jika dibatalkan, kembalikan status awal checkbox
+                    checkbox.checked = !isChecked;
+                }
+            });
         }
     </script>
 </body>

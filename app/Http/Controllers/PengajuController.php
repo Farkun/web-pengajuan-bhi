@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Notifications\PengajuNotification;
+use App\Notifications\ReceivedNotification;
 use Illuminate\Http\Request;
 use App\Models\Pengaju;
 use App\Models\User;
@@ -104,6 +105,21 @@ class PengajuController extends Controller
         $userOperator = User::where('role', 3)->get();
         Notification::send($userOperator, new PengajuNotification($pengaju));
         return redirect()->route('pengaju.result')->with('success', 'Pengajuan berhasil ditambahkan.');
+    }
+
+    public function receive(Request $request)
+    {
+        $pengaju = Pengaju::findOrFail($request->id);
+
+        // Tandai bahwa dana sudah diterima
+        $pengaju->received_at = now();
+        $pengaju->save();
+
+        $message = Auth::user()->name; // Dapatkan nama pengguna yang login
+        $userOperator = User::where('role', 5)->get();
+        Notification::send($userOperator, new ReceivedNotification($pengaju, $message));
+
+        return response()->json(['success' => true]);
     }
 
     public function destroy($id)
